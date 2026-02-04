@@ -16,7 +16,7 @@ export class SideNavService {
     return this.apiService.get<SideNavConfig>(this.configEndpoint).pipe(
       catchError(error => {
         console.error('Error fetching side-nav config:', error);
-        
+
         // Return default config on error
         return of(this.getDefaultConfig());
       })
@@ -29,18 +29,18 @@ export class SideNavService {
         {
           title: 'Overview',
           items: [
-            { label: 'Dashboard', href: '#', active: true },
-            { label: 'Accounts', href: '#' },
-            { label: 'Budgets', href: '#' },
-            { label: 'Goals', href: '#' }
+            { label: 'Dashboard', route: '#', active: true },
+            { label: 'Accounts', route: '#' },
+            { label: 'Budgets', route: '#' },
+            { label: 'Goals', route: '#' }
           ]
         },
         {
           title: 'Insights',
           items: [
-            { label: 'Spending trends', href: '#' },
-            { label: 'Cash flow', href: '#' },
-            { label: 'Reports', href: '#' }
+            { label: 'Spending trends', route: '#' },
+            { label: 'Cash flow', route: '#' },
+            { label: 'Reports', route: '#' }
           ]
         }
       ],

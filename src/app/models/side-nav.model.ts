@@ -1,6 +1,6 @@
 export interface NavItem {
   label: string;
-  href: string;
+  route: string;
   active?: boolean;
   icon?: string;
 }

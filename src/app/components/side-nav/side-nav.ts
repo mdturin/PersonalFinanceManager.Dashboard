@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { SideNavService } from '../../services/side-nav.service';
 import { SideNavConfig, NavSection } from '../../models/side-nav.model';
 import { delay, Observable } from 'rxjs';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-side-nav',
   templateUrl: './side-nav.html',
   styleUrl: './side-nav.scss',
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, RouterLink]
 })
 export class SideNavComponent implements OnInit {
   config: SideNavConfig | null = null;

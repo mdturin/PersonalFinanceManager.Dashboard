@@ -13,7 +13,7 @@
     <ng-container *ngFor="let section of config.sections">
       <p class="side-title">{{ section.title }}</p>
       <nav class="side-links">
-        <a *ngFor="let item of section.items" class="side-link" [class.active]="item.active" [href]="item.href">
+        <a *ngFor="let item of section.items" class="side-link" [class.active]="item.active" [routerLink]="item.route">
           {{ item.label }}
         </a>
       </nav>
