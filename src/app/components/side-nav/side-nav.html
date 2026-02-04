@@ -1,22 +1,31 @@
 <aside class="side-nav">
-  <p class="side-title">Overview</p>
-  <nav class="side-links">
-    <a class="side-link active" href="#">Dashboard</a>
-    <a class="side-link" href="#">Accounts</a>
-    <a class="side-link" href="#">Budgets</a>
-    <a class="side-link" href="#">Goals</a>
-  </nav>
 
-  <p class="side-title">Insights</p>
-  <nav class="side-links">
-    <a class="side-link" href="#">Spending trends</a>
-    <a class="side-link" href="#">Cash flow</a>
-    <a class="side-link" href="#">Reports</a>
-  </nav>
-
-  <div class="side-card hide" hidden>
-    <p class="side-card-title">Next steps</p>
-    <p class="side-card-body">Connect your bank account to start importing transactions.</p>
-    <button class="ghost-button" type="button">Connect bank</button>
+  <div *ngIf="loading" class="loading">
+    <p>Loading navigation...</p>
   </div>
+
+  <div *ngIf="error" class="error">
+    <p>{{ error }}</p>
+  </div>
+
+  <ng-container *ngIf="config">
+    <!-- Render nav sections dynamically -->
+    <ng-container *ngFor="let section of config.sections">
+      <p class="side-title">{{ section.title }}</p>
+      <nav class="side-links">
+        <a *ngFor="let item of section.items" class="side-link" [class.active]="item.active" [href]="item.href">
+          {{ item.label }}
+        </a>
+      </nav>
+    </ng-container>
+
+    <!-- Render cards dynamically -->
+    <div *ngFor="let card of config.cards" class="side-card" [class.hide]="card.hidden" [hidden]="card.hidden">
+      <p class="side-card-title">{{ card.title }}</p>
+      <p class="side-card-body">{{ card.body }}</p>
+      <button class="ghost-button" type="button" (click)="onCardButtonClick(card.buttonAction)">
+        {{ card.buttonLabel }}
+      </button>
+    </div>
+  </ng-container>
 </aside>
