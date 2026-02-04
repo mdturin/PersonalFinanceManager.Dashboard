@@ -10,6 +10,10 @@
   box-sizing: border-box;
 }
 
+.hide {
+  display: none !important;
+}
+
 .app-shell {
   display: flex;
   flex-direction: column;
