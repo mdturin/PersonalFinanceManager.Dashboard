@@ -1,1 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+:host {
+  display: block;
+  min-height: 100vh;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  background: #f5f7fb;
+  color: #1f2937;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.hide {
+  display: none !important;
+}
