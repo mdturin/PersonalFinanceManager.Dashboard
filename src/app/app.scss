@@ -1,0 +1,266 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  background: #f5f7fb;
+  color: #1f2937;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+  background: #111827;
+  color: #f9fafb;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #2563eb;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.brand-name {
+  font-weight: 600;
+  margin: 0;
+}
+
+.brand-subtitle {
+  margin: 0.15rem 0 0;
+  font-size: 0.85rem;
+  color: #cbd5f5;
+}
+
+.top-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.primary-button,
+.ghost-button {
+  border: none;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary-button {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.ghost-button {
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem 2rem;
+  flex: 1;
+}
+
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.side-title {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #64748b;
+}
+
+.side-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.side-link {
+  text-decoration: none;
+  color: #1f2937;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.side-link:hover,
+.side-link.active {
+  background: #e0ecff;
+  color: #1d4ed8;
+}
+
+.side-card {
+  margin-top: auto;
+  padding: 1rem;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5f5;
+}
+
+.side-card-title {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+.side-card-body {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.content-header h1 {
+  margin: 0 0 0.4rem;
+  font-size: 1.75rem;
+}
+
+.content-header p {
+  margin: 0;
+  color: #475569;
+}
+
+.content-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.content-card {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 18px;
+  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+}
+
+.content-card h2 {
+  margin-top: 0;
+}
+
+.content-card ul {
+  margin: 0.75rem 0 0;
+  padding-left: 1.2rem;
+  color: #475569;
+}
+
+.content-card.wide {
+  grid-column: 1 / -1;
+}
+
+.bill-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.bill-row:last-child {
+  border-bottom: none;
+}
+
+.bill-name {
+  margin: 0;
+  font-weight: 600;
+}
+
+.bill-date {
+  margin: 0.15rem 0 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.bill-amount {
+  margin: 0;
+  font-weight: 700;
+  color: #1d4ed8;
+}
+
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .side-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .side-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 720px) {
+  .top-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .layout {
+    padding: 1.25rem;
+  }
+
+  .content-header {
+    flex-direction: column;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
