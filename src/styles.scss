@@ -1,8 +1,13 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  background: #f8f4f4 !important;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
 :host {
   display: block;
   min-height: 100vh;
-  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
-  background: #f5f7fb;
   color: #1f2937;
 }
 
