@@ -28,65 +28,6 @@
   flex: 1;
 }
 
-.side-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  padding: 1.5rem;
-  background: #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-}
-
-.side-title {
-  margin: 0;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #64748b;
-}
-
-.side-links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.side-link {
-  text-decoration: none;
-  color: #1f2937;
-  padding: 0.5rem 0.75rem;
-  border-radius: 10px;
-  font-weight: 500;
-  transition: background 0.2s ease;
-}
-
-.side-link:hover,
-.side-link.active {
-  background: #e0ecff;
-  color: #1d4ed8;
-}
-
-.side-card {
-  margin-top: auto;
-  padding: 1rem;
-  border-radius: 14px;
-  background: #f8fafc;
-  border: 1px dashed #cbd5f5;
-}
-
-.side-card-title {
-  margin: 0 0 0.5rem;
-  font-weight: 600;
-}
-
-.side-card-body {
-  margin: 0 0 0.75rem;
-  font-size: 0.9rem;
-  color: #475569;
-}
-
 .content {
   display: flex;
   flex-direction: column;
