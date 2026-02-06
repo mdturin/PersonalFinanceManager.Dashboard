@@ -2,16 +2,16 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from "@angular/router";
 import { SideNavService } from '../../../services/side-nav.service';
-import { SideNavConfig } from '../../../models/side-nav.model';
+import { NavItem, SideNavConfig } from '../../../models/side-nav.model';
 
 @Component({
   selector: 'app-side-nav',
   templateUrl: './side-nav.html',
   styleUrl: './side-nav.scss',
-  standalone: true,
   imports: [CommonModule, RouterLink]
 })
 export class SideNavComponent implements OnInit {
+  currentNavItem: NavItem | null = null;
   config: SideNavConfig | null = null;
   loading = true;
   error: string | null = null;
@@ -34,6 +34,7 @@ export class SideNavComponent implements OnInit {
         next: (config) => {
           this.config = config;
           this.loading = false;
+          this.currentNavItem = this.findActiveNavItem(config);
           this.cdr.detectChanges();
         },
         error: (err) => {
@@ -43,6 +44,28 @@ export class SideNavComponent implements OnInit {
           this.cdr.detectChanges();
         }
       });
+  }
+
+  private findActiveNavItem(config: SideNavConfig): NavItem | null {
+    for (const section of config.sections) {
+      for (const item of section.items) {
+        if (item.active) {
+          return item;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  onNavItemClick(item: NavItem): void {
+    console.log('Navigation item clicked:', item);
+    // Implement navigation logic here if needed
+    if(this.currentNavItem)
+      this.currentNavItem.active = false; // Deactivate current item
+
+    item.active = true; // Activate clicked item
+    this.currentNavItem = item; // Update current active item
   }
 
   onCardButtonClick(action: string): void {

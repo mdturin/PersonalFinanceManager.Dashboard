@@ -1,14 +1,18 @@
+/* ---------------- SIDE NAV ---------------- */
 .side-nav {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
   padding: 1.5rem;
   background: #ffffff;
-  border-radius: 18px;
+  border-radius: 1.125rem; /* 18px */
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
   color: #1f2937;
+  min-width: 220px; /* keeps nav from collapsing */
+  transition: all 0.2s ease;
 }
 
+/* Side nav title */
 .side-title {
   margin: 0;
   font-size: 0.75rem;
@@ -18,53 +22,107 @@
   color: #64748b;
 }
 
+/* Links container */
 .side-links {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  flex-grow: 1; /* push side-card to bottom */
 }
 
+/* Individual link */
 .side-link {
+  display: flex;
+  align-items: center;
   text-decoration: none;
   color: #1f2937;
   padding: 0.5rem 0.75rem;
-  border-radius: 10px;
+  border-radius: 0.625rem; /* 10px */
   font-weight: 500;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
 }
 
+/* Active / hover state */
 .side-link:hover,
 .side-link.active {
   background: #e0ecff;
   color: #1d4ed8;
 }
 
+/* Optional icon inside link */
+.side-link i {
+  margin-right: 0.5rem;
+  font-size: 1rem;
+}
+
+/* Card at bottom (e.g., quick stats) */
 .side-card {
   margin-top: auto;
   padding: 1rem;
-  border-radius: 14px;
+  border-radius: 0.875rem; /* 14px */
   background: #f8fafc;
   border: 1px dashed #cbd5f5;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .side-card-title {
-  margin: 0 0 0.5rem;
+  margin: 0;
   font-weight: 600;
+  font-size: 0.875rem;
+  color: #1f2937;
 }
 
 .side-card-body {
-  margin: 0 0 0.75rem;
-  font-size: 0.9rem;
+  margin: 0;
+  font-size: 0.875rem;
   color: #475569;
 }
 
+/* ---------------- RESPONSIVE ---------------- */
 @media (max-width: 1024px) {
   .side-nav {
     flex-direction: row;
     flex-wrap: wrap;
+    min-width: 0;
+    padding: 1rem;
+    gap: 1rem;
+    border-radius: 1rem;
+  }
+
+  .side-links {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    flex-grow: 1;
+  }
+
+  .side-link {
+    flex: 1 1 calc(50% - 0.5rem);
+    justify-content: center;
+    padding: 0.5rem;
   }
 
   .side-card {
     width: 100%;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .side-nav {
+    flex-direction: column;
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .side-link {
+    padding: 0.45rem 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .side-card {
+    padding: 0.75rem;
   }
 }
