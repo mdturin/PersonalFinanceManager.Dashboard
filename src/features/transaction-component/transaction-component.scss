@@ -1,0 +1,106 @@
+/* ---------- FILTER BAR ---------- */
+.filters {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1.25rem 1.5rem; /* slightly tighter than normal cards */
+}
+
+/* Select inputs */
+.filters select {
+  min-width: 160px;
+  padding: 0.45rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  font-size: 0.9rem;
+  color: #1f2937;
+  cursor: pointer;
+}
+
+/* Focus state */
+.filters select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+/* ---------- TRANSACTION LIST ---------- */
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+  padding: 0.5rem 1rem;
+}
+
+/* Date group */
+.date-group {
+  padding: 0 0.5rem 1rem; /* extra bottom padding */
+  margin-bottom: 1rem;    /* space to next group */
+}
+
+.date-group h3 {
+  margin: 1rem 0 0.5rem;
+  padding: 0 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+/* ---------- TRANSACTION ROW ---------- */
+.transaction-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.95rem;
+}
+
+.transaction-row:last-child {
+  border-bottom: none;
+}
+
+.transaction-row span:last-child {
+  font-weight: 600;
+}
+
+/* Types */
+.transaction-row.expense {
+  color: #dc2626;
+}
+
+.transaction-row.income {
+  color: #16a34a;
+}
+
+.transaction-row.transfer {
+  color: #2563eb;
+}
+
+/* Hover (desktop UX polish) */
+.transaction-row:hover {
+  background: #f8fafc;
+  cursor: pointer;
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 640px) {
+  .transaction-row {
+    font-size: 0.9rem;
+    padding: 0.7rem 0.85rem;
+  }
+
+  .transaction-row span:first-child {
+    max-width: 65%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

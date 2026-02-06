@@ -14,13 +14,6 @@
     flex: 1;
   }
 
-  .content {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    color: #1f2937;
-  }
-
   @media (max-width: 1024px) {
     .layout {
       grid-template-columns: 1fr;

@@ -1,58 +1,3 @@
-/* ---------- HEADER ---------- */
-.content-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1.5rem;
-}
-
-.content-header h1 {
-  margin: 0 0 0.4rem;
-  font-size: 1.75rem;
-}
-
-.content-header p {
-  margin: 0;
-  color: #475569;
-}
-
-.content-actions {
-  display: flex;
-  gap: 0.6rem;
-}
-
-/* ---------- GRID ---------- */
-.content-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem;
-  margin-top: 1.25rem;
-}
-
-/* Summary cards need 4 columns */
-.summary-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-/* ---------- CARDS ---------- */
-.content-card {
-  background: #ffffff;
-  padding: 1.5rem;
-  border-radius: 18px;
-  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
-}
-
-.content-card h2,
-.content-card h3 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-}
-
-/* Wide cards */
-.content-card.wide {
-  grid-column: 1 / -1;
-}
-
 /* ---------- STAT CARDS ---------- */
 .stat-card h3 {
   font-size: 0.9rem;
@@ -73,32 +18,6 @@
 
 .stat-value.negative {
   color: #dc2626;
-}
-
-/* ---------- LISTS ---------- */
-.content-card ul {
-  margin: 0.75rem 0 0;
-  padding-left: 1.2rem;
-  color: #475569;
-}
-
-.category-list li,
-.transaction-list li,
-.insight-list li {
-  padding: 0.4rem 0;
-  list-style: none;
-}
-
-/* ---------- CHART PLACEHOLDER ---------- */
-.chart-placeholder {
-  height: 220px;
-  background: #f1f5f9;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #64748b;
-  font-size: 0.9rem;
 }
 
 /* ---------- BUDGET ---------- */
@@ -144,17 +63,5 @@
 @media (max-width: 1024px) {
   .summary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 640px) {
-  .content-grid,
-  .summary-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .content-actions {
-    flex-direction: column;
-    align-items: stretch;
   }
 }
