@@ -1,0 +1,10 @@
+<div class="calendar-grid">
+  <div *ngFor="let day of calendarDays">
+    <div class="day-number">{{ day.date | date: 'd' }}</div>
+    <div class="transactions">
+      <div *ngFor="let t of day.transactions">
+        <span [ngClass]="t.type">{{ t.type === 'expense' ? '-' : '+' }} ৳ {{ t.amount }}</span>
+      </div>
+    </div>
+  </div>
+</div>

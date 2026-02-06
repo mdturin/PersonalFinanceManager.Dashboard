@@ -1,0 +1,91 @@
+/* ---------------- CALENDAR GRID ---------------- */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 days per week */
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+}
+
+/* Each day box */
+.calendar-grid .day-number {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+}
+
+/* Day container */
+.calendar-grid > div {
+  display: flex;
+  flex-direction: column;
+  min-height: 80px;
+  background: #f8fafc;
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  transition: background 0.2s ease;
+}
+
+.calendar-grid > div:hover {
+  background: #e2e8f0;
+  cursor: pointer;
+}
+
+/* Transactions inside a day */
+.calendar-grid .transactions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: auto; /* push transactions to bottom */
+}
+
+/* Transaction badges */
+.calendar-grid .transactions span {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.375rem;
+  color: #fff;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Type colors */
+.calendar-grid .transactions span.expense {
+  background-color: #dc2626;
+}
+
+.calendar-grid .transactions span.income {
+  background-color: #16a34a;
+}
+
+.calendar-grid .transactions span.transfer {
+  background-color: #2563eb;
+}
+
+/* Responsive - Mobile view */
+@media (max-width: 640px) {
+  .calendar-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.35rem;
+    padding: 0.75rem;
+  }
+
+  .calendar-grid > div {
+    min-height: 60px;
+    padding: 0.35rem;
+  }
+
+  .calendar-grid .day-number {
+    font-size: 0.75rem;
+  }
+
+  .calendar-grid .transactions span {
+    font-size: 0.65rem;
+    padding: 0.15rem 0.3rem;
+  }
+}

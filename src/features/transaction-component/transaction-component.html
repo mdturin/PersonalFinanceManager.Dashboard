@@ -1,57 +1,79 @@
-<!-- HEADER -->
 <section class="content">
-    <section class="content-header">
-        <div>
-            <h1>Transactions</h1>
-            <p>View and manage all your transactions</p>
-        </div>
 
-        <div class="content-actions">
-            <button class="ghost-button">📅 This Month</button>
-            <button class="primary-button">➕ Add</button>
-        </div>
-    </section>
+  <!-- HEADER -->
+  <section class="content-header">
+      <div>
+          <h1>Transactions</h1>
+          <p>View and manage all your transactions</p>
+      </div>
 
-    <!-- FILTERS -->
-    <section class="content-card filters">
-        <!-- later component -->
-        <select>
-            <option>All Types</option>
-            <option>Income</option>
-            <option>Expense</option>
-            <option>Transfer</option>
-        </select>
+      <div class="content-actions">
+          <button class="ghost-button" (click)="setDateFilter('month')">📅 This Month</button>
+          <button class="primary-button" (click)="openAddTransactionModal()">➕ Add</button>
+          <button class="ghost-button" (click)="toggleView()">
+            {{ currentView === 'grid' ? '📅 Calendar View' : '📋 Grid View' }}
+          </button>
+      </div>
+  </section>
 
-        <select>
-            <option>All Accounts</option>
-        </select>
+  <!-- FILTERS -->
+  <section class="content-card filters">
+      <select [(ngModel)]="filters.type">
+          <option value="">All Types</option>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+          <option value="transfer">Transfer</option>
+      </select>
 
-        <select>
-            <option>All Categories</option>
-        </select>
-    </section>
+      <select [(ngModel)]="filters.account">
+          <option value="">All Accounts</option>
+          <option *ngFor="let acc of accounts" [value]="acc.id">{{ acc.name }}</option>
+      </select>
 
-    <!-- TRANSACTION LIST -->
-    <section class="content-card transaction-list">
+      <select [(ngModel)]="filters.category">
+          <option value="">All Categories</option>
+          <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+      </select>
 
-        <div class="date-group">
-            <h3>Today</h3>
+      <input type="date" [(ngModel)]="filters.startDate">
+      <input type="date" [(ngModel)]="filters.endDate">
 
-            <article class="transaction-row expense">
-                <span>🍔 Food</span>
-                <span>- ৳ 450</span>
-            </article>
+      <button class="primary-button" (click)="applyFilters()">Apply</button>
+  </section>
 
-            <article class="transaction-row income">
-                <span>💼 Salary</span>
-                <span>+ ৳ 52,000</span>
-            </article>
+  <!-- MAIN CONTENT -->
+  <section class="content-card transaction-view">
 
-            <article class="transaction-row transfer">
-                <span>🏦 Bank → Cash</span>
-                <span>৳ 5,000</span>
-            </article>
-        </div>
+      <!-- GRID VIEW -->
+      <div *ngIf="currentView === 'grid'">
+          <table class="transaction-grid">
+              <thead>
+                  <tr>
+                      <th>Date</th>
+                      <th>Type</th>
+                      <th>Category</th>
+                      <th>Account</th>
+                      <th>Amount</th>
+                      <th>Note</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let t of transactions">
+                      <td>{{ t.date | date:'shortDate' }}</td>
+                      <td>{{ t.type | titlecase }}</td>
+                      <td>{{ t.category?.name }}</td>
+                      <td>{{ t.account?.name }}</td>
+                      <td [ngClass]="t.type">{{ t.type === 'expense' ? '-' : '+' }} ৳ {{ t.amount }}</td>
+                      <td>{{ t.note }}</td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
 
-    </section>
+      <!-- CALENDAR VIEW -->
+      <div *ngIf="currentView === 'calendar'">
+          <app-calendar-component [transactions]="transactions" />
+      </div>
+
+  </section>
 </section>
