@@ -59,8 +59,6 @@ export class SideNavComponent implements OnInit {
   }
 
   onNavItemClick(item: NavItem): void {
-    console.log('Navigation item clicked:', item);
-    // Implement navigation logic here if needed
     if(this.currentNavItem)
       this.currentNavItem.active = false; // Deactivate current item
 

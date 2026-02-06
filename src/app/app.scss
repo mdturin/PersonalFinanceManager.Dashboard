@@ -1,5 +1,4 @@
 ::ng-deep {
-
   .app-shell {
     display: flex;
     flex-direction: column;
@@ -8,7 +7,7 @@
 
   .layout {
     display: grid;
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: minmax(220px, 0.6fr) 3fr;
     gap: 1.5rem;
     padding: 1.5rem 2rem 2rem;
     flex: 1;
