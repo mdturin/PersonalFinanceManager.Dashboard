@@ -1,9 +1,8 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SideNavService } from '../../services/side-nav.service';
-import { SideNavConfig, NavSection } from '../../models/side-nav.model';
-import { delay, Observable } from 'rxjs';
 import { RouterLink } from "@angular/router";
+import { SideNavService } from '../../../services/side-nav.service';
+import { SideNavConfig } from '../../../models/side-nav.model';
 
 @Component({
   selector: 'app-side-nav',
@@ -34,8 +33,8 @@ export class SideNavComponent implements OnInit {
       .subscribe({
         next: (config) => {
           this.config = config;
-            this.loading = false;
-            this.cdr.detectChanges();
+          this.loading = false;
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('Error loading side-nav config:', err);

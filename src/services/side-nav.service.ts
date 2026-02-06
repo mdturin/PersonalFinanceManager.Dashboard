@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { SideNavConfig } from '../models/side-nav.model';
 import { ApiService } from './api.service';
+import { SideNavConfig } from '../models/side-nav.model';
 
 @Injectable({
   providedIn: 'root'
