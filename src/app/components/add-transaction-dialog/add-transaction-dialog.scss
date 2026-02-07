@@ -10,24 +10,37 @@
 }
 
 .dialog-card {
-  background: #fff;
-  border-radius: 16px;
   width: min(640px, 100%);
+  border-radius: 20px;
   box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2);
-  overflow: hidden;
 }
 
 .dialog-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid #e2e8f0;
+  padding: 1.25rem 1.5rem 0.5rem;
+}
+
+.dialog-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .dialog-body {
   padding: 1.5rem;
   display: block;
+}
+
+.dialog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.dialog-note {
+  grid-column: 1 / -1;
 }
 
 .dialog-footer {
