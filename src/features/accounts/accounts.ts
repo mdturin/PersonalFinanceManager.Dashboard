@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { DialogService } from '../../services/dialog.service';
@@ -24,7 +24,7 @@ interface AccountInsight {
   selector: 'app-accounts',
   imports: [CommonModule],
   templateUrl: './accounts.html',
-  styleUrls: ['./accounts.scss']
+  styleUrls: ['./accounts.scss'],
 })
 export class AccountsComponent {
   metrics: AccountMetric[] = [
@@ -32,26 +32,26 @@ export class AccountsComponent {
       label: 'Total balance',
       value: '৳ 214,860',
       helper: 'Across 6 accounts',
-      trend: 'positive'
+      trend: 'positive',
     },
     {
       label: 'Monthly cash flow',
       value: '৳ 18,450',
       helper: 'Up 6% from last month',
-      trend: 'positive'
+      trend: 'positive',
     },
     {
       label: 'Credit utilization',
       value: '22%',
       helper: 'Healthy range',
-      trend: 'neutral'
+      trend: 'neutral',
     },
     {
       label: 'Connected institutions',
       value: '3',
       helper: 'Last sync 2 hours ago',
-      trend: 'neutral'
-    }
+      trend: 'neutral',
+    },
   ];
 
   accounts: Account[] = [
@@ -61,7 +61,7 @@ export class AccountsComponent {
       institution: 'City Bank',
       balance: '৳ 48,320',
       status: 'Active',
-      lastActivity: 'Today, 9:12 AM'
+      lastActivity: 'Today, 9:12 AM',
     },
     {
       name: 'High-Yield Savings',
@@ -69,7 +69,7 @@ export class AccountsComponent {
       institution: 'Prime Credit Union',
       balance: '৳ 120,500',
       status: 'Active',
-      lastActivity: 'Yesterday, 4:18 PM'
+      lastActivity: 'Yesterday, 4:18 PM',
     },
     {
       name: 'Travel Rewards Card',
@@ -77,7 +77,7 @@ export class AccountsComponent {
       institution: 'Nova Bank',
       balance: '৳ 12,980',
       status: 'Needs attention',
-      lastActivity: '2 days ago'
+      lastActivity: '2 days ago',
     },
     {
       name: 'Family Expenses',
@@ -85,7 +85,7 @@ export class AccountsComponent {
       institution: 'City Bank',
       balance: '৳ 23,450',
       status: 'Active',
-      lastActivity: '3 days ago'
+      lastActivity: '3 days ago',
     },
     {
       name: 'Emergency Fund',
@@ -93,7 +93,7 @@ export class AccountsComponent {
       institution: 'Prime Credit Union',
       balance: '৳ 30,000',
       status: 'Active',
-      lastActivity: 'Last week'
+      lastActivity: 'Last week',
     },
     {
       name: 'Cash Wallet',
@@ -101,28 +101,33 @@ export class AccountsComponent {
       institution: 'Offline',
       balance: '৳ 1,610',
       status: 'Inactive',
-      lastActivity: '2 weeks ago'
-    }
+      lastActivity: '2 weeks ago',
+    },
   ];
 
   insights: AccountInsight[] = [
     {
       title: 'Upcoming payments',
-      description: 'Two credit card payments due within 7 days.'
+      description: 'Two credit card payments due within 7 days.',
     },
     {
       title: 'Transfer suggestion',
-      description: 'Move ৳ 8,000 into savings to hit your target.'
+      description: 'Move ৳ 8,000 into savings to hit your target.',
     },
     {
       title: 'Shared account alert',
-      description: 'Family Expenses account dipped below ৳ 20,000 threshold.'
-    }
+      description: 'Family Expenses account dipped below ৳ 20,000 threshold.',
+    },
   ];
 
   quickActions: string[] = ['Add account', 'Sync accounts', 'Export list', 'Set alerts'];
 
-  constructor(private dialogService: DialogService) {}
+  constructor(
+    private dialogService: DialogService,
+
+    // angular services
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   getStatusClass(status: Account['status']): string {
     switch (status) {
@@ -154,6 +159,7 @@ export class AccountsComponent {
       .pipe(filter((result): result is AddAccountFormData => !!result))
       .subscribe((formData: AddAccountFormData) => {
         this.accounts = [{ ...formData }, ...this.accounts];
+        this.cdr.markForCheck();
       });
   }
 
