@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 
 export interface AddTransactionFormData {
@@ -16,6 +17,11 @@ export interface AddTransactionFormData {
   accountId: string;
   toAccountId: string;
   note: string;
+}
+
+export interface AddTransactionDialogData {
+  accounts: Array<{ id: number; name: string }>;
+  categories: Array<{ id: number; name: string }>;
 }
 
 @Component({
@@ -33,28 +39,27 @@ export interface AddTransactionFormData {
   templateUrl: './add-transaction-dialog.html',
   styleUrl: './add-transaction-dialog.scss'
 })
-export class AddTransactionDialogComponent implements OnChanges {
-  @Input({ required: true }) isOpen = false;
-  @Input() accounts: Array<{ id: number; name: string }> = [];
-  @Input() categories: Array<{ id: number; name: string }> = [];
+export class AddTransactionDialogComponent implements OnInit {
+  private dialogRef = inject(
+    MatDialogRef<AddTransactionDialogComponent, AddTransactionFormData>
+  );
+  private dialogData = inject<AddTransactionDialogData>(MAT_DIALOG_DATA);
 
-  @Output() close = new EventEmitter<void>();
-  @Output() save = new EventEmitter<AddTransactionFormData>();
+  accounts = this.dialogData.accounts;
+  categories = this.dialogData.categories;
 
   formData: AddTransactionFormData = this.getDefaultFormData();
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['isOpen']?.currentValue) {
-      this.formData = this.getDefaultFormData();
-    }
+  ngOnInit() {
+    this.formData = this.getDefaultFormData();
   }
 
   closeDialog() {
-    this.close.emit();
+    this.dialogRef.close();
   }
 
   submit() {
-    this.save.emit({ ...this.formData });
+    this.dialogRef.close({ ...this.formData });
   }
 
   private getDefaultFormData(): AddTransactionFormData {

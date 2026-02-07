@@ -100,11 +100,3 @@
     </div>
   </section>
 </section>
-
-<app-add-transaction-dialog
-  [isOpen]="isAddModalOpen"
-  [accounts]="accounts"
-  [categories]="categories"
-  (close)="closeAddTransactionModal()"
-  (save)="saveTransaction($event)"
-/>
