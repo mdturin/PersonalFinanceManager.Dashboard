@@ -8,10 +8,11 @@ import { CalendarComponent } from './components/calendar-component/calendar-comp
 import {
   AddTransactionDialogComponent,
   AddTransactionDialogData,
-  AddTransactionFormData
+  AddTransactionFormData,
 } from '../../app/components/add-transaction-dialog/add-transaction-dialog';
 import { DialogService } from '../../services/dialog.service';
 import { filter } from 'rxjs/operators';
+import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'app-transaction-component',
@@ -38,9 +39,10 @@ export class TransactionComponent implements OnInit {
     private accountService: AccountService,
     private categoryService: CategoryService,
     private dialogService: DialogService,
+    private loader: LoaderService,
 
     // angular services
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -50,9 +52,16 @@ export class TransactionComponent implements OnInit {
   }
 
   loadTransactions() {
-    this.transactionService.getTransactions(this.filters).subscribe((data) => {
-      this.transactions = data;
-      this.cdr.markForCheck();
+    this.loader.show();
+    this.transactionService.getTransactions(this.filters).subscribe({
+      next: (data) => {
+        this.transactions = data;
+        this.cdr.markForCheck();
+      },
+      error: console.error,
+      complete: () => {
+        this.loader.hide();
+      }
     });
   }
 

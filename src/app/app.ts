@@ -10,7 +10,7 @@ import { LoaderService } from '../services/loader.service';
   selector: 'app-root',
   imports: [RouterOutlet, NavBarComponent, SideNavComponent, NgIf, AsyncPipe],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App {
   constructor(private loaderService: LoaderService) {}
