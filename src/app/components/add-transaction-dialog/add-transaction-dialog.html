@@ -1,0 +1,76 @@
+<div class="dialog-backdrop" *ngIf="isOpen" (click)="closeDialog()">
+  <div class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="add-transaction-title" (click)="$event.stopPropagation()">
+    <header class="dialog-header">
+      <div>
+        <h2 id="add-transaction-title" class="h5 mb-1">Add Transaction</h2>
+        <p class="text-muted small mb-0">Capture income, expenses, or transfers.</p>
+      </div>
+      <button type="button" class="btn btn-light btn-sm" (click)="closeDialog()">✕</button>
+    </header>
+
+    <form #transactionForm="ngForm" (ngSubmit)="submit()" class="dialog-body">
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <label class="form-label">Type</label>
+          <select class="form-select" name="type" [(ngModel)]="formData.type" required>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+            <option value="transfer">Transfer</option>
+          </select>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label">Amount</label>
+          <input class="form-control" type="number" name="amount" min="0" step="0.01" [(ngModel)]="formData.amount" required />
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label">Date</label>
+          <input class="form-control" type="date" name="date" [(ngModel)]="formData.date" required />
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label">Category</label>
+          <select class="form-select" name="categoryId" [(ngModel)]="formData.categoryId" required>
+            <option value="" disabled>Select category</option>
+            <option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label">From Account</label>
+          <select class="form-select" name="accountId" [(ngModel)]="formData.accountId" required>
+            <option value="" disabled>Select account</option>
+            <option *ngFor="let account of accounts" [value]="account.id">
+              {{ account.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-12 col-md-6" *ngIf="formData.type === 'transfer'">
+          <label class="form-label">To Account</label>
+          <select class="form-select" name="toAccountId" [(ngModel)]="formData.toAccountId" required>
+            <option value="" disabled>Select destination</option>
+            <option *ngFor="let account of accounts" [value]="account.id">
+              {{ account.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Note</label>
+          <textarea class="form-control" name="note" rows="2" [(ngModel)]="formData.note"></textarea>
+        </div>
+      </div>
+
+      <footer class="dialog-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeDialog()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="transactionForm.invalid">
+          Save Transaction
+        </button>
+      </footer>
+    </form>
+  </div>
+</div>

@@ -5,7 +5,6 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class TransactionService {
-
   private dummyTransactions = [
     {
       id: 1,
@@ -67,7 +66,6 @@ export class TransactionService {
   constructor() {}
 
   getTransactions(filters: any): Observable<any[]> {
-    // Simple filtering logic for dummy data
     let data = [...this.dummyTransactions];
 
     if (filters.type) {
@@ -87,5 +85,19 @@ export class TransactionService {
     }
 
     return of(data);
+  }
+
+  addTransaction(transaction: any): Observable<any> {
+    const nextId = this.dummyTransactions.length
+      ? Math.max(...this.dummyTransactions.map((item) => item.id)) + 1
+      : 1;
+    const newTransaction = {
+      id: nextId,
+      ...transaction,
+    };
+
+    this.dummyTransactions = [newTransaction, ...this.dummyTransactions];
+
+    return of(newTransaction);
   }
 }
