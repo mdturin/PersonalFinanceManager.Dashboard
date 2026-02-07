@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccountService } from '../../services/account-service';
 import { CategoryService } from '../../services/category-service';
@@ -38,6 +38,9 @@ export class TransactionComponent implements OnInit {
     private accountService: AccountService,
     private categoryService: CategoryService,
     private dialogService: DialogService,
+
+    // angular services
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -49,6 +52,7 @@ export class TransactionComponent implements OnInit {
   loadTransactions() {
     this.transactionService.getTransactions(this.filters).subscribe((data) => {
       this.transactions = data;
+      this.cdr.markForCheck();
     });
   }
 
