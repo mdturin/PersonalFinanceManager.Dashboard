@@ -1,109 +1,164 @@
-<section class="content-header">
+<section class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
   <div>
-    <h1>Dashboard</h1>
-    <p>Track your income, expenses, and budgets at a glance</p>
+    <h1 class="h3 mb-1">Dashboard</h1>
+    <p class="text-muted mb-0">Track your income, expenses, and budgets at a glance</p>
   </div>
 
-  <div class="content-actions">
-    <!-- Date Range Filter -->
-    <button class="ghost-button" type="button">
-      📅 This Month
-    </button>
-
-    <!-- Add Transaction -->
-    <button class="primary-button" type="button">
-      ➕ Add Transaction
-    </button>
+  <div class="d-flex flex-wrap gap-2">
+    <button class="btn btn-outline-primary btn-sm" type="button">📅 This Month</button>
+    <button class="btn btn-primary btn-sm" type="button">➕ Add Transaction</button>
   </div>
 </section>
 
 <!-- SUMMARY CARDS -->
-<section class="content-grid summary-grid">
-  <article class="content-card stat-card">
-    <h3>Total Balance</h3>
-    <p class="stat-value">৳ 125,400</p>
-  </article>
+<section class="row g-3 mb-4">
+  <div class="col-12 col-sm-6 col-xl-3">
+    <article class="card shadow-sm h-100">
+      <div class="card-body">
+        <h3 class="h6 text-muted mb-2">Total Balance</h3>
+        <p class="stat-value mb-0">৳ 125,400</p>
+      </div>
+    </article>
+  </div>
 
-  <article class="content-card stat-card">
-    <h3>Total Income</h3>
-    <p class="stat-value positive">৳ 82,000</p>
-  </article>
+  <div class="col-12 col-sm-6 col-xl-3">
+    <article class="card shadow-sm h-100">
+      <div class="card-body">
+        <h3 class="h6 text-muted mb-2">Total Income</h3>
+        <p class="stat-value positive mb-0">৳ 82,000</p>
+      </div>
+    </article>
+  </div>
 
-  <article class="content-card stat-card">
-    <h3>Total Expense</h3>
-    <p class="stat-value negative">৳ 56,600</p>
-  </article>
+  <div class="col-12 col-sm-6 col-xl-3">
+    <article class="card shadow-sm h-100">
+      <div class="card-body">
+        <h3 class="h6 text-muted mb-2">Total Expense</h3>
+        <p class="stat-value negative mb-0">৳ 56,600</p>
+      </div>
+    </article>
+  </div>
 
-  <article class="content-card stat-card">
-    <h3>Savings</h3>
-    <p class="stat-value">৳ 25,400</p>
-  </article>
+  <div class="col-12 col-sm-6 col-xl-3">
+    <article class="card shadow-sm h-100">
+      <div class="card-body">
+        <h3 class="h6 text-muted mb-2">Savings</h3>
+        <p class="stat-value mb-0">৳ 25,400</p>
+      </div>
+    </article>
+  </div>
 </section>
 
 <!-- CHARTS -->
-<section class="content-grid">
-  <article class="content-card wide">
-    <h2>Expense Trend</h2>
-    <!-- <app-expense-trend-chart></app-expense-trend-chart> -->
-    <div class="chart-placeholder">Line chart goes here</div>
-  </article>
+<section class="row g-3 mb-4">
+  <div class="col-12">
+    <article class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Expense Trend</h2>
+        <div class="chart-placeholder">Line chart goes here</div>
+      </div>
+    </article>
+  </div>
 
-  <article class="content-card wide">
-    <h2>Income vs Expense</h2>
-    <!-- <app-income-expense-chart></app-income-expense-chart> -->
-    <div class="chart-placeholder">Bar chart goes here</div>
-  </article>
+  <div class="col-12">
+    <article class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Income vs Expense</h2>
+        <div class="chart-placeholder">Bar chart goes here</div>
+      </div>
+    </article>
+  </div>
 </section>
 
 <!-- INSIGHTS -->
-<section class="content-grid">
-  <article class="content-card">
-    <h2>Top Expense Categories</h2>
-    <!-- <app-top-categories></app-top-categories> -->
-    <ul class="category-list">
-      <li>🍔 Food — ৳ 18,200</li>
-      <li>🏠 Rent — ৳ 15,000</li>
-      <li>🚗 Transport — ৳ 6,300</li>
-      <li>🛍️ Shopping — ৳ 5,100</li>
-    </ul>
-  </article>
+<section class="row g-3 mb-4">
+  <div class="col-12 col-lg-6">
+    <article class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Top Expense Categories</h2>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+            <span>🍔 Food</span>
+            <span class="fw-semibold">৳ 18,200</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+            <span>🏠 Rent</span>
+            <span class="fw-semibold">৳ 15,000</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+            <span>🚗 Transport</span>
+            <span class="fw-semibold">৳ 6,300</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+            <span>🛍️ Shopping</span>
+            <span class="fw-semibold">৳ 5,100</span>
+          </li>
+        </ul>
+      </div>
+    </article>
+  </div>
 
-  <article class="content-card">
-    <h2>Recent Transactions</h2>
-    <!-- <app-recent-transactions></app-recent-transactions> -->
-    <ul class="transaction-list">
-      <li>🍔 Food — ৳ 450</li>
-      <li>🚕 Uber — ৳ 320</li>
-      <li>💡 Electricity — ৳ 1,200</li>
-      <li>🛒 Grocery — ৳ 2,150</li>
-    </ul>
-  </article>
+  <div class="col-12 col-lg-6">
+    <article class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Recent Transactions</h2>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+            <span>🍔 Food</span>
+            <span class="fw-semibold">৳ 450</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+            <span>🚕 Uber</span>
+            <span class="fw-semibold">৳ 320</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+            <span>💡 Electricity</span>
+            <span class="fw-semibold">৳ 1,200</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+            <span>🛒 Grocery</span>
+            <span class="fw-semibold">৳ 2,150</span>
+          </li>
+        </ul>
+      </div>
+    </article>
+  </div>
 </section>
 
 <!-- BUDGET & ALERTS -->
-<section class="content-grid">
-  <article class="content-card">
-    <h2>Budget Usage</h2>
-    <!-- <app-budget-progress></app-budget-progress> -->
-    <div class="budget-row">
-      <span>Food</span>
-      <progress value="80" max="100"></progress>
-      <span class="warning">80%</span>
-    </div>
-    <div class="budget-row">
-      <span>Transport</span>
-      <progress value="45" max="100"></progress>
-      <span>45%</span>
-    </div>
-  </article>
+<section class="row g-3">
+  <div class="col-12 col-lg-6">
+    <article class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Budget Usage</h2>
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <span class="fw-semibold">Food</span>
+          <div class="progress flex-grow-1" style="height: 8px;">
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 80%"></div>
+          </div>
+          <span class="text-danger fw-semibold">80%</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <span class="fw-semibold">Transport</span>
+          <div class="progress flex-grow-1" style="height: 8px;">
+            <div class="progress-bar" role="progressbar" style="width: 45%"></div>
+          </div>
+          <span class="text-muted fw-semibold">45%</span>
+        </div>
+      </div>
+    </article>
+  </div>
 
-  <article class="content-card">
-    <h2>Alerts & Insights</h2>
-    <!-- <app-insights></app-insights> -->
-    <ul class="insight-list">
-      <li>⚠️ Food budget exceeded 80%</li>
-      <li>📉 Spending up 12% vs last month</li>
-      <li>💡 Most spending happens on weekends</li>
-    </ul>
-  </article>
+  <div class="col-12 col-lg-6">
+    <article class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Alerts &amp; Insights</h2>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item px-0">⚠️ Food budget exceeded 80%</li>
+          <li class="list-group-item px-0">📉 Spending up 12% vs last month</li>
+          <li class="list-group-item px-0">💡 Most spending happens on weekends</li>
+        </ul>
+      </div>
+    </article>
+  </div>
 </section>

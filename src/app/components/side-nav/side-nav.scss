@@ -1,15 +1,7 @@
 /* ---------------- SIDE NAV ---------------- */
 .side-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  background: #ffffff;
-  border-radius: 1.125rem; /* 18px */
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
   color: #1f2937;
-  min-width: 220px; /* keeps nav from collapsing */
-  transition: all 0.2s ease;
+  min-width: 220px;
 }
 
 /* Side nav title */
@@ -22,30 +14,16 @@
   color: #64748b;
 }
 
-/* Links container */
-.side-links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  flex-grow: 1; /* push side-card to bottom */
-}
-
 /* Individual link */
 .side-link {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: #1f2937;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.625rem; /* 10px */
   font-weight: 500;
-  transition: all 0.2s ease;
+  border: 0;
 }
 
 /* Active / hover state */
 .side-link:hover,
 .side-link.active {
-  background: #e0ecff;
+  background: rgba(37, 99, 235, 0.12);
   color: #1d4ed8;
 }
 
@@ -58,13 +36,6 @@
 /* Card at bottom (e.g., quick stats) */
 .side-card {
   margin-top: auto;
-  padding: 1rem;
-  border-radius: 0.875rem; /* 14px */
-  background: #f8fafc;
-  border: 1px dashed #cbd5f5;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
 }
 
 .side-card-title {
@@ -83,25 +54,7 @@
 /* ---------------- RESPONSIVE ---------------- */
 @media (max-width: 1024px) {
   .side-nav {
-    flex-direction: row;
-    flex-wrap: wrap;
     min-width: 0;
-    padding: 1rem;
-    gap: 1rem;
-    border-radius: 1rem;
-  }
-
-  .side-links {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    flex-grow: 1;
-  }
-
-  .side-link {
-    flex: 1 1 calc(50% - 0.5rem);
-    justify-content: center;
-    padding: 0.5rem;
   }
 
   .side-card {
@@ -112,17 +65,10 @@
 
 @media (max-width: 640px) {
   .side-nav {
-    flex-direction: column;
-    padding: 0.75rem;
-    gap: 0.75rem;
+    min-width: 0;
   }
 
   .side-link {
-    padding: 0.45rem 0.6rem;
     font-size: 0.85rem;
-  }
-
-  .side-card {
-    padding: 0.75rem;
   }
 }
