@@ -4,7 +4,7 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dial
 import {
   GenericDialogComponent,
   GenericDialogData
-} from '../app/shared/generic-dialog/generic-dialog.component';
+} from '../../shared/components/generic-dialog/generic-dialog.component';
 
 export interface GenericDialogOptions<TComponent = unknown, TData = unknown> {
   component: Type<TComponent>;
