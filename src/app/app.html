@@ -1,4 +1,8 @@
 <div class="app-shell bg-light min-vh-100">
+  <div class="loader-overlay" *ngIf="loading$ | async" aria-live="polite">
+    <div class="loader-spinner" role="status" aria-label="Loading"></div>
+    <span class="loader-text">Loading...</span>
+  </div>
   <app-nav-bar></app-nav-bar>
 
   <div class="container-fluid py-4">
