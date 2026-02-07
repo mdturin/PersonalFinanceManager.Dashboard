@@ -5,22 +5,22 @@ import { AccountService } from '../../services/account-service';
 import { CategoryService } from '../../services/category-service';
 import { TransactionService } from '../../services/transaction-service';
 import { CalendarComponent } from './components/calendar-component/calendar-component';
+import { DialogService } from '../../services/dialog.service';
+import { filter } from 'rxjs/operators';
+import { LoaderService } from '../../services/loader.service';
 import {
   AddTransactionDialogComponent,
   AddTransactionDialogData,
   AddTransactionFormData,
-} from '../../app/components/add-transaction-dialog/add-transaction-dialog';
-import { DialogService } from '../../services/dialog.service';
-import { filter } from 'rxjs/operators';
-import { LoaderService } from '../../services/loader.service';
+} from './components/add-transaction-dialog/add-transaction-dialog';
 
 @Component({
-  selector: 'app-transaction-component',
+  selector: 'app-transaction-container-component',
   imports: [CommonModule, FormsModule, CalendarComponent],
-  templateUrl: './transaction-component.html',
-  styleUrl: './transaction-component.scss',
+  templateUrl: './transaction-container-component.html',
+  styleUrl: './transaction-container-component.scss',
 })
-export class TransactionComponent implements OnInit {
+export class TransactionContainerComponent implements OnInit {
   transactions: any[] = [];
   accounts: Array<{ id: number; name: string }> = [];
   categories: Array<{ id: number; name: string }> = [];
@@ -61,7 +61,7 @@ export class TransactionComponent implements OnInit {
       error: console.error,
       complete: () => {
         this.loader.hide();
-      }
+      },
     });
   }
 
