@@ -7,12 +7,15 @@ import { TransactionService } from '../../services/transaction-service';
 import { CalendarComponent } from './components/calendar-component/calendar-component';
 import {
   AddTransactionDialogComponent,
+  AddTransactionDialogData,
   AddTransactionFormData
 } from '../../app/components/add-transaction-dialog/add-transaction-dialog';
+import { DialogService } from '../../services/dialog.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transaction-component',
-  imports: [CommonModule, FormsModule, CalendarComponent, AddTransactionDialogComponent],
+  imports: [CommonModule, FormsModule, CalendarComponent],
   templateUrl: './transaction-component.html',
   styleUrl: './transaction-component.scss',
 })
@@ -21,7 +24,6 @@ export class TransactionComponent implements OnInit {
   accounts: Array<{ id: number; name: string }> = [];
   categories: Array<{ id: number; name: string }> = [];
   currentView: 'grid' | 'calendar' = 'grid';
-  isAddModalOpen = false;
 
   filters = {
     type: '',
@@ -35,6 +37,7 @@ export class TransactionComponent implements OnInit {
     private transactionService: TransactionService,
     private accountService: AccountService,
     private categoryService: CategoryService,
+    private dialogService: DialogService,
   ) {}
 
   ngOnInit() {
@@ -79,11 +82,29 @@ export class TransactionComponent implements OnInit {
   }
 
   openAddTransactionModal() {
-    this.isAddModalOpen = true;
-  }
+    const dialogRef = this.dialogService.openComponent<
+      AddTransactionDialogComponent,
+      AddTransactionDialogData,
+      AddTransactionFormData
+    >({
+      component: AddTransactionDialogComponent,
+      data: {
+        accounts: this.accounts,
+        categories: this.categories,
+      },
+      showCloseButton: false,
+      config: {
+        width: '640px',
+        maxWidth: '95vw',
+      },
+    });
 
-  closeAddTransactionModal() {
-    this.isAddModalOpen = false;
+    dialogRef
+      .afterClosed()
+      .pipe(filter((result): result is AddTransactionFormData => !!result))
+      .subscribe((formData: AddTransactionFormData) => {
+        this.saveTransaction(formData);
+      });
   }
 
   saveTransaction(formData: AddTransactionFormData) {
@@ -102,7 +123,6 @@ export class TransactionComponent implements OnInit {
         note: formData.note,
       })
       .subscribe(() => {
-        this.closeAddTransactionModal();
         this.loadTransactions();
       });
   }
