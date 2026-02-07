@@ -1,0 +1,42 @@
+.accounts-stat {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.accounts-stat.positive {
+  color: #15803d;
+}
+
+.accounts-stat.negative {
+  color: #b91c1c;
+}
+
+.badge-soft {
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.badge-soft-success {
+  background: rgba(22, 163, 74, 0.15);
+  color: #15803d;
+}
+
+.badge-soft-warning {
+  background: rgba(245, 158, 11, 0.18);
+  color: #b45309;
+}
+
+.badge-soft-muted {
+  background: rgba(148, 163, 184, 0.2);
+  color: #64748b;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+}
