@@ -20,7 +20,6 @@ export interface AddTransactionFormData {
 
 @Component({
   selector: 'app-add-transaction-dialog',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
