@@ -29,8 +29,8 @@ export class SideNavService {
         {
           title: 'Overview',
           items: [
-            { label: 'Dashboard', route: '#', active: true },
-            { label: 'Accounts', route: '#' },
+            { label: 'Dashboard', route: '/dashboard', active: true },
+            { label: 'Accounts', route: '/accounts' },
             { label: 'Budgets', route: '#' },
             { label: 'Goals', route: '#' }
           ]
@@ -40,7 +40,7 @@ export class SideNavService {
           items: [
             { label: 'Spending trends', route: '#' },
             { label: 'Cash flow', route: '#' },
-            { label: 'Reports', route: '#' }
+            { label: 'Transactions', route: '/transactions' }
           ]
         }
       ],
