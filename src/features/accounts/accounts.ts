@@ -1,20 +1,18 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { filter } from 'rxjs/operators';
+import { DialogService } from '../../services/dialog.service';
+import { Account } from '../../models/account.model';
+import {
+  AddAccountDialogComponent,
+  AddAccountFormData,
+} from './components/add-account-dialog/add-account-dialog';
 
 interface AccountMetric {
   label: string;
   value: string;
   helper: string;
   trend?: 'positive' | 'negative' | 'neutral';
-}
-
-interface AccountSummary {
-  name: string;
-  type: string;
-  institution: string;
-  balance: string;
-  status: 'Active' | 'Needs attention' | 'Inactive';
-  lastActivity: string;
 }
 
 interface AccountInsight {
@@ -56,7 +54,7 @@ export class AccountsComponent {
     }
   ];
 
-  accounts: AccountSummary[] = [
+  accounts: Account[] = [
     {
       name: 'Everyday Checking',
       type: 'Checking',
@@ -124,7 +122,9 @@ export class AccountsComponent {
 
   quickActions: string[] = ['Add account', 'Sync accounts', 'Export list', 'Set alerts'];
 
-  getStatusClass(status: AccountSummary['status']): string {
+  constructor(private dialogService: DialogService) {}
+
+  getStatusClass(status: Account['status']): string {
     switch (status) {
       case 'Active':
         return 'badge-soft-success';
@@ -132,6 +132,34 @@ export class AccountsComponent {
         return 'badge-soft-warning';
       default:
         return 'badge-soft-muted';
+    }
+  }
+
+  openAddAccountDialog() {
+    const dialogRef = this.dialogService.openComponent<
+      AddAccountDialogComponent,
+      undefined,
+      AddAccountFormData
+    >({
+      component: AddAccountDialogComponent,
+      showCloseButton: false,
+      config: {
+        width: '640px',
+        maxWidth: '95vw',
+      },
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(filter((result): result is AddAccountFormData => !!result))
+      .subscribe((formData: AddAccountFormData) => {
+        this.accounts = [{ ...formData }, ...this.accounts];
+      });
+  }
+
+  handleQuickAction(action: string) {
+    if (action === 'Add account') {
+      this.openAddAccountDialog();
     }
   }
 }

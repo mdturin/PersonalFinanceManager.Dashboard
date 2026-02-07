@@ -1,0 +1,56 @@
+<mat-card class="dialog-card" role="dialog" aria-labelledby="add-account-title">
+  <mat-card-header class="dialog-header">
+    <div class="dialog-header-text">
+      <mat-card-title id="add-account-title">Add account</mat-card-title>
+      <mat-card-subtitle>Capture the details for a new account.</mat-card-subtitle>
+    </div>
+    <button type="button" mat-icon-button aria-label="Close dialog" (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-card-header>
+
+  <form #accountForm="ngForm" (ngSubmit)="submit()" class="dialog-body">
+    <div class="dialog-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Account name</mat-label>
+        <input matInput name="name" [(ngModel)]="formData.name" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Account type</mat-label>
+        <input matInput name="type" [(ngModel)]="formData.type" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Institution</mat-label>
+        <input matInput name="institution" [(ngModel)]="formData.institution" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Current balance</mat-label>
+        <input matInput name="balance" [(ngModel)]="formData.balance" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select name="status" [(ngModel)]="formData.status" required>
+          <mat-option *ngFor="let status of statusOptions" [value]="status">
+            {{ status }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Last activity</mat-label>
+        <input matInput name="lastActivity" [(ngModel)]="formData.lastActivity" required />
+      </mat-form-field>
+    </div>
+
+    <footer class="dialog-footer">
+      <button type="button" mat-stroked-button (click)="closeDialog()">Cancel</button>
+      <button type="submit" mat-flat-button color="primary" [disabled]="accountForm.invalid">
+        Add account
+      </button>
+    </footer>
+  </form>
+</mat-card>
