@@ -5,72 +5,7 @@
     min-height: 100vh;
   }
 
-  .layout {
-    display: grid;
-    grid-template-columns: minmax(220px, 0.6fr) 3fr;
-    gap: 1.5rem;
-    padding: 1.5rem 2rem 2rem;
-    flex: 1;
-  }
-
-  /* ---------------- TABLET ---------------- */
-  @media (max-width: 1024px) {
-    .layout {
-      grid-template-columns: 260px 1fr; /* keep side-nav visible but scrollable */
-      padding: 1.5rem;
-    }
-
-    .side-nav {
-      position: sticky;
-      top: 1.5rem;
-      align-self: start;
-      height: fit-content;
-      flex-direction: column;
-      flex-wrap: nowrap;
-    }
-
-    .side-card {
-      margin-top: auto;
-      width: 100%;
-    }
-  }
-
-  /* ---------------- MOBILE ---------------- */
-  @media (max-width: 720px) {
-    .layout {
-      display: flex;
-      flex-direction: column;
-      padding: 1rem;
-      gap: 1rem;
-    }
-
-    .side-nav {
-      width: 100%;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-    }
-
-    .side-card {
-      width: 100%;
-      margin-top: 0;
-    }
-
-    .top-nav {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-
-    .content-header {
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .content-grid {
-      grid-template-columns: 1fr;
-      gap: 0.75rem;
-    }
+  .top-nav .navbar-brand {
+    font-weight: 600;
   }
 }

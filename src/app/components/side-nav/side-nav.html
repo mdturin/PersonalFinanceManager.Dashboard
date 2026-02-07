@@ -1,31 +1,47 @@
-<aside class="side-nav">
-
-  <div *ngIf="loading" class="loading">
-    <p>Loading navigation...</p>
-  </div>
-
-  <div *ngIf="error" class="error">
-    <p>{{ error }}</p>
-  </div>
-
-  <ng-container *ngIf="config">
-    <!-- Render nav sections dynamically -->
-    <ng-container *ngFor="let section of config.sections">
-      <p class="side-title">{{ section.title }}</p>
-      <nav class="side-links">
-        <a *ngFor="let item of section.items" class="side-link" [class.active]="item.active" [routerLink]="item.route" (click)="onNavItemClick(item)">
-          {{ item.label }}
-        </a>
-      </nav>
-    </ng-container>
-
-    <!-- Render cards dynamically -->
-    <div *ngFor="let card of config.cards" class="side-card" [class.hide]="card.hidden" [hidden]="card.hidden">
-      <p class="side-card-title">{{ card.title }}</p>
-      <p class="side-card-body">{{ card.body }}</p>
-      <button class="ghost-button" type="button" (click)="onCardButtonClick(card.buttonAction)">
-        {{ card.buttonLabel }}
-      </button>
+<aside class="side-nav card border-0 shadow-sm">
+  <div class="card-body d-flex flex-column gap-3">
+    <div *ngIf="loading" class="alert alert-info mb-0">
+      Loading navigation...
     </div>
-  </ng-container>
+
+    <div *ngIf="error" class="alert alert-danger mb-0">
+      {{ error }}
+    </div>
+
+    <ng-container *ngIf="config">
+      <!-- Render nav sections dynamically -->
+      <ng-container *ngFor="let section of config.sections">
+        <div>
+          <p class="side-title mb-2">{{ section.title }}</p>
+          <nav class="list-group list-group-flush">
+            <a
+              *ngFor="let item of section.items"
+              class="list-group-item list-group-item-action side-link"
+              [class.active]="item.active"
+              [routerLink]="item.route"
+              (click)="onNavItemClick(item)"
+            >
+              {{ item.label }}
+            </a>
+          </nav>
+        </div>
+      </ng-container>
+
+      <!-- Render cards dynamically -->
+      <div
+        *ngFor="let card of config.cards"
+        class="side-card card border-0 bg-light"
+        [class.hide]="card.hidden"
+        [hidden]="card.hidden"
+      >
+        <div class="card-body py-3">
+          <p class="side-card-title">{{ card.title }}</p>
+          <p class="side-card-body mb-2">{{ card.body }}</p>
+          <button class="btn btn-outline-primary btn-sm" type="button" (click)="onCardButtonClick(card.buttonAction)">
+            {{ card.buttonLabel }}
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
 </aside>
