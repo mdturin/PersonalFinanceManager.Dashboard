@@ -1,22 +1,27 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { AccountService } from '../../services/account-service';
 import { CategoryService } from '../../services/category-service';
 import { TransactionService } from '../../services/transaction-service';
-import { FormsModule } from '@angular/forms';
-import { CalendarComponent } from "./components/calendar-component/calendar-component";
+import { CalendarComponent } from './components/calendar-component/calendar-component';
+import {
+  AddTransactionDialogComponent,
+  AddTransactionFormData
+} from '../../app/components/add-transaction-dialog/add-transaction-dialog';
 
 @Component({
   selector: 'app-transaction-component',
-  imports: [CommonModule, FormsModule, CalendarComponent],
+  imports: [CommonModule, FormsModule, CalendarComponent, AddTransactionDialogComponent],
   templateUrl: './transaction-component.html',
   styleUrl: './transaction-component.scss',
 })
 export class TransactionComponent implements OnInit {
   transactions: any[] = [];
-  accounts: any[] = [];
-  categories: any[] = [];
+  accounts: Array<{ id: number; name: string }> = [];
+  categories: Array<{ id: number; name: string }> = [];
   currentView: 'grid' | 'calendar' = 'grid';
+  isAddModalOpen = false;
 
   filters = {
     type: '',
@@ -74,6 +79,31 @@ export class TransactionComponent implements OnInit {
   }
 
   openAddTransactionModal() {
-    // Open dynamic modal for adding transaction
+    this.isAddModalOpen = true;
+  }
+
+  closeAddTransactionModal() {
+    this.isAddModalOpen = false;
+  }
+
+  saveTransaction(formData: AddTransactionFormData) {
+    const category = this.categories.find((item) => item.id === Number(formData.categoryId));
+    const account = this.accounts.find((item) => item.id === Number(formData.accountId));
+    const toAccount = this.accounts.find((item) => item.id === Number(formData.toAccountId));
+
+    this.transactionService
+      .addTransaction({
+        date: new Date(formData.date),
+        type: formData.type,
+        category,
+        account,
+        toAccount: formData.type === 'transfer' ? toAccount : undefined,
+        amount: Number(formData.amount ?? 0),
+        note: formData.note,
+      })
+      .subscribe(() => {
+        this.closeAddTransactionModal();
+        this.loadTransactions();
+      });
   }
 }

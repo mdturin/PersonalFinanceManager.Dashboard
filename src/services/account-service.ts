@@ -6,7 +6,10 @@ import { of } from 'rxjs';
 })
 export class AccountService {
   getAccounts() {
-    // Implementation to fetch accounts
-    return of([]); // Placeholder for actual data
+    return of([
+      { id: 1, name: 'Cash' },
+      { id: 2, name: 'Bank' },
+      { id: 3, name: 'Card' },
+    ]);
   }
 }
