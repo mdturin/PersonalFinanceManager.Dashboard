@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
-import { DialogService } from '../../services/dialog.service';
-import { Account } from '../../models/account.model';
+import { DialogService } from '../../core/services/dialog.service';
+import { Account } from '../../core/models/account.model';
 import {
   AddAccountDialogComponent,
   AddAccountFormData,

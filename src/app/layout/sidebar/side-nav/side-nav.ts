@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from "@angular/router";
-import { SideNavService } from '../../../services/side-nav.service';
-import { NavItem, SideNavConfig } from '../../../models/side-nav.model';
+import { SideNavService } from '../../../core/services/side-nav.service';
+import { NavItem, SideNavConfig } from '../../../core/models/side-nav.model';
 
 @Component({
   selector: 'app-side-nav',

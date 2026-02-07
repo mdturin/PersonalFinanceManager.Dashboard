@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AccountService } from '../../services/account-service';
-import { CategoryService } from '../../services/category-service';
-import { TransactionService } from '../../services/transaction-service';
+import { AccountService } from '../../core/services/account-service';
+import { CategoryService } from '../../core/services/category-service';
+import { TransactionService } from '../../core/services/transaction-service';
 import { CalendarComponent } from './components/calendar-component/calendar-component';
-import { DialogService } from '../../services/dialog.service';
+import { DialogService } from '../../core/services/dialog.service';
 import { filter } from 'rxjs/operators';
-import { LoaderService } from '../../services/loader.service';
+import { LoaderService } from '../../core/services/loader.service';
 import {
   AddTransactionDialogComponent,
   AddTransactionDialogData,
