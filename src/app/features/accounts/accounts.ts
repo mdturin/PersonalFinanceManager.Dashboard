@@ -7,13 +7,8 @@ import {
   AddAccountDialogComponent,
   AddAccountFormData,
 } from './components/add-account-dialog/add-account-dialog';
-
-interface AccountMetric {
-  label: string;
-  value: string;
-  helper: string;
-  trend?: 'positive' | 'negative' | 'neutral';
-}
+import { MetricModel } from '../../core/models/metric-model';
+import { StatCardComponent } from '../../shared/components/stat-card-component/stat-card-component';
 
 interface AccountInsight {
   title: string;
@@ -22,12 +17,12 @@ interface AccountInsight {
 
 @Component({
   selector: 'app-accounts',
-  imports: [CommonModule],
+  imports: [CommonModule, StatCardComponent],
   templateUrl: './accounts.html',
   styleUrls: ['./accounts.scss'],
 })
 export class AccountsComponent {
-  metrics: AccountMetric[] = [
+  metrics: MetricModel[] = [
     {
       label: 'Total balance',
       value: '৳ 214,860',

@@ -1,0 +1,15 @@
+<article class="card shadow-sm h-100">
+  <div class="card-body">
+    <h2 class="h6 text-muted mb-2">{{ metric.label }}</h2>
+    <p
+      class="card-stat mb-1"
+      [class.positive]="metric.trend === 'positive'"
+      [class.negative]="metric.trend === 'negative'"
+    >
+      {{ metric.value }}
+    </p>
+    @if (metric.helper) {
+      <p class="text-muted small mb-0">{{ metric.helper }}</p>
+    }
+  </div>
+</article>

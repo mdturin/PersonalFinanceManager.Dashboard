@@ -1,10 +1,31 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MetricModel } from '../../core/models/metric-model';
+import { StatCardComponent } from '../../shared/components/stat-card-component/stat-card-component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule, StatCardComponent],
   templateUrl: './dashboard.html',
-  styleUrls: ['./dashboard.scss']
+  styleUrls: ['./dashboard.scss'],
 })
-export class DashboardComponent {}
+export class DashboardComponent {
+  metricModels: MetricModel[] = [
+    {
+      label: 'Total Balance',
+      value: '৳ 500,000',
+    },
+    {
+      label: 'Total Income',
+      value: '৳ 150,000',
+    },
+    {
+      label: 'Total Expenses',
+      value: '৳ 100,000',
+    },
+    {
+      label: 'Savings',
+      value: '৳ 50,000',
+    },
+  ];
+}
