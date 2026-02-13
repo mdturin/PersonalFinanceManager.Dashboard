@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
-import { DashboardSummary } from "../models/dashboard.model";
 import { Observable } from "rxjs";
 import { MetricModel } from "../models/metric-model";
 
@@ -12,9 +11,9 @@ export class DashboardService {
 
     constructor(private apiService: ApiService) { }
 
-    getSummary(): Observable<DashboardSummary> {
+    getSummary(): Observable<MetricModel[]> {
         const dashboardSummaryEndpoint = `${this.dashboardEndpoint}/summary`;
-        return this.apiService.get<DashboardSummary>(dashboardSummaryEndpoint);
+        return this.apiService.get<MetricModel[]>(dashboardSummaryEndpoint);
     }
 
     getTopExpenseCategories(): Observable<MetricModel[]> {

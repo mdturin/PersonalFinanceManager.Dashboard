@@ -11,13 +11,24 @@
 </section>
 
 <!-- SUMMARY CARDS -->
-<section class="row g-3 mb-4">
-  @for (summary of summaries; track $index) {
-  <div class="col-12 col-sm-6 col-xl-3">
-    <app-stat-card-component [metric]="summary" />
-  </div>
-  }
+<section class="mb-4">
+  <article class="card shadow-sm position-relative">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Summary</h2>
+      <app-spinner *ngIf="isSummaryLoading"></app-spinner>
+
+      <div class="row g-3">
+        @for (summary of summaries; track $index) {
+        <div class="col-12 col-sm-6 col-xl-3">
+          <app-stat-card-component [metric]="summary" />
+        </div>
+        }
+      </div>
+
+    </div>
+  </article>
 </section>
+
 
 <!-- CHARTS -->
 <section class="row g-3 mb-4">

@@ -14,6 +14,7 @@ import { SpinnerComponent } from '../../shared/components/spinner-component/spin
   styleUrls: ['./dashboard.scss'],
 })
 export class DashboardComponent implements OnInit {
+  isSummaryLoading = true;
   isCategoryLoading = true;
   isRecentTransactionsLoading = true;
 
@@ -30,26 +31,26 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loader.show();
     this.dashboardService.getSummary().subscribe({
-      next: (result: DashboardSummary) => {
-        this.summaries = result.metrics;
-      },
-      complete: () => this.loader.hide()
+      next: (summaries: MetricModel[]) => {
+        this.summaries = summaries;
+        this.isSummaryLoading = false;
+        this.cdr.markForCheck();
+      }
     });
 
     this.dashboardService.getTopExpenseCategories().subscribe({
       next: (topExpenseCategories: MetricModel[]) => {
-        this.isCategoryLoading = false;
         this.topExpenseCategories = topExpenseCategories;
+        this.isCategoryLoading = false;
         this.cdr.markForCheck();
       }
     });
 
     this.dashboardService.getRecentTransactions().subscribe({
       next: (recentTransactions: MetricModel[]) => {
-        this.isRecentTransactionsLoading = false;
         this.recentTransactions = recentTransactions;
+        this.isRecentTransactionsLoading = false;
         this.cdr.markForCheck();
       }
     })
