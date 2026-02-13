@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { delay, Observable, of } from 'rxjs';
 import { MetricModel } from '../models/metric-model';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
+
+  constructor(private api:ApiService){}
+
   getCategories() {
     return of([
       { id: 1, name: 'Food' },
@@ -17,12 +21,5 @@ export class CategoryService {
     ]);
   }
 
-  getTopExpenseCategories(): Observable<MetricModel[]> {
-    return of([
-      { label: 'Food', value: "৳ 18,200" },
-      { label: 'Rent', value: "৳ 15,000" },
-      { label: 'Transport', value: "৳ 6,300" },
-      { label: 'Shopping', value: "৳ 5,100" }
-    ] as MetricModel[]).pipe(delay(2000));
-  }
+  
 }

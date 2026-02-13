@@ -5,7 +5,6 @@ import { StatCardComponent } from '../../shared/components/stat-card-component/s
 import { DashboardService } from '../../core/services/dashboard.service';
 import { LoaderService } from '../../core/services/loader.service';
 import { DashboardSummary } from '../../core/models/dashboard.model';
-import { CategoryService } from '../../core/services/category-service';
 import { SpinnerComponent } from '../../shared/components/spinner-component/spinner-component';
 
 @Component({
@@ -21,8 +20,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private loader: LoaderService,
-    private categoryService: CategoryService,
-    private dashboard: DashboardService,
+    private dashboardService: DashboardService,
 
     // angular services
     private cdr: ChangeDetectorRef
@@ -30,14 +28,14 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loader.show();
-    this.dashboard.getSummary().subscribe({
+    this.dashboardService.getSummary().subscribe({
       next: (result: DashboardSummary) => {
         this.summaries = result.metrics;
       },
       complete: () => this.loader.hide()
     })
 
-    this.categoryService.getTopExpenseCategories().subscribe({
+    this.dashboardService.getTopExpenseCategories().subscribe({
       next: (topExpenseCategories: MetricModel[]) => {
         this.isCategoryLoading = false;
         this.topExpenseCategories = topExpenseCategories;
