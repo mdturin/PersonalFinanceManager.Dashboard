@@ -1,9 +1,12 @@
-<div class="loader-overlay" *ngIf="loading$ | async" aria-live="polite">
+@if (loading$ | async) {
+<div class="loader-overlay" aria-live="polite">
   <div class="loader-spinner" role="status" aria-label="Loading"></div>
   <span class="loader-text">Loading...</span>
 </div>
+}
 
-<div class="app-shell bg-light min-vh-100" *ngIf="isAuthenticated$ | async; else authLayout">
+@if(isAuthenticated$ | async){
+<div class="app-shell bg-light min-vh-100">
   <app-nav-bar></app-nav-bar>
 
   <div class="container-fluid py-4">
@@ -18,7 +21,6 @@
     </div>
   </div>
 </div>
-
-<ng-template #authLayout>
-  <router-outlet></router-outlet>
-</ng-template>
+} @else {
+<router-outlet></router-outlet>
+}

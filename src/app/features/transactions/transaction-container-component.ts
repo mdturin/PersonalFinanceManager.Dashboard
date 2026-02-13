@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccountService } from '../../core/services/account-service';
 import { CategoryService } from '../../core/services/category-service';
@@ -21,9 +21,16 @@ import {
   styleUrl: './transaction-container-component.scss',
 })
 export class TransactionContainerComponent implements OnInit {
+  private transactionService = inject(TransactionService);
+  private accountService = inject(AccountService);
+  private categoryService = inject(CategoryService);
+  private dialogService = inject(DialogService);
+  private loader = inject(LoaderService);
+  private cdr = inject(ChangeDetectorRef);
+
   transactions: any[] = [];
-  accounts: Array<{ id: number; name: string }> = [];
-  categories: Array<{ id: number; name: string }> = [];
+  accounts: { id: number; name: string }[] = [];
+  categories: { id: number; name: string }[] = [];
   currentView: 'grid' | 'calendar' = 'grid';
 
   filters = {
@@ -33,17 +40,6 @@ export class TransactionContainerComponent implements OnInit {
     startDate: '',
     endDate: '',
   };
-
-  constructor(
-    private transactionService: TransactionService,
-    private accountService: AccountService,
-    private categoryService: CategoryService,
-    private dialogService: DialogService,
-    private loader: LoaderService,
-
-    // angular services
-    private cdr: ChangeDetectorRef,
-  ) {}
 
   ngOnInit() {
     this.loadTransactions();

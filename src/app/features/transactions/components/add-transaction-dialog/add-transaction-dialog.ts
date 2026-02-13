@@ -20,8 +20,8 @@ export interface AddTransactionFormData {
 }
 
 export interface AddTransactionDialogData {
-  accounts: Array<{ id: number; name: string }>;
-  categories: Array<{ id: number; name: string }>;
+  accounts: { id: number; name: string }[];
+  categories: { id: number; name: string }[];
 }
 
 @Component({

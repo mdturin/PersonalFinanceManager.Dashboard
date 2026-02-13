@@ -1,5 +1,5 @@
-import { AsyncPipe, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
 import { NavBarComponent } from './layout/header/nav-bar/nav-bar';
@@ -9,15 +9,13 @@ import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavBarComponent, SideNavComponent, NgIf, AsyncPipe],
+  imports: [RouterOutlet, NavBarComponent, SideNavComponent, AsyncPipe],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
-  constructor(
-    private loaderService: LoaderService,
-    private authService: AuthService
-  ) {}
+  private loaderService = inject(LoaderService);
+  private authService = inject(AuthService);
 
   get loading$(): Observable<boolean> {
     return this.loaderService.loading$;

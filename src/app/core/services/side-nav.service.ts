@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ApiService } from './api.service';
@@ -8,9 +8,9 @@ import { SideNavConfig } from '../models/side-nav.model';
   providedIn: 'root'
 })
 export class SideNavService {
-  private configEndpoint = '/api/config?type=side-nav';
+  private apiService = inject(ApiService);
 
-  constructor(private apiService: ApiService) {}
+  private configEndpoint = '/api/config?type=side-nav';
 
   getSideNavConfig(): Observable<SideNavConfig> {
     return this.apiService.get<SideNavConfig>(this.configEndpoint).pipe(

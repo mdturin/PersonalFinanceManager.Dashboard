@@ -1,4 +1,4 @@
-import { Injectable, Type } from '@angular/core';
+import { Injectable, Type, inject } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 
 import {
@@ -18,7 +18,7 @@ export interface GenericDialogOptions<TComponent = unknown, TData = unknown> {
   providedIn: 'root'
 })
 export class DialogService {
-  constructor(private dialog: MatDialog) {}
+  private dialog = inject(MatDialog);
 
   openComponent<TComponent = unknown, TData = unknown, TResult = unknown>(
     options: GenericDialogOptions<TComponent, TData>

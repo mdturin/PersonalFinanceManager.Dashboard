@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -10,13 +10,14 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './login.scss',
 })
 export class LoginComponent {
+  private authService = inject(AuthService);
+
   loginFailed = false;
   readonly loginForm;
 
-  constructor(
-    formBuilder: FormBuilder,
-    private authService: AuthService,
-  ) {
+  constructor() {
+    const formBuilder = inject(FormBuilder);
+
     this.loginForm = formBuilder.nonNullable.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],

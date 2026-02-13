@@ -62,7 +62,11 @@
         <ul class="list-group list-group-flush">
           @for (category of topExpenseCategories; track $index) {
           <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-            <span>{{category.label}}</span>
+            <span>
+              @if(category.icon){
+              <i class="fas {{category.icon}} me-2"></i>
+              }
+              {{category.label}}</span>
             <span class="fw-semibold">{{category.value}}</span>
           </li>
           }

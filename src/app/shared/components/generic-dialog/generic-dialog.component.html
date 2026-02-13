@@ -1,11 +1,13 @@
-<h2 *ngIf="dialogData.title" mat-dialog-title>{{ dialogData.title }}</h2>
+@if(dialogData.title){
+<h2 mat-dialog-title>{{ dialogData.title }}</h2>
+}
 
 <mat-dialog-content class="generic-dialog__content">
-  <ng-container
-    *ngComponentOutlet="dialogData.component; injector: contentInjector"
-  ></ng-container>
+  <ng-container *ngComponentOutlet="dialogData.component; injector: contentInjector"></ng-container>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end" *ngIf="showCloseButton">
+@if(showCloseButton){
+<mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Close</button>
 </mat-dialog-actions>
+}

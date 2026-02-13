@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
 import { Observable } from "rxjs";
 import { MetricModel } from "../models/metric-model";
@@ -8,8 +8,7 @@ import { MetricModel } from "../models/metric-model";
 })
 export class DashboardService {
     private dashboardEndpoint = '/api/dashboard';
-
-    constructor(private apiService: ApiService) { }
+    private apiService = inject(ApiService);
 
     getSummary(): Observable<MetricModel[]> {
         const dashboardSummaryEndpoint = `${this.dashboardEndpoint}/summary`;

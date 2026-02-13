@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, take } from 'rxjs';
 import { ApiService } from './api.service';
 import { AuthResponse } from '../models/auth-response.model';
@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
+  private api = inject(ApiService);
+  private router = inject(Router);
+
   private authEndpoint = '/api/auth';
   private readonly authStorageKey = 'pfm.authentication.token';
   private readonly isAuthenticatedSubject = new BehaviorSubject<boolean>(
@@ -21,8 +24,6 @@ export class AuthService {
   get isAuthenticated(): boolean {
     return this.isAuthenticatedSubject.value;
   }
-
-  constructor(private api:ApiService, private router: Router){}
 
   login(username: string, password: string) {
     this.api.post<AuthResponse>(this.authEndpoint+"/login", {

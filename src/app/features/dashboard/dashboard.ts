@@ -1,10 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MetricModel } from '../../core/models/metric-model';
 import { StatCardComponent } from '../../shared/components/stat-card-component/stat-card-component';
 import { DashboardService } from '../../core/services/dashboard.service';
-import { LoaderService } from '../../core/services/loader.service';
-import { DashboardSummary } from '../../core/models/dashboard.model';
 import { SpinnerComponent } from '../../shared/components/spinner-component/spinner-component';
 
 @Component({
@@ -14,6 +12,9 @@ import { SpinnerComponent } from '../../shared/components/spinner-component/spin
   styleUrls: ['./dashboard.scss'],
 })
 export class DashboardComponent implements OnInit {
+  private dashboardService = inject(DashboardService);
+  private cdr = inject(ChangeDetectorRef);
+
   isSummaryLoading = true;
   isCategoryLoading = true;
   isRecentTransactionsLoading = true;
@@ -21,14 +22,6 @@ export class DashboardComponent implements OnInit {
   summaries: MetricModel[] = [];
   topExpenseCategories: MetricModel[] = [];
   recentTransactions: MetricModel[] = [];
-
-  constructor(
-    private loader: LoaderService,
-    private dashboardService: DashboardService,
-
-    // angular services
-    private cdr: ChangeDetectorRef
-  ) { }
 
   ngOnInit(): void {
     this.dashboardService.getSummary().subscribe({

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { DialogService } from '../../core/services/dialog.service';
@@ -22,6 +22,9 @@ interface AccountInsight {
   styleUrls: ['./accounts.scss'],
 })
 export class AccountsComponent {
+  private dialogService = inject(DialogService);
+  private cdr = inject(ChangeDetectorRef);
+
   metrics: MetricModel[] = [
     {
       label: 'Total balance',
@@ -116,13 +119,6 @@ export class AccountsComponent {
   ];
 
   quickActions: string[] = ['Add account', 'Sync accounts', 'Export list', 'Set alerts'];
-
-  constructor(
-    private dialogService: DialogService,
-
-    // angular services
-    private cdr: ChangeDetectorRef,
-  ) {}
 
   getStatusClass(status: Account['status']): string {
     switch (status) {

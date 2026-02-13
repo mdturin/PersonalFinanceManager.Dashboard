@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from "@angular/router";
 import { SideNavService } from '../../../core/services/side-nav.service';
@@ -16,13 +16,8 @@ export class SideNavComponent implements OnInit {
   loading = true;
   error: string | null = null;
 
-  constructor(
-    // platform services
-    private sideNavService: SideNavService,
-
-    // angular services
-    private cdr: ChangeDetectorRef
-  ) { }
+  private cdr = inject(ChangeDetectorRef);
+  private sideNavService = inject(SideNavService);
 
   ngOnInit(): void {
     this.loadSideNavConfig();
@@ -59,7 +54,7 @@ export class SideNavComponent implements OnInit {
   }
 
   onNavItemClick(item: NavItem): void {
-    if(this.currentNavItem)
+    if (this.currentNavItem)
       this.currentNavItem.active = false; // Deactivate current item
 
     item.active = true; // Activate clicked item

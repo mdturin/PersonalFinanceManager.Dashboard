@@ -1,15 +1,10 @@
 import { Injectable } from '@angular/core';
-import { delay, Observable, of } from 'rxjs';
-import { MetricModel } from '../models/metric-model';
-import { ApiService } from './api.service';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
-
-  constructor(private api:ApiService){}
-
   getCategories() {
     return of([
       { id: 1, name: 'Food' },
@@ -20,6 +15,4 @@ export class CategoryService {
       { id: 6, name: 'Shopping' },
     ]);
   }
-
-  
 }
