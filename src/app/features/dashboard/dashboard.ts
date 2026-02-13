@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MetricModel } from '../../core/models/metric-model';
 import { StatCardComponent } from '../../shared/components/stat-card-component/stat-card-component';
+import { ApiService } from '../../core/services/api.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,7 +10,7 @@ import { StatCardComponent } from '../../shared/components/stat-card-component/s
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   metricModels: MetricModel[] = [
     {
       label: 'Total Balance',
@@ -28,4 +29,8 @@ export class DashboardComponent {
       value: '৳ 50,000',
     },
   ];
+
+  ngOnInit(): void {
+    
+  }
 }
