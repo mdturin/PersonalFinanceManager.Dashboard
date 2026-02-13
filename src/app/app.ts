@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { NavBarComponent } from './layout/header/nav-bar/nav-bar';
 import { SideNavComponent } from './layout/sidebar/side-nav/side-nav';
 import { LoaderService } from './core/services/loader.service';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -13,9 +14,16 @@ import { LoaderService } from './core/services/loader.service';
   styleUrl: './app.scss',
 })
 export class App {
-  constructor(private loaderService: LoaderService) {}
+  constructor(
+    private loaderService: LoaderService,
+    private authService: AuthService
+  ) {}
 
   get loading$(): Observable<boolean> {
     return this.loaderService.loading$;
+  }
+
+  get isAuthenticated$(): Observable<boolean> {
+    return this.authService.isAuthenticated$;
   }
 }

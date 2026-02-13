@@ -1,5 +1,5 @@
 <header class="navbar navbar-dark bg-dark px-4 py-3 shadow-sm top-nav">
-  <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+  <a class="navbar-brand d-flex align-items-center gap-2" [routerLink]="'/dashboard'">
     <span class="brand-mark">PF</span>
     <span class="d-flex flex-column">
       <span class="brand-name">Personal Finance Manager</span>
@@ -9,5 +9,6 @@
   <div class="d-flex flex-wrap gap-2">
     <button class="btn btn-outline-light btn-sm" type="button">Notifications</button>
     <button class="btn btn-primary btn-sm" type="button">Add transaction</button>
+    <button class="btn btn-danger btn-sm" type="button" (click)="logout()">Logout</button>
   </div>
 </header>
