@@ -15,8 +15,11 @@ import { SpinnerComponent } from '../../shared/components/spinner-component/spin
 })
 export class DashboardComponent implements OnInit {
   isCategoryLoading = true;
+  isRecentTransactionsLoading = true;
+
   summaries: MetricModel[] = [];
   topExpenseCategories: MetricModel[] = [];
+  recentTransactions: MetricModel[] = [];
 
   constructor(
     private loader: LoaderService,
@@ -33,12 +36,20 @@ export class DashboardComponent implements OnInit {
         this.summaries = result.metrics;
       },
       complete: () => this.loader.hide()
-    })
+    });
 
     this.dashboardService.getTopExpenseCategories().subscribe({
       next: (topExpenseCategories: MetricModel[]) => {
         this.isCategoryLoading = false;
         this.topExpenseCategories = topExpenseCategories;
+        this.cdr.markForCheck();
+      }
+    });
+
+    this.dashboardService.getRecentTransactions().subscribe({
+      next: (recentTransactions: MetricModel[]) => {
+        this.isRecentTransactionsLoading = false;
+        this.recentTransactions = recentTransactions;
         this.cdr.markForCheck();
       }
     })

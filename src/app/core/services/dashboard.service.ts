@@ -21,4 +21,9 @@ export class DashboardService {
         const topExpenseCategoriesEndpoint = `${this.dashboardEndpoint}/top-expense-categories`;
         return this.apiService.get<MetricModel[]>(topExpenseCategoriesEndpoint);
     }
+
+    getRecentTransactions(): Observable<MetricModel[]> {
+        const recentTransactionsEndpoint = `${this.dashboardEndpoint}/recent-transactions`;
+        return this.apiService.get<MetricModel[]>(recentTransactionsEndpoint);
+    }
 }

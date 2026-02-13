@@ -63,24 +63,15 @@
   <div class="col-12 col-lg-6">
     <article class="card shadow-sm h-100">
       <div class="card-body">
+        <app-spinner *ngIf="isRecentTransactionsLoading" />
         <h2 class="h5 mb-3">Recent Transactions</h2>
         <ul class="list-group list-group-flush">
+          @for (transaction of recentTransactions; track $index) {
           <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-            <span>🍔 Food</span>
-            <span class="fw-semibold">৳ 450</span>
+            <span>{{transaction.label}}</span>
+            <span class="fw-semibold">{{transaction.value}}</span>
           </li>
-          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-            <span>🚕 Uber</span>
-            <span class="fw-semibold">৳ 320</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-            <span>💡 Electricity</span>
-            <span class="fw-semibold">৳ 1,200</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-            <span>🛒 Grocery</span>
-            <span class="fw-semibold">৳ 2,150</span>
-          </li>
+          }
         </ul>
       </div>
     </article>
