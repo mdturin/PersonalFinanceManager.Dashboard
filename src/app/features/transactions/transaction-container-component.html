@@ -81,13 +81,13 @@
           <tbody>
             <tr *ngFor="let t of transactions">
               <td>{{ t.date | date:'shortDate' }}</td>
-              <td>{{ t.type | titlecase }}</td>
-              <td>{{ t.category?.name }}</td>
-              <td>{{ t.account?.name }}</td>
+              <td>{{ t.type }}</td>
+              <td>{{ t.categoryName }}</td>
+              <td>{{ t.accountId }}</td>
               <td [ngClass]="t.type" class="fw-semibold text-end">
-                {{ t.type === 'expense' ? '-' : '+' }} ৳ {{ t.amount }}
+                {{ t.type === 'Expense' ? '-' : '+' }} ৳ {{ t.amount }}
               </td>
-              <td>{{ t.note }}</td>
+              <td>{{ t.description }}</td>
             </tr>
           </tbody>
         </table>

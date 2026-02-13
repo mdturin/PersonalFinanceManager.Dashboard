@@ -1,10 +1,17 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { ApiService } from './api.service';
+import { Transaction, TransactionFilter } from '../models/transaction.model';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionService {
+
+  private transactionsEndpoint = '/api/transactions';
+  private apiService = inject(ApiService);
+
   private dummyTransactions = [
     {
       id: 1,
@@ -63,28 +70,20 @@ export class TransactionService {
     },
   ];
 
-  constructor() {}
+  getTransactions(filters: TransactionFilter): Observable<Transaction[]> {
+    let params = new HttpParams()
+      .set('type', filters.type ?? '')
+      .set('accountId', filters.account ?? '')
+      .set('categoryName', filters.category ?? '');
 
-  getTransactions(filters: any): Observable<any[]> {
-    let data = [...this.dummyTransactions];
+    if (filters.startDate instanceof Date)
+      params = params.set('startDate', filters.startDate.toISOString());
 
-    if (filters.type) {
-      data = data.filter(t => t.type === filters.type);
-    }
-    if (filters.account) {
-      data = data.filter(t => t.account.id == filters.account);
-    }
-    if (filters.category) {
-      data = data.filter(t => t.category.id == filters.category);
-    }
-    if (filters.startDate) {
-      data = data.filter(t => new Date(t.date) >= new Date(filters.startDate));
-    }
-    if (filters.endDate) {
-      data = data.filter(t => new Date(t.date) <= new Date(filters.endDate));
-    }
+    if (filters.endDate instanceof Date)
+      params = params.set('endDate', filters.endDate.toISOString());
 
-    return of(data);
+    return this.apiService
+      .get(this.transactionsEndpoint, { params });
   }
 
   addTransaction(transaction: any): Observable<any> {

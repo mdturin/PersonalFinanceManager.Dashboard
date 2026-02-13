@@ -13,6 +13,7 @@ import {
   AddTransactionDialogData,
   AddTransactionFormData,
 } from './components/add-transaction-dialog/add-transaction-dialog';
+import { Transaction, TransactionFilter } from '../../core/models/transaction.model';
 
 @Component({
   selector: 'app-transaction-container-component',
@@ -28,18 +29,16 @@ export class TransactionContainerComponent implements OnInit {
   private loader = inject(LoaderService);
   private cdr = inject(ChangeDetectorRef);
 
-  transactions: any[] = [];
+  transactions: Transaction[] = [];
   accounts: { id: number; name: string }[] = [];
   categories: { id: number; name: string }[] = [];
   currentView: 'grid' | 'calendar' = 'grid';
 
-  filters = {
+  filters: TransactionFilter = {
     type: '',
     account: '',
     category: '',
-    startDate: '',
-    endDate: '',
-  };
+  } as TransactionFilter;
 
   ngOnInit() {
     this.loadTransactions();
@@ -50,8 +49,8 @@ export class TransactionContainerComponent implements OnInit {
   loadTransactions() {
     this.loader.show();
     this.transactionService.getTransactions(this.filters).subscribe({
-      next: (data) => {
-        this.transactions = data;
+      next: (transactions) => {
+        this.transactions = transactions;
         this.cdr.markForCheck();
       },
       error: console.error,
@@ -80,13 +79,10 @@ export class TransactionContainerComponent implements OnInit {
   setDateFilter(range: 'month' | 'week') {
     const now = new Date();
     if (range === 'month') {
-      this.filters.startDate = new Date(now.getFullYear(), now.getMonth(), 1)
-        .toISOString()
-        .split('T')[0];
-      this.filters.endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0)
-        .toISOString()
-        .split('T')[0];
+      this.filters.startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+      this.filters.endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
     }
+
     this.applyFilters();
   }
 

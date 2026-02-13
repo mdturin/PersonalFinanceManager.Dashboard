@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -28,9 +28,9 @@ export class ApiService {
   /**
    * Make a GET request
    */
-  get<T>(endpoint: string): Observable<T> {
+  get<T>(endpoint: string, options?: { params?: HttpParams }): Observable<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.get<T>(url).pipe(
+    return this.http.get<T>(url, options).pipe(
       catchError(this.handleError)
     );
   }
