@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -17,7 +16,6 @@ export class LoginComponent {
   constructor(
     formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
   ) {
     this.loginForm = formBuilder.nonNullable.group({
       username: ['', [Validators.required]],
@@ -32,14 +30,6 @@ export class LoginComponent {
     }
 
     const { username, password } = this.loginForm.getRawValue();
-    const isLoggedIn = this.authService.login(username, password);
-
-    if (!isLoggedIn) {
-      this.loginFailed = true;
-      return;
-    }
-
-    this.loginFailed = false;
-    this.router.navigate(['/dashboard']);
+    this.authService.login(username.trim(), password.trim());
   }
 }

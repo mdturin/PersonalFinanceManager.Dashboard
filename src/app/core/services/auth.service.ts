@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, take } from 'rxjs';
+import { ApiService } from './api.service';
+import { AuthResponse } from '../models/auth-response.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly authStorageKey = 'pfm.authenticated';
+  private authEndpoint = '/api/auth';
+  private readonly authStorageKey = 'pfm.authentication.token';
   private readonly isAuthenticatedSubject = new BehaviorSubject<boolean>(
     this.readInitialAuthState()
   );
@@ -18,25 +22,43 @@ export class AuthService {
     return this.isAuthenticatedSubject.value;
   }
 
-  login(username: string, password: string): boolean {
-    if (!username.trim() || !password.trim()) {
-      return false;
-    }
+  constructor(private api:ApiService, private router: Router){}
 
-    this.updateAuthState(true);
-    return true;
+  login(username: string, password: string) {
+    this.api.post<AuthResponse>(this.authEndpoint+"/login", {
+      email: username,
+      password: password
+    }).pipe(take(1)).subscribe({
+      next: (response: AuthResponse) => {
+        if(!response.success){
+          // TODO: show response message as Notification
+          console.error(response.message);
+        } else {
+          console.info(response.message);
+          localStorage.setItem(this.authStorageKey, response.token);
+          this.isAuthenticatedSubject.next(true);
+          this.router.navigateByUrl("/dashboard")
+        }
+      }
+    })
   }
 
   logout(): void {
-    this.updateAuthState(false);
+    localStorage.removeItem(this.authStorageKey);
+    this.isAuthenticatedSubject.next(false);
+    this.router.navigateByUrl("/");
+  }
+
+  getToken(): string {
+    return localStorage.getItem(this.authStorageKey) ?? '';
   }
 
   private readInitialAuthState(): boolean {
-    return localStorage.getItem(this.authStorageKey) === 'true';
-  }
+    const token = localStorage.getItem(this.authStorageKey);
+    if(token){
+      return token !== '';
+    }
 
-  private updateAuthState(isAuthenticated: boolean): void {
-    localStorage.setItem(this.authStorageKey, String(isAuthenticated));
-    this.isAuthenticatedSubject.next(isAuthenticated);
+    return false;
   }
 }
