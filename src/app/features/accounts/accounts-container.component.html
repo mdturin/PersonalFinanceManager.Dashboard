@@ -12,13 +12,20 @@
   </div>
 </section>
 
-<section class="row g-3 mb-4 position-relative">
-  <app-spinner *ngIf="isSummaryLoading" />
-  @for (metric of summary; track $index) {
-  <div class="col-12 col-sm-6 col-xl-3">
-    <app-stat-card-component [metric]="metric" />
-  </div>
-  }
+<section class="mb-4 position-relative">
+  <article class="card shadow-sm position-relative">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Summary</h2>
+      <app-spinner *ngIf="isSummaryLoading" />
+      <div class="row g-3">
+        @for (metric of summary; track $index) {
+          <div class="col-12 col-sm-6 col-xl-3">
+            <app-stat-card-component [metric]="metric" />
+          </div>
+        }
+      </div>
+    </div>
+  </article>
 </section>
 
 <section class="row g-3">
@@ -53,10 +60,10 @@
                 <td class="fw-semibold">{{ account.currentBalance }}</td>
                 <td>
                   <span class="badge badge-soft" [ngClass]="getStatusClass(account.isActive)">{{
-                    (account.isActive == true) ? "Active" : "Need Attention"
-                    }}</span>
+                    account.isActive == true ? 'Active' : 'Need Attention'
+                  }}</span>
                 </td>
-                <td class="text-muted">{{ account.updatedAt | date:'shortDate' }}</td>
+                <td class="text-muted">{{ account.updatedAt | date: 'shortDate' }}</td>
               </tr>
             </tbody>
           </table>
@@ -68,14 +75,19 @@
       <div class="card-body">
         <h2 class="h5 mb-3">Account mix</h2>
         <app-spinner *ngIf="isAccountMixLoading" />
-        @for(mix of accountMix; track $index){
-        <div class="d-flex align-items-center gap-3 mb-3">
-          <span class="fw-semibold" style="width: 100px;">{{mix.label}}</span>
-          <div class="progress flex-grow-1" style="height: 8px">
-            <div class="progress-bar" [ngClass]="mix.trend" role="progressbar" [style.width]="mix.value"></div>
+        @for (mix of accountMix; track $index) {
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <span class="fw-semibold" style="width: 100px">{{ mix.label }}</span>
+            <div class="progress flex-grow-1" style="height: 8px">
+              <div
+                class="progress-bar"
+                [ngClass]="mix.trend"
+                role="progressbar"
+                [style.width]="mix.value"
+              ></div>
+            </div>
+            <span class="text-muted fw-semibold">{{ mix.value }}</span>
           </div>
-          <span class="text-muted fw-semibold">{{mix.value}}</span>
-        </div>
         }
       </div>
     </article>
@@ -86,8 +98,12 @@
       <div class="card-body">
         <h2 class="h5 mb-3">Quick actions</h2>
         <div class="d-grid gap-2">
-          <button class="btn btn-outline-primary" type="button" *ngFor="let action of quickActions"
-            (click)="handleQuickAction(action)">
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+            *ngFor="let action of quickActions"
+            (click)="handleQuickAction(action)"
+          >
             {{ action }}
           </button>
         </div>
