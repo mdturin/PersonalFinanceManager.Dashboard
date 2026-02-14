@@ -6,10 +6,13 @@ import { NavBarComponent } from './layout/header/nav-bar/nav-bar';
 import { SideNavComponent } from './layout/sidebar/side-nav/side-nav';
 import { LoaderService } from './core/services/loader.service';
 import { AuthService } from './core/services/auth.service';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavBarComponent, SideNavComponent, AsyncPipe],
+  imports: [RouterOutlet, NavBarComponent, SideNavComponent, AsyncPipe, MatSidenavModule, MatButtonModule, MatIconModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

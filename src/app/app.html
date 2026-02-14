@@ -9,17 +9,27 @@
 <div class="app-shell bg-light min-vh-100">
   <app-nav-bar></app-nav-bar>
 
-  <div class="container-fluid py-4">
-    <div class="row g-4 align-items-start">
-      <div class="col-12 col-lg-3 col-xl-2">
-        <app-side-nav></app-side-nav>
+  <mat-drawer-container class="dashboard-container">
+
+    <!-- Sidebar drawer -->
+    <mat-drawer #drawer mode="side" opened class="side-nav">
+      <app-side-nav></app-side-nav>
+    </mat-drawer>
+
+    <!-- Main content -->
+    <mat-drawer-content>
+      <div class="main-header">
+        <button mat-icon-button (click)="drawer.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
       </div>
 
-      <main class="col-12 col-lg-9 col-xl-10">
+      <div class="container-fluid py-4">
         <router-outlet></router-outlet>
-      </main>
-    </div>
-  </div>
+      </div>
+    </mat-drawer-content>
+
+  </mat-drawer-container>
 </div>
 } @else {
 <router-outlet></router-outlet>

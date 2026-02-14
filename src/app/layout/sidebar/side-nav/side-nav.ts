@@ -1,14 +1,17 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from "@angular/router";
+import { RouterModule } from "@angular/router";
 import { SideNavService } from '../../../core/services/side-nav.service';
 import { NavItem, SideNavConfig } from '../../../core/models/side-nav.model';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-side-nav',
   templateUrl: './side-nav.html',
   styleUrl: './side-nav.scss',
-  imports: [CommonModule, RouterLink]
+  imports: [CommonModule, RouterModule, MatSidenavModule, MatButtonModule, MatIconModule]
 })
 export class SideNavComponent implements OnInit {
   currentNavItem: NavItem | null = null;
