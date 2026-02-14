@@ -16,12 +16,16 @@ export class DashboardComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
 
   isSummaryLoading = true;
-  isCategoryLoading = true;
-  isRecentTransactionsLoading = true;
-
   summaries: MetricModel[] = [];
+
+  isCategoryLoading = true;
   topExpenseCategories: MetricModel[] = [];
+
+  isRecentTransactionsLoading = true;
   recentTransactions: MetricModel[] = [];
+
+  isBudgetUsagesLoading = true;
+  budgetUsages: MetricModel[] = [];
 
   ngOnInit(): void {
     this.dashboardService.getSummary().subscribe({
