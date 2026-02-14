@@ -5,7 +5,7 @@ export interface Account {
   name: string;
   type: string;
   institution: string;
-  balance: string;
-  status: AccountStatus;
-  lastActivity: string;
+  currentBalance: string;
+  isActive: boolean;
+  updatedAt: string;
 }

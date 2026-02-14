@@ -28,21 +28,7 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Current balance</mat-label>
-        <input matInput name="balance" [(ngModel)]="formData.balance" required />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Status</mat-label>
-        <mat-select name="status" [(ngModel)]="formData.status" required>
-          <mat-option *ngFor="let status of statusOptions" [value]="status">
-            {{ status }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Last activity</mat-label>
-        <input matInput name="lastActivity" [(ngModel)]="formData.lastActivity" required />
+        <input matInput name="balance" [(ngModel)]="formData.currentBalance" required />
       </mat-form-field>
     </div>
 

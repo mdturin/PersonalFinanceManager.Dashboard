@@ -12,11 +12,12 @@
   </div>
 </section>
 
-<section class="row g-3 mb-4">
-  @for (metric of metrics; track $index) {
-    <div class="col-12 col-sm-6 col-xl-3">
-      <app-stat-card-component [metric]="metric" />
-    </div>
+<section class="row g-3 mb-4 position-relative">
+  <app-spinner *ngIf="isSummaryLoading" />
+  @for (metric of summary; track $index) {
+  <div class="col-12 col-sm-6 col-xl-3">
+    <app-stat-card-component [metric]="metric" />
+  </div>
   }
 </section>
 
@@ -44,17 +45,18 @@
               </tr>
             </thead>
             <tbody>
+              <app-spinner *ngIf="isAccountsLoading" />
               <tr *ngFor="let account of accounts">
                 <td class="fw-semibold">{{ account.name }}</td>
                 <td>{{ account.type }}</td>
                 <td>{{ account.institution }}</td>
-                <td class="fw-semibold">{{ account.balance }}</td>
+                <td class="fw-semibold">{{ account.currentBalance }}</td>
                 <td>
-                  <span class="badge badge-soft" [ngClass]="getStatusClass(account.status)">{{
-                    account.status
-                  }}</span>
+                  <span class="badge badge-soft" [ngClass]="getStatusClass(account.isActive)">{{
+                    (account.isActive == true) ? "Active" : "Need Attention"
+                    }}</span>
                 </td>
-                <td class="text-muted">{{ account.lastActivity }}</td>
+                <td class="text-muted">{{ account.updatedAt | date:'shortDate' }}</td>
               </tr>
             </tbody>
           </table>
@@ -95,12 +97,8 @@
       <div class="card-body">
         <h2 class="h5 mb-3">Quick actions</h2>
         <div class="d-grid gap-2">
-          <button
-            class="btn btn-outline-primary"
-            type="button"
-            *ngFor="let action of quickActions"
-            (click)="handleQuickAction(action)"
-          >
+          <button class="btn btn-outline-primary" type="button" *ngFor="let action of quickActions"
+            (click)="handleQuickAction(action)">
             {{ action }}
           </button>
         </div>

@@ -60,9 +60,9 @@ export class AddAccountDialogComponent implements OnInit {
       name: '',
       type: '',
       institution: '',
-      balance: '',
-      status: 'Active',
-      lastActivity: new Date().toLocaleDateString(),
+      currentBalance: '0',
+      isActive: true,
+      updatedAt: new Date().toLocaleDateString(),
     };
   }
 }

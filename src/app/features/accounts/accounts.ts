@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { DialogService } from '../../core/services/dialog.service';
@@ -9,6 +9,9 @@ import {
 } from './components/add-account-dialog/add-account-dialog';
 import { MetricModel } from '../../core/models/metric-model';
 import { StatCardComponent } from '../../shared/components/stat-card-component/stat-card-component';
+import { ApiService } from '../../core/services/api.service';
+import { AccountService } from '../../core/services/account-service';
+import { SpinnerComponent } from '../../shared/components/spinner-component/spinner-component';
 
 interface AccountInsight {
   title: string;
@@ -17,97 +20,20 @@ interface AccountInsight {
 
 @Component({
   selector: 'app-accounts',
-  imports: [CommonModule, StatCardComponent],
+  imports: [CommonModule, StatCardComponent, SpinnerComponent],
   templateUrl: './accounts.html',
   styleUrls: ['./accounts.scss'],
 })
-export class AccountsComponent {
+export class AccountsComponent implements OnInit {
+  private accountsService = inject(AccountService);
   private dialogService = inject(DialogService);
   private cdr = inject(ChangeDetectorRef);
 
-  metrics: MetricModel[] = [
-    {
-      label: 'Total balance',
-      value: '৳ 214,860',
-      helper: 'Across 6 accounts',
-      trend: 'positive',
-    },
-    {
-      label: 'Monthly cash flow',
-      value: '৳ 18,450',
-      helper: 'Up 6% from last month',
-      trend: 'positive',
-    },
-    {
-      label: 'Credit utilization',
-      value: '22%',
-      helper: 'Healthy range',
-      trend: 'neutral',
-    },
-    {
-      label: 'Connected institutions',
-      value: '3',
-      helper: 'Last sync 2 hours ago',
-      trend: 'neutral',
-    },
-  ];
+  isSummaryLoading = true;
+  summary: MetricModel[] = [];
 
-  accounts: Account[] = [
-    {
-      id: '',
-      name: 'Everyday Checking',
-      type: 'Checking',
-      institution: 'City Bank',
-      balance: '৳ 48,320',
-      status: 'Active',
-      lastActivity: 'Today, 9:12 AM',
-    },
-    {
-      id: '',
-      name: 'High-Yield Savings',
-      type: 'Savings',
-      institution: 'Prime Credit Union',
-      balance: '৳ 120,500',
-      status: 'Active',
-      lastActivity: 'Yesterday, 4:18 PM',
-    },
-    {
-      id: '',
-      name: 'Travel Rewards Card',
-      type: 'Credit card',
-      institution: 'Nova Bank',
-      balance: '৳ 12,980',
-      status: 'Needs attention',
-      lastActivity: '2 days ago',
-    },
-    {
-      id: '',
-      name: 'Family Expenses',
-      type: 'Joint checking',
-      institution: 'City Bank',
-      balance: '৳ 23,450',
-      status: 'Active',
-      lastActivity: '3 days ago',
-    },
-    {
-      id: '',
-      name: 'Emergency Fund',
-      type: 'Savings',
-      institution: 'Prime Credit Union',
-      balance: '৳ 30,000',
-      status: 'Active',
-      lastActivity: 'Last week',
-    },
-    {
-      id: '',
-      name: 'Cash Wallet',
-      type: 'Cash',
-      institution: 'Offline',
-      balance: '৳ 1,610',
-      status: 'Inactive',
-      lastActivity: '2 weeks ago',
-    },
-  ];
+  isAccountsLoading = true;
+  accounts: Account[] = [];
 
   insights: AccountInsight[] = [
     {
@@ -126,11 +52,32 @@ export class AccountsComponent {
 
   quickActions: string[] = ['Add account', 'Sync accounts', 'Export list', 'Set alerts'];
 
-  getStatusClass(status: Account['status']): string {
-    switch (status) {
-      case 'Active':
+  ngOnInit(): void {
+
+    this.accountsService.getAccountsSummary()
+      .subscribe({
+        next: (summary: MetricModel[]) => {
+          this.summary = summary;
+          this.isSummaryLoading = false;
+          this.cdr.markForCheck();
+        }
+      })
+
+    this.accountsService.getAccounts()
+      .subscribe({
+        next: (accounts: Account[]) => {
+          this.accounts = accounts;
+          this.isAccountsLoading = false;
+          this.cdr.markForCheck();
+        }
+      })
+  }
+
+  getStatusClass(isActive: boolean): string {
+    switch (isActive) {
+      case true:
         return 'badge-soft-success';
-      case 'Needs attention':
+      case false:
         return 'badge-soft-warning';
       default:
         return 'badge-soft-muted';
