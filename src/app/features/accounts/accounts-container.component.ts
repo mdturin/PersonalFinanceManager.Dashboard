@@ -9,7 +9,6 @@ import {
 } from './components/add-account-dialog/add-account-dialog';
 import { MetricModel } from '../../core/models/metric-model';
 import { StatCardComponent } from '../../shared/components/stat-card-component/stat-card-component';
-import { ApiService } from '../../core/services/api.service';
 import { AccountService } from '../../core/services/account-service';
 import { SpinnerComponent } from '../../shared/components/spinner-component/spinner-component';
 
@@ -21,10 +20,10 @@ interface AccountInsight {
 @Component({
   selector: 'app-accounts',
   imports: [CommonModule, StatCardComponent, SpinnerComponent],
-  templateUrl: './accounts.html',
-  styleUrls: ['./accounts.scss'],
+  templateUrl: './accounts-container.component.html',
+  styleUrls: ['./accounts-container.component.scss'],
 })
-export class AccountsComponent implements OnInit {
+export class AccountsContainerComponent implements OnInit {
   private accountsService = inject(AccountService);
   private dialogService = inject(DialogService);
   private cdr = inject(ChangeDetectorRef);
@@ -50,7 +49,12 @@ export class AccountsComponent implements OnInit {
     },
   ];
 
-  quickActions: string[] = ['Add account', 'Sync accounts', 'Export list', 'Set alerts'];
+  quickActions: string[] = [
+    'Add account',
+    'Sync accounts',
+    'Export list',
+    'Set alerts'
+  ];
 
   ngOnInit(): void {
 
