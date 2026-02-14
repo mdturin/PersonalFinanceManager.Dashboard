@@ -34,6 +34,9 @@ export class AccountsContainerComponent implements OnInit {
   isAccountsLoading = true;
   accounts: Account[] = [];
 
+  isAccountMixLoading = true;
+  accountMix: MetricModel[] = [];
+
   insights: AccountInsight[] = [
     {
       title: 'Upcoming payments',
@@ -65,13 +68,22 @@ export class AccountsContainerComponent implements OnInit {
           this.isSummaryLoading = false;
           this.cdr.markForCheck();
         }
-      })
+      });
 
     this.accountsService.getAccounts()
       .subscribe({
         next: (accounts: Account[]) => {
           this.accounts = accounts;
           this.isAccountsLoading = false;
+          this.cdr.markForCheck();
+        }
+      });
+
+    this.accountsService.getAccountMix()
+      .subscribe({
+        next: (accountMix: MetricModel[]) => {
+          this.accountMix = accountMix;
+          this.isAccountMixLoading = false;
           this.cdr.markForCheck();
         }
       })

@@ -67,27 +67,16 @@
     <article class="card shadow-sm">
       <div class="card-body">
         <h2 class="h5 mb-3">Account mix</h2>
+        <app-spinner *ngIf="isAccountMixLoading" />
+        @for(mix of accountMix; track $index){
         <div class="d-flex align-items-center gap-3 mb-3">
-          <span class="fw-semibold">Savings</span>
+          <span class="fw-semibold" style="width: 100px;">{{mix.label}}</span>
           <div class="progress flex-grow-1" style="height: 8px">
-            <div class="progress-bar bg-success" role="progressbar" style="width: 56%"></div>
+            <div class="progress-bar" [ngClass]="mix.trend" role="progressbar" [style.width]="mix.value"></div>
           </div>
-          <span class="text-muted fw-semibold">56%</span>
+          <span class="text-muted fw-semibold">{{mix.value}}</span>
         </div>
-        <div class="d-flex align-items-center gap-3 mb-3">
-          <span class="fw-semibold">Checking</span>
-          <div class="progress flex-grow-1" style="height: 8px">
-            <div class="progress-bar" role="progressbar" style="width: 31%"></div>
-          </div>
-          <span class="text-muted fw-semibold">31%</span>
-        </div>
-        <div class="d-flex align-items-center gap-3">
-          <span class="fw-semibold">Credit</span>
-          <div class="progress flex-grow-1" style="height: 8px">
-            <div class="progress-bar bg-warning" role="progressbar" style="width: 13%"></div>
-          </div>
-          <span class="text-muted fw-semibold">13%</span>
-        </div>
+        }
       </div>
     </article>
   </div>
