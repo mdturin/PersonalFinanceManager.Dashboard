@@ -54,6 +54,7 @@ export class AccountsComponent {
 
   accounts: Account[] = [
     {
+      id: '',
       name: 'Everyday Checking',
       type: 'Checking',
       institution: 'City Bank',
@@ -62,6 +63,7 @@ export class AccountsComponent {
       lastActivity: 'Today, 9:12 AM',
     },
     {
+      id: '',
       name: 'High-Yield Savings',
       type: 'Savings',
       institution: 'Prime Credit Union',
@@ -70,6 +72,7 @@ export class AccountsComponent {
       lastActivity: 'Yesterday, 4:18 PM',
     },
     {
+      id: '',
       name: 'Travel Rewards Card',
       type: 'Credit card',
       institution: 'Nova Bank',
@@ -78,6 +81,7 @@ export class AccountsComponent {
       lastActivity: '2 days ago',
     },
     {
+      id: '',
       name: 'Family Expenses',
       type: 'Joint checking',
       institution: 'City Bank',
@@ -86,6 +90,7 @@ export class AccountsComponent {
       lastActivity: '3 days ago',
     },
     {
+      id: '',
       name: 'Emergency Fund',
       type: 'Savings',
       institution: 'Prime Credit Union',
@@ -94,6 +99,7 @@ export class AccountsComponent {
       lastActivity: 'Last week',
     },
     {
+      id: '',
       name: 'Cash Wallet',
       type: 'Cash',
       institution: 'Offline',

@@ -1,10 +1,18 @@
 export interface Transaction {
     id: string;
     accountName: string;
-    targetAccountId: string;
     type: string;
     amount: number;
     categoryName: string;
+    description: string;
+    date: Date;
+}
+
+export interface CreateTransaction {
+    accountId: string;
+    type: string;
+    amount: number;
+    categoryId: string;
     description: string;
     date: Date;
 }

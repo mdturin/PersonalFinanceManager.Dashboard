@@ -7,17 +7,18 @@ import { TransactionService } from '../../core/services/transaction-service';
 import { CalendarComponent } from './components/calendar-component/calendar-component';
 import { DialogService } from '../../core/services/dialog.service';
 import { filter } from 'rxjs/operators';
-import { LoaderService } from '../../core/services/loader.service';
 import {
   AddTransactionDialogComponent,
   AddTransactionDialogData,
   AddTransactionFormData,
 } from './components/add-transaction-dialog/add-transaction-dialog';
-import { Transaction, TransactionFilter } from '../../core/models/transaction.model';
+import { CreateTransaction, Transaction, TransactionFilter } from '../../core/models/transaction.model';
+import { SpinnerComponent } from '../../shared/components/spinner-component/spinner-component';
+import { Account } from '../../core/models/account.model';
 
 @Component({
   selector: 'app-transaction-container-component',
-  imports: [CommonModule, FormsModule, CalendarComponent],
+  imports: [CommonModule, FormsModule, CalendarComponent, SpinnerComponent],
   templateUrl: './transaction-container-component.html',
   styleUrl: './transaction-container-component.scss',
 })
@@ -26,11 +27,12 @@ export class TransactionContainerComponent implements OnInit {
   private accountService = inject(AccountService);
   private categoryService = inject(CategoryService);
   private dialogService = inject(DialogService);
-  private loader = inject(LoaderService);
   private cdr = inject(ChangeDetectorRef);
 
+  isTransactionLoading: boolean = true;
+
   transactions: Transaction[] = [];
-  accounts: { id: number; name: string }[] = [];
+  accounts: Account[] = [];
   categories: { id: number; name: string }[] = [];
   currentView: 'grid' | 'calendar' = 'grid';
 
@@ -47,16 +49,13 @@ export class TransactionContainerComponent implements OnInit {
   }
 
   loadTransactions() {
-    this.loader.show();
     this.transactionService.getTransactions(this.filters).subscribe({
       next: (transactions) => {
         this.transactions = transactions;
+        this.isTransactionLoading = false;
         this.cdr.markForCheck();
       },
       error: console.error,
-      complete: () => {
-        this.loader.hide();
-      },
     });
   }
 
@@ -125,21 +124,18 @@ export class TransactionContainerComponent implements OnInit {
       });
   }
 
-  saveTransaction(formData: AddTransactionFormData) {
-    const category = this.categories.find((item) => item.id === Number(formData.categoryId));
-    const account = this.accounts.find((item) => item.id === Number(formData.accountId));
-    const toAccount = this.accounts.find((item) => item.id === Number(formData.toAccountId));
+  private saveTransaction(formData: AddTransactionFormData) {
+    const transaction: CreateTransaction = {
+      accountId: formData.accountId,
+      amount: formData.amount,
+      categoryId: formData.categoryId,
+      date: new Date(formData.date),
+      type: formData.type,
+      description: formData.note
+    }
 
     this.transactionService
-      .addTransaction({
-        date: new Date(formData.date),
-        type: formData.type,
-        category,
-        account,
-        toAccount: formData.type === 'transfer' ? toAccount : undefined,
-        amount: Number(formData.amount ?? 0),
-        note: formData.note,
-      })
+      .addTransaction(transaction)
       .subscribe(() => {
         this.loadTransactions();
       });

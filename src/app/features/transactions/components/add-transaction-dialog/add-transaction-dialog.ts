@@ -8,19 +8,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { Account } from '../../../../core/models/account.model';
 
 export interface AddTransactionFormData {
   type: 'income' | 'expense' | 'transfer';
-  amount: number | null;
+  amount: number;
   date: string;
   categoryId: string;
   accountId: string;
-  toAccountId: string;
   note: string;
 }
 
 export interface AddTransactionDialogData {
-  accounts: { id: number; name: string }[];
+  accounts: Account[];
   categories: { id: number; name: string }[];
 }
 
@@ -66,11 +66,10 @@ export class AddTransactionDialogComponent implements OnInit {
     const today = new Date().toISOString().split('T')[0];
     return {
       type: 'expense',
-      amount: null,
+      amount: 0,
       date: today,
       categoryId: '',
       accountId: '',
-      toAccountId: '',
       note: ''
     };
   }

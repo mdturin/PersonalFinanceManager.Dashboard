@@ -43,6 +43,7 @@
     "@fortawesome/fontawesome-free": "^7.2.0",
     "angular-eslint": "21.2.0",
     "eslint": "^9.39.2",
+    "guid-typescript": "^1.0.9",
     "prettier": "3.8.1",
     "typescript": "~5.9.2",
     "typescript-eslint": "8.50.1"

@@ -65,8 +65,13 @@
   <!-- MAIN CONTENT -->
   <section class="card shadow-sm">
     <div class="card-body">
+
+      <app-spinner *ngIf="isTransactionLoading" />
+
+      @if (currentView === 'grid') {
+
       <!-- GRID VIEW -->
-      <div *ngIf="currentView === 'grid'" class="table-responsive">
+      <div class="table-responsive">
         <table class="table table-hover align-middle transaction-table">
           <thead class="table-light">
             <tr>
@@ -92,11 +97,12 @@
           </tbody>
         </table>
       </div>
+      } @else {
 
       <!-- CALENDAR VIEW -->
-      <div *ngIf="currentView === 'calendar'">
-        <app-calendar-component [transactions]="transactions" />
-      </div>
+      <app-calendar-component [transactions]="transactions" />
+      }
+
     </div>
   </section>
 </section>

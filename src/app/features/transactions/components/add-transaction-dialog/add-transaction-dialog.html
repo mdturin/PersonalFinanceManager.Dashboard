@@ -52,7 +52,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field *ngIf="formData.type === 'transfer'" appearance="outline">
+      <!-- <mat-form-field *ngIf="formData.type === 'transfer'" appearance="outline">
         <mat-label>To Account</mat-label>
         <mat-select name="toAccountId" [(ngModel)]="formData.toAccountId" required>
           <mat-option value="" disabled>Select destination</mat-option>
@@ -60,7 +60,7 @@
             {{ account.name }}
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
 
       <mat-form-field class="dialog-note" appearance="outline">
         <mat-label>Note</mat-label>

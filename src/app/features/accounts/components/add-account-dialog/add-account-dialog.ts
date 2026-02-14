@@ -56,6 +56,7 @@ export class AddAccountDialogComponent implements OnInit {
 
   private getDefaultFormData(): AddAccountFormData {
     return {
+      id: '',
       name: '',
       type: '',
       institution: '',
