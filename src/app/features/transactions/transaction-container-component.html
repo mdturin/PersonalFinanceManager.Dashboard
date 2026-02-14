@@ -83,7 +83,7 @@
               <td>{{ t.date | date:'shortDate' }}</td>
               <td>{{ t.type }}</td>
               <td>{{ t.categoryName }}</td>
-              <td>{{ t.accountId }}</td>
+              <td>{{ t.accountName }}</td>
               <td [ngClass]="t.type" class="fw-semibold text-end">
                 {{ t.type === 'Expense' ? '-' : '+' }} ৳ {{ t.amount }}
               </td>

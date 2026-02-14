@@ -74,13 +74,9 @@ export class TransactionService {
     let params = new HttpParams()
       .set('type', filters.type ?? '')
       .set('accountId', filters.account ?? '')
-      .set('categoryName', filters.category ?? '');
-
-    if (filters.startDate instanceof Date)
-      params = params.set('startDate', filters.startDate.toISOString());
-
-    if (filters.endDate instanceof Date)
-      params = params.set('endDate', filters.endDate.toISOString());
+      .set('categoryName', filters.category ?? '')
+      .set('startDate', filters.startDate ?? '')
+      .set('endDate', filters.endDate ?? '');
 
     return this.apiService
       .get(this.transactionsEndpoint, { params });

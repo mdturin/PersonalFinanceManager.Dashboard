@@ -1,6 +1,6 @@
 export interface Transaction {
     id: string;
-    accountId: string;
+    accountName: string;
     targetAccountId: string;
     type: string;
     amount: number;
@@ -13,6 +13,6 @@ export class TransactionFilter {
     type: string = '';
     account: string = '';
     category: string = '';
-    startDate: Date | null = null;
-    endDate: Date | null = null;
+    startDate: string | null = null;
+    endDate: string | null = null;
 }

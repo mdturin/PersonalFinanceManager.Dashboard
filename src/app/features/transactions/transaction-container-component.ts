@@ -76,11 +76,24 @@ export class TransactionContainerComponent implements OnInit {
     this.currentView = this.currentView === 'grid' ? 'calendar' : 'grid';
   }
 
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
+
   setDateFilter(range: 'month' | 'week') {
     const now = new Date();
     if (range === 'month') {
-      this.filters.startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-      this.filters.endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      this.filters.startDate = this.formatDate(
+        new Date(now.getFullYear(), now.getMonth(), 1)
+      );
+
+      this.filters.endDate = this.formatDate(
+        new Date(now.getFullYear(), now.getMonth() + 1, 0)
+      );
     }
 
     this.applyFilters();

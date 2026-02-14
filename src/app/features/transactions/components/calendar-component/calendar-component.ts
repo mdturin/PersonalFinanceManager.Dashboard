@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Transaction } from '../../../../core/models/transaction.model';
 
 @Component({
   selector: 'app-calendar-component',
@@ -9,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './calendar-component.scss',
 })
 export class CalendarComponent implements OnInit {
-  @Input() transactions: any[] = [];
+  @Input() transactions: Transaction[] = [];
   calendarDays: any[] = [];
 
   ngOnInit() {
