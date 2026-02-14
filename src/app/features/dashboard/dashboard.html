@@ -19,24 +19,33 @@
 
       <div class="row g-3">
         @for (summary of summaries; track $index) {
-        <div class="col-12 col-sm-6 col-xl-3">
-          <app-stat-card-component [metric]="summary" />
-        </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <app-stat-card-component [metric]="summary" />
+          </div>
         }
       </div>
-
     </div>
   </article>
 </section>
 
-
 <!-- CHARTS -->
-<section class="row g-3 mb-4 hide">
+<section class="row g-3 mb-4">
   <div class="col-12">
     <article class="card shadow-sm">
       <div class="card-body">
         <h2 class="h5 mb-3">Expense Trend</h2>
-        <div class="chart-placeholder">Line chart goes here</div>
+        <app-spinner *ngIf="isExpenseTrendLoading" />
+        <div class="chart-placeholder">
+          @if (!isExpenseTrendLoading) {
+            <canvas
+              baseChart
+              [data]="expenseChartData"
+              [options]="expenseChartOptions"
+              [type]="'line'"
+            >
+            </canvas>
+          }
+        </div>
       </div>
     </article>
   </div>
@@ -61,14 +70,15 @@
         <app-spinner *ngIf="isCategoryLoading" />
         <ul class="list-group list-group-flush">
           @for (category of topExpenseCategories; track $index) {
-          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-            <span>
-              @if(category.icon){
-              <i class="fas {{category.icon}} me-2"></i>
-              }
-              {{category.label}}</span>
-            <span class="fw-semibold">{{category.value}}</span>
-          </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              <span>
+                @if (category.icon) {
+                  <i class="fas {{ category.icon }} me-2"></i>
+                }
+                {{ category.label }}</span
+              >
+              <span class="fw-semibold">{{ category.value }}</span>
+            </li>
           }
         </ul>
       </div>
@@ -82,10 +92,10 @@
         <h2 class="h5 mb-3">Recent Transactions</h2>
         <ul class="list-group list-group-flush">
           @for (transaction of recentTransactions; track $index) {
-          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-            <span>{{transaction.label}}</span>
-            <span class="fw-semibold">{{transaction.value}}</span>
-          </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              <span>{{ transaction.label }}</span>
+              <span class="fw-semibold">{{ transaction.value }}</span>
+            </li>
           }
         </ul>
       </div>
