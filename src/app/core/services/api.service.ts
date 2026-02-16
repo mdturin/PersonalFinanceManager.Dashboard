@@ -30,6 +30,7 @@ export class ApiService {
    */
   get<T>(endpoint: string, options?: { params?: HttpParams }): Observable<T> {
     const url = `${this.baseUrl}${endpoint}`;
+    console.log(`Making GET request to: ${url} with params:`, options?.params);
     return this.http.get<T>(url, options).pipe(catchError(this.handleError));
   }
 

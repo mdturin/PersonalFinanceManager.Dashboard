@@ -8,7 +8,6 @@ import { HttpParams } from '@angular/common/http';
   providedIn: 'root',
 })
 export class TransactionService {
-
   private transactionsEndpoint = '/api/transactions';
   private apiService = inject(ApiService);
 
@@ -20,12 +19,10 @@ export class TransactionService {
       .set('startDate', filters.startDate ?? '')
       .set('endDate', filters.endDate ?? '');
 
-    return this.apiService
-      .get(this.transactionsEndpoint, { params });
+    return this.apiService.get<Transaction[]>(this.transactionsEndpoint, { params });
   }
 
-  addTransaction(transaction: CreateTransaction): Observable<any> {
-    // TODO: call api to create transaction
-    return of(transaction);
+  createTransaction(transaction: CreateTransaction): Observable<Transaction> {
+    return this.apiService.post<Transaction>(this.transactionsEndpoint, transaction);
   }
 }

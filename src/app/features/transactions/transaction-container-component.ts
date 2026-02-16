@@ -6,15 +6,19 @@ import { CategoryService } from '../../core/services/category-service';
 import { TransactionService } from '../../core/services/transaction-service';
 import { CalendarComponent } from './components/calendar-component/calendar-component';
 import { DialogService } from '../../core/services/dialog.service';
-import { filter } from 'rxjs/operators';
 import {
   AddTransactionDialogComponent,
   AddTransactionDialogData,
   AddTransactionFormData,
 } from './components/add-transaction-dialog/add-transaction-dialog';
-import { CreateTransaction, Transaction, TransactionFilter } from '../../core/models/transaction.model';
+import {
+  CreateTransaction,
+  Transaction,
+  TransactionFilter,
+} from '../../core/models/transaction.model';
 import { SpinnerComponent } from '../../shared/components/spinner-component/spinner-component';
 import { Account } from '../../core/models/account.model';
+import { Category } from '../../core/models/category.model';
 
 @Component({
   selector: 'app-transaction-container-component',
@@ -30,10 +34,14 @@ export class TransactionContainerComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
 
   isTransactionLoading: boolean = true;
-
   transactions: Transaction[] = [];
+
+  isGetAccountsLoading: boolean = true;
   accounts: Account[] = [];
-  categories: { id: number; name: string }[] = [];
+
+  isGetCategoriesLoading: boolean = true;
+  categories: Category[] = [];
+
   currentView: 'grid' | 'calendar' = 'grid';
 
   filters: TransactionFilter = {
@@ -60,11 +68,19 @@ export class TransactionContainerComponent implements OnInit {
   }
 
   loadAccounts() {
-    this.accountService.getAccounts().subscribe((data) => (this.accounts = data));
+    this.accountService.getAccounts().subscribe((accounts: Account[]) => {
+      this.accounts = accounts;
+      this.isGetAccountsLoading = false;
+      this.cdr.markForCheck();
+    });
   }
 
   loadCategories() {
-    this.categoryService.getCategories().subscribe((data) => (this.categories = data));
+    this.categoryService.getCategories().subscribe((categories: Category[]) => {
+      this.categories = categories;
+      this.isGetCategoriesLoading = false;
+      this.cdr.markForCheck();
+    });
   }
 
   applyFilters() {
@@ -86,13 +102,8 @@ export class TransactionContainerComponent implements OnInit {
   setDateFilter(range: 'month' | 'week') {
     const now = new Date();
     if (range === 'month') {
-      this.filters.startDate = this.formatDate(
-        new Date(now.getFullYear(), now.getMonth(), 1)
-      );
-
-      this.filters.endDate = this.formatDate(
-        new Date(now.getFullYear(), now.getMonth() + 1, 0)
-      );
+      this.filters.startDate = this.formatDate(new Date(now.getFullYear(), now.getMonth(), 1));
+      this.filters.endDate = this.formatDate(new Date(now.getFullYear(), now.getMonth() + 1, 0));
     }
 
     this.applyFilters();
@@ -109,19 +120,15 @@ export class TransactionContainerComponent implements OnInit {
         accounts: this.accounts,
         categories: this.categories,
       },
-      showCloseButton: false,
       config: {
         width: '640px',
         maxWidth: '95vw',
       },
     });
 
-    dialogRef
-      .afterClosed()
-      .pipe(filter((result): result is AddTransactionFormData => !!result))
-      .subscribe((formData: AddTransactionFormData) => {
-        this.saveTransaction(formData);
-      });
+    dialogRef.subscribe((formData: AddTransactionFormData) => {
+      this.saveTransaction(formData);
+    });
   }
 
   private saveTransaction(formData: AddTransactionFormData) {
@@ -131,13 +138,17 @@ export class TransactionContainerComponent implements OnInit {
       categoryId: formData.categoryId,
       date: new Date(formData.date),
       type: formData.type,
-      description: formData.note
-    }
+      description: formData.note,
+    };
 
-    this.transactionService
-      .addTransaction(transaction)
-      .subscribe(() => {
-        this.loadTransactions();
-      });
+    this.transactionService.createTransaction(transaction).subscribe({
+      next: (createdTransaction: Transaction) => {
+        // this.loadTransactions();
+        // Instead of reloading all transactions, we can just add the new one to the list
+        this.transactions = [createdTransaction, ...this.transactions];
+        this.cdr.markForCheck();
+      },
+      error: console.error,
+    });
   }
 }

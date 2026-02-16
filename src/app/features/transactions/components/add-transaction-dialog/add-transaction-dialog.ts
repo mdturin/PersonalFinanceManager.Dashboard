@@ -21,7 +21,7 @@ export interface AddTransactionFormData {
 
 export interface AddTransactionDialogData {
   accounts: Account[];
-  categories: { id: number; name: string }[];
+  categories: { id: string; name: string }[];
 }
 
 @Component({
@@ -34,15 +34,13 @@ export interface AddTransactionDialogData {
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   templateUrl: './add-transaction-dialog.html',
-  styleUrl: './add-transaction-dialog.scss'
+  styleUrl: './add-transaction-dialog.scss',
 })
 export class AddTransactionDialogComponent implements OnInit {
-  private dialogRef = inject(
-    MatDialogRef<AddTransactionDialogComponent, AddTransactionFormData>
-  );
+  private dialogRef = inject(MatDialogRef<AddTransactionDialogComponent, AddTransactionFormData>);
   private dialogData = inject<AddTransactionDialogData>(MAT_DIALOG_DATA);
 
   accounts = this.dialogData.accounts;
@@ -70,7 +68,7 @@ export class AddTransactionDialogComponent implements OnInit {
       date: today,
       categoryId: '',
       accountId: '',
-      note: ''
+      note: '',
     };
   }
 }

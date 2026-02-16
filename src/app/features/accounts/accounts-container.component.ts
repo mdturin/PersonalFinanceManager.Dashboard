@@ -52,41 +52,32 @@ export class AccountsContainerComponent implements OnInit {
     },
   ];
 
-  quickActions: string[] = [
-    'Add account',
-    'Sync accounts',
-    'Export list',
-    'Set alerts'
-  ];
+  quickActions: string[] = ['Add account', 'Sync accounts', 'Export list', 'Set alerts'];
 
   ngOnInit(): void {
+    this.accountsService.getAccountsSummary().subscribe({
+      next: (summary: MetricModel[]) => {
+        this.summary = summary;
+        this.isSummaryLoading = false;
+        this.cdr.markForCheck();
+      },
+    });
 
-    this.accountsService.getAccountsSummary()
-      .subscribe({
-        next: (summary: MetricModel[]) => {
-          this.summary = summary;
-          this.isSummaryLoading = false;
-          this.cdr.markForCheck();
-        }
-      });
+    this.accountsService.getAccounts().subscribe({
+      next: (accounts: Account[]) => {
+        this.accounts = accounts;
+        this.isAccountsLoading = false;
+        this.cdr.markForCheck();
+      },
+    });
 
-    this.accountsService.getAccounts()
-      .subscribe({
-        next: (accounts: Account[]) => {
-          this.accounts = accounts;
-          this.isAccountsLoading = false;
-          this.cdr.markForCheck();
-        }
-      });
-
-    this.accountsService.getAccountMix()
-      .subscribe({
-        next: (accountMix: MetricModel[]) => {
-          this.accountMix = accountMix;
-          this.isAccountMixLoading = false;
-          this.cdr.markForCheck();
-        }
-      })
+    this.accountsService.getAccountMix().subscribe({
+      next: (accountMix: MetricModel[]) => {
+        this.accountMix = accountMix;
+        this.isAccountMixLoading = false;
+        this.cdr.markForCheck();
+      },
+    });
   }
 
   getStatusClass(isActive: boolean): string {
@@ -107,20 +98,16 @@ export class AccountsContainerComponent implements OnInit {
       AddAccountFormData
     >({
       component: AddAccountDialogComponent,
-      showCloseButton: false,
       config: {
         width: '640px',
         maxWidth: '95vw',
       },
     });
 
-    dialogRef
-      .afterClosed()
-      .pipe(filter((result): result is AddAccountFormData => !!result))
-      .subscribe((formData: AddAccountFormData) => {
-        this.accounts = [{ ...formData }, ...this.accounts];
-        this.cdr.markForCheck();
-      });
+    dialogRef.subscribe((formData: AddAccountFormData) => {
+      this.accounts = [{ ...formData }, ...this.accounts];
+      this.cdr.markForCheck();
+    });
   }
 
   handleQuickAction(action: string) {

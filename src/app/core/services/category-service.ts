@@ -1,18 +1,15 @@
-import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { ApiService } from './api.service';
+import { Category } from '../models/category.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
+  private apiService = inject(ApiService);
+  private categoryEp = '/api/category';
+
   getCategories() {
-    return of([
-      { id: 1, name: 'Food' },
-      { id: 2, name: 'Salary' },
-      { id: 3, name: 'Transfer' },
-      { id: 4, name: 'Transport' },
-      { id: 5, name: 'Freelance' },
-      { id: 6, name: 'Shopping' },
-    ]);
+    return this.apiService.get<Category[]>(this.categoryEp);
   }
 }
