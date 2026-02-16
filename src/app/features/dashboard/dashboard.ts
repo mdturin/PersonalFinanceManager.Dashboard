@@ -54,11 +54,7 @@ export class DashboardComponent implements OnInit {
       {
         data: [],
         label: 'Income Vs Expense',
-        backgroundColor: [
-          '#198754', // Bootstrap success (green)
-          '#dc3545', // Bootstrap danger (red)
-        ],
-        barPercentage: 1,
+        backgroundColor: [],
       },
     ],
   };
@@ -107,7 +103,10 @@ export class DashboardComponent implements OnInit {
       next: (incomeVsExpense: MetricModel[]) => {
         this.incomeVsExpense = incomeVsExpense;
         this.barChartData.labels = incomeVsExpense.map((x) => x.label);
-        this.barChartData.datasets[0].data = incomeVsExpense.map((x) => +x.value);
+        const dataset = this.barChartData.datasets[0];
+        dataset.data = incomeVsExpense.map((x) => +x.value);
+        dataset.backgroundColor = incomeVsExpense.map((x) => x.trend);
+
         this.isIncomeVsExpenseLoading = false;
         this.cdr.detectChanges();
       },
