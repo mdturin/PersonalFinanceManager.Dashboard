@@ -2,14 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
   private http = inject(HttpClient);
-
-  private baseUrl = 'https://localhost:5001';
+  private baseUrl = environment.apiBaseUrl;
 
   /**
    * Set custom base URL
@@ -30,9 +30,7 @@ export class ApiService {
    */
   get<T>(endpoint: string, options?: { params?: HttpParams }): Observable<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.get<T>(url, options).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.get<T>(url, options).pipe(catchError(this.handleError));
   }
 
   /**
@@ -40,9 +38,7 @@ export class ApiService {
    */
   post<T>(endpoint: string, data: any): Observable<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.post<T>(url, data).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post<T>(url, data).pipe(catchError(this.handleError));
   }
 
   /**
@@ -50,9 +46,7 @@ export class ApiService {
    */
   put<T>(endpoint: string, data: any): Observable<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.put<T>(url, data).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.put<T>(url, data).pipe(catchError(this.handleError));
   }
 
   /**
@@ -60,9 +54,7 @@ export class ApiService {
    */
   delete<T>(endpoint: string): Observable<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.delete<T>(url).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.delete<T>(url).pipe(catchError(this.handleError));
   }
 
   /**
