@@ -19,10 +19,19 @@ import {
 import { SpinnerComponent } from '../../shared/components/spinner-component/spinner-component';
 import { Account } from '../../core/models/account.model';
 import { Category } from '../../core/models/category.model';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-transaction-container-component',
-  imports: [CommonModule, FormsModule, CalendarComponent, SpinnerComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CalendarComponent,
+    SpinnerComponent,
+    MatIconModule,
+    MatButtonModule,
+  ],
   templateUrl: './transaction-container-component.html',
   styleUrl: './transaction-container-component.scss',
 })
@@ -143,12 +152,14 @@ export class TransactionContainerComponent implements OnInit {
 
     this.transactionService.createTransaction(transaction).subscribe({
       next: (createdTransaction: Transaction) => {
-        // this.loadTransactions();
-        // Instead of reloading all transactions, we can just add the new one to the list
         this.transactions = [createdTransaction, ...this.transactions];
         this.cdr.markForCheck();
       },
       error: console.error,
     });
   }
+
+  editTransaction(transaction: Transaction) {}
+
+  deleteTransaction(id: string) {}
 }
