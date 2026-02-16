@@ -4,7 +4,7 @@
     <p class="text-muted mb-0">Track your income, expenses, and budgets at a glance</p>
   </div>
 
-  <div class="d-flex flex-wrap gap-2">
+  <div class="d-flex flex-wrap gap-2 hide">
     <button class="btn btn-outline-primary btn-sm" type="button">📅 This Month</button>
     <button class="btn btn-primary btn-sm" type="button">➕ Add Transaction</button>
   </div>
@@ -30,7 +30,7 @@
 
 <!-- CHARTS -->
 <section class="row g-3 mb-4">
-  <div class="col-12">
+  <div class="col-12 col-lg-6">
     <article class="card shadow-sm">
       <div class="card-body">
         <h2 class="h5 mb-3">Expense Trend</h2>
@@ -40,7 +40,7 @@
             <canvas
               baseChart
               [data]="expenseChartData"
-              [options]="expenseChartOptions"
+              [options]="lineChartOptions"
               [type]="'line'"
             >
             </canvas>
@@ -50,11 +50,17 @@
     </article>
   </div>
 
-  <div class="col-12">
+  <div class="col-12 col-lg-6">
     <article class="card shadow-sm">
       <div class="card-body">
         <h2 class="h5 mb-3">Income vs Expense</h2>
-        <div class="chart-placeholder">Bar chart goes here</div>
+        <app-spinner *ngIf="isIncomeVsExpenseLoading" />
+        <div class="chart-placeholder">
+          @if (!isIncomeVsExpenseLoading) {
+            <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="'bar'">
+            </canvas>
+          }
+        </div>
       </div>
     </article>
   </div>

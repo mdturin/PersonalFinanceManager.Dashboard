@@ -29,4 +29,9 @@ export class DashboardService {
     const expenseTrend = `${this.dashboardEndpoint}/expense-trend`;
     return this.apiService.get<MetricModel[]>(expenseTrend);
   }
+
+  getIncomeVsExpense() {
+    const incomeVsExpense = `${this.dashboardEndpoint}/income-vs-expense`;
+    return this.apiService.get<MetricModel[]>(incomeVsExpense);
+  }
 }

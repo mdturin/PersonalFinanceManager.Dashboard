@@ -41,18 +41,31 @@ export class DashboardComponent implements OnInit {
     ],
   };
 
-  expenseChartOptions: ChartConfiguration<'line'>['options'] = {
+  lineChartOptions: ChartConfiguration<'line'>['options'] = {
     responsive: true,
     maintainAspectRatio: false,
   };
 
+  isIncomeVsExpenseLoading = true;
+  incomeVsExpense: MetricModel[] = [];
   barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: ['Income', 'Expense'],
+    labels: [],
     datasets: [
       {
         data: [],
+        label: 'Income Vs Expense',
+        backgroundColor: [
+          '#198754', // Bootstrap success (green)
+          '#dc3545', // Bootstrap danger (red)
+        ],
+        barPercentage: 1,
       },
     ],
+  };
+
+  barChartOptions: ChartConfiguration<'bar'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
   };
 
   ngOnInit(): void {
@@ -83,9 +96,19 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getExpenseTrend().subscribe({
       next: (expenseTrend: MetricModel[]) => {
         this.expenseTrend = expenseTrend;
-        this.isExpenseTrendLoading = false;
         this.expenseChartData.labels = expenseTrend.map((x) => x.label);
         this.expenseChartData.datasets[0].data = expenseTrend.map((x) => +x.value);
+        this.isExpenseTrendLoading = false;
+        this.cdr.detectChanges();
+      },
+    });
+
+    this.dashboardService.getIncomeVsExpense().subscribe({
+      next: (incomeVsExpense: MetricModel[]) => {
+        this.incomeVsExpense = incomeVsExpense;
+        this.barChartData.labels = incomeVsExpense.map((x) => x.label);
+        this.barChartData.datasets[0].data = incomeVsExpense.map((x) => +x.value);
+        this.isIncomeVsExpenseLoading = false;
         this.cdr.detectChanges();
       },
     });
