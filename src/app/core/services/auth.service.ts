@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, take } from 'rxjs';
+import { BehaviorSubject, Observable, take, tap } from 'rxjs';
 import { ApiService } from './api.service';
 import { AuthResponse } from '../models/auth-response.model';
 import { Router } from '@angular/router';
@@ -30,10 +30,14 @@ export class AuthService {
   login(username: string, password: string) {
     this.loader.show();
     this.api
-      .post<AuthResponse>(this.authEndpoint + '/login', {
-        email: username,
-        password: password,
-      })
+      .post<AuthResponse>(
+        this.authEndpoint + '/login',
+        {
+          email: username,
+          password: password,
+        },
+        { withCredentials: true },
+      )
       .pipe(take(1))
       .subscribe({
         next: (response: AuthResponse) => {
@@ -50,6 +54,19 @@ export class AuthService {
         error: console.error,
         complete: () => this.loader.hide(),
       });
+  }
+
+  refreshToken(): Observable<AuthResponse> {
+    return this.api.post<AuthResponse>(this.authEndpoint + '/refresh-token', {}).pipe(
+      tap((response) => {
+        if (response.success) {
+          localStorage.setItem(this.authStorageKey, response.token);
+          this.isAuthenticatedSubject.next(true);
+        } else {
+          this.logout();
+        }
+      }),
+    );
   }
 
   logout(): void {

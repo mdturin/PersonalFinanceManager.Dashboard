@@ -37,9 +37,13 @@ export class ApiService {
   /**
    * Make a POST request
    */
-  post<T>(endpoint: string, data: any): Observable<T> {
+  post<T>(endpoint: string, data: any, options?: { withCredentials?: boolean }): Observable<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.post<T>(url, data).pipe(catchError(this.handleError));
+    return this.http
+      .post<T>(url, data, {
+        withCredentials: options?.withCredentials ?? false,
+      })
+      .pipe(catchError(this.handleError));
   }
 
   /**
