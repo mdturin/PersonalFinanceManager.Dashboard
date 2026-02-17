@@ -86,7 +86,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let t of transactions">
+              <tr *ngFor="let t of transactions" class="position-relative">
                 <td>{{ t.date | date: 'shortDate' }}</td>
                 <td>{{ t.type }}</td>
                 <td>{{ t.categoryName }}</td>
@@ -96,14 +96,25 @@
                 </td>
                 <td>{{ t.description }}</td>
                 <td class="text-center">
-                  <!-- Edit Icon -->
-                  <button mat-icon-button color="primary" (click)="editTransaction(t)">
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="editTransaction(t)"
+                    [disabled]="isTransactionDeleting[t.id]"
+                  >
                     <mat-icon>edit_square</mat-icon>
                   </button>
-
-                  <!-- Delete Icon -->
-                  <button mat-icon-button color="warn" (click)="deleteTransaction(t.id)">
-                    <mat-icon>delete</mat-icon>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="deleteTransaction(t.id)"
+                    [disabled]="isTransactionDeleting[t.id]"
+                  >
+                    @if (isTransactionDeleting[t.id]) {
+                      <mat-progress-spinner mode="indeterminate" diameter="24" />
+                    } @else {
+                      <mat-icon>delete</mat-icon>
+                    }
                   </button>
                 </td>
               </tr>

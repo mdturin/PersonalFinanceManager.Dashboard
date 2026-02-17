@@ -21,6 +21,7 @@ import { Account } from '../../core/models/account.model';
 import { Category } from '../../core/models/category.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-transaction-container-component',
@@ -31,6 +32,7 @@ import { MatButtonModule } from '@angular/material/button';
     SpinnerComponent,
     MatIconModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './transaction-container-component.html',
   styleUrl: './transaction-container-component.scss',
@@ -161,5 +163,18 @@ export class TransactionContainerComponent implements OnInit {
 
   editTransaction(transaction: Transaction) {}
 
-  deleteTransaction(id: string) {}
+  isTransactionDeleting: { [id: string]: boolean } = {};
+  deleteTransaction(id: string) {
+    this.isTransactionDeleting[id] = true;
+    this.transactionService.deleteTransaction(id).subscribe({
+      next: () => {
+        // TODO: show deleted toast notification
+        console.info(`Transaction with id: ${id} successfully deleted.`);
+        this.transactions = this.transactions.filter((t) => t.id !== id);
+        delete this.isTransactionDeleting[id];
+        this.cdr.markForCheck();
+      },
+      error: console.error,
+    });
+  }
 }

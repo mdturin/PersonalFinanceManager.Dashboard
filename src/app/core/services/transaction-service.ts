@@ -25,4 +25,8 @@ export class TransactionService {
   createTransaction(transaction: CreateTransaction): Observable<Transaction> {
     return this.apiService.post<Transaction>(this.transactionsEndpoint, transaction);
   }
+
+  deleteTransaction(id: string): Observable<void> {
+    return this.apiService.delete<void>(`${this.transactionsEndpoint}/${id}`);
+  }
 }
