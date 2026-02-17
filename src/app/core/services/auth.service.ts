@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, take } from 'rxjs';
 import { ApiService } from './api.service';
 import { AuthResponse } from '../models/auth-response.model';
 import { Router } from '@angular/router';
+import { LoaderService } from './loader.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,11 +11,12 @@ import { Router } from '@angular/router';
 export class AuthService {
   private api = inject(ApiService);
   private router = inject(Router);
+  private loader = inject(LoaderService);
 
   private authEndpoint = '/api/auth';
   private readonly authStorageKey = 'pfm.authentication.token';
   private readonly isAuthenticatedSubject = new BehaviorSubject<boolean>(
-    this.readInitialAuthState()
+    this.readInitialAuthState(),
   );
 
   get isAuthenticated$(): Observable<boolean> {
@@ -26,28 +28,34 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    this.api.post<AuthResponse>(this.authEndpoint+"/login", {
-      email: username,
-      password: password
-    }).pipe(take(1)).subscribe({
-      next: (response: AuthResponse) => {
-        if(!response.success){
-          // TODO: show response message as Notification
-          console.error(response.message);
-        } else {
-          console.info(response.message);
-          localStorage.setItem(this.authStorageKey, response.token);
-          this.isAuthenticatedSubject.next(true);
-          this.router.navigateByUrl("/dashboard")
-        }
-      }
-    })
+    this.loader.show();
+    this.api
+      .post<AuthResponse>(this.authEndpoint + '/login', {
+        email: username,
+        password: password,
+      })
+      .pipe(take(1))
+      .subscribe({
+        next: (response: AuthResponse) => {
+          if (!response.success) {
+            // TODO: show response message as Notification
+            console.error(response.message);
+          } else {
+            console.info(response.message);
+            localStorage.setItem(this.authStorageKey, response.token);
+            this.isAuthenticatedSubject.next(true);
+            this.router.navigateByUrl('/dashboard');
+          }
+        },
+        error: console.error,
+        complete: () => this.loader.hide(),
+      });
   }
 
   logout(): void {
     localStorage.removeItem(this.authStorageKey);
     this.isAuthenticatedSubject.next(false);
-    this.router.navigateByUrl("/");
+    this.router.navigateByUrl('/');
   }
 
   getToken(): string {
@@ -56,7 +64,7 @@ export class AuthService {
 
   private readInitialAuthState(): boolean {
     const token = localStorage.getItem(this.authStorageKey);
-    if(token){
+    if (token) {
       return token !== '';
     }
 
