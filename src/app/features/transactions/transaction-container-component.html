@@ -10,7 +10,7 @@
       <button class="btn btn-outline-primary btn-sm" (click)="setDateFilter('month')">
         📅 This Month
       </button>
-      <button class="btn btn-primary btn-sm" (click)="openAddTransactionModal()">➕ Add</button>
+      <button class="btn btn-primary btn-sm" (click)="addTransaction()">➕ Add</button>
       <button class="btn btn-outline-secondary btn-sm hide" (click)="toggleView()">
         {{ currentView === 'grid' ? '📅 Calendar View' : '📋 Grid View' }}
       </button>
@@ -28,7 +28,6 @@
             <option value="">All Types</option>
             <option value="income">Income</option>
             <option value="expense">Expense</option>
-            <option value="transfer">Transfer</option>
           </select>
         </div>
 
@@ -102,7 +101,11 @@
                     (click)="editTransaction(t)"
                     [disabled]="isTransactionDeleting[t.id]"
                   >
-                    <mat-icon>edit_square</mat-icon>
+                    @if (isTransactionUpdating[t.id]) {
+                      <mat-progress-spinner mode="indeterminate" diameter="24" />
+                    } @else {
+                      <mat-icon>edit_square</mat-icon>
+                    }
                   </button>
                   <button
                     mat-icon-button

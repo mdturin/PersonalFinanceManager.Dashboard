@@ -1,7 +1,7 @@
 <mat-card class="dialog-card" role="dialog" aria-labelledby="add-transaction-title">
   <mat-card-header class="dialog-header">
     <div class="dialog-header-text">
-      <mat-card-title id="add-transaction-title">Add Transaction</mat-card-title>
+      <mat-card-title id="add-transaction-title">{{ title }}</mat-card-title>
       <mat-card-subtitle>Capture income, expenses, or transfers.</mat-card-subtitle>
     </div>
     <button type="button" mat-icon-button aria-label="Close dialog" (click)="closeDialog()">
@@ -13,16 +13,28 @@
     <div class="dialog-grid">
       <mat-form-field appearance="outline">
         <mat-label>Type</mat-label>
-        <mat-select name="type" [(ngModel)]="formData.type" required>
+        <mat-select
+          name="type"
+          [(ngModel)]="formData.type"
+          [disabled]="transaction != null"
+          required
+        >
           <mat-option value="income">Income</mat-option>
           <mat-option value="expense">Expense</mat-option>
-          <mat-option value="transfer">Transfer</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Amount</mat-label>
-        <input matInput type="number" name="amount" min="0" step="0.01" [(ngModel)]="formData.amount" required />
+        <input
+          matInput
+          type="number"
+          name="amount"
+          min="0"
+          step="0.01"
+          [(ngModel)]="formData.amount"
+          required
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -35,16 +47,21 @@
         <mat-select name="categoryId" [(ngModel)]="formData.categoryId" required>
           <mat-option value="" disabled>Select category</mat-option>
           @for (category of categories; track $index) {
-          <mat-option [value]="category.id">
-            {{ category.name }}
-          </mat-option>
+            <mat-option [value]="category.id">
+              {{ category.name }}
+            </mat-option>
           }
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>From Account</mat-label>
-        <mat-select name="accountId" [(ngModel)]="formData.accountId" required>
+        <mat-select
+          name="accountId"
+          [(ngModel)]="formData.accountId"
+          [disabled]="transaction != null"
+          required
+        >
           <mat-option value="" disabled>Select account</mat-option>
           <mat-option *ngFor="let account of accounts" [value]="account.id">
             {{ account.name }}

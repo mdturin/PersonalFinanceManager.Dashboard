@@ -8,21 +8,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
-import { Account } from '../../../../core/models/account.model';
-
-export interface AddTransactionFormData {
-  type: 'income' | 'expense' | 'transfer';
-  amount: number;
-  date: string;
-  categoryId: string;
-  accountId: string;
-  note: string;
-}
-
-export interface AddTransactionDialogData {
-  accounts: Account[];
-  categories: { id: string; name: string }[];
-}
+import { UtilityService } from '../../../../core/services/utility.service';
+import {
+  AddTransactionFormData,
+  AddTransactionDialogData,
+} from '../../../../core/models/transaction.model';
 
 @Component({
   selector: 'app-add-transaction-dialog',
@@ -43,8 +33,10 @@ export class AddTransactionDialogComponent implements OnInit {
   private dialogRef = inject(MatDialogRef<AddTransactionDialogComponent, AddTransactionFormData>);
   private dialogData = inject<AddTransactionDialogData>(MAT_DIALOG_DATA);
 
+  title = this.dialogData.title;
   accounts = this.dialogData.accounts;
   categories = this.dialogData.categories;
+  transaction = this.dialogData.transaction;
 
   formData: AddTransactionFormData = this.getDefaultFormData();
 
@@ -61,14 +53,16 @@ export class AddTransactionDialogComponent implements OnInit {
   }
 
   private getDefaultFormData(): AddTransactionFormData {
-    const today = new Date().toISOString().split('T')[0];
+    const baseDate = this.transaction?.date ? new Date(this.transaction.date) : new Date();
+    const today = UtilityService.formatDate(baseDate);
+
     return {
-      type: 'expense',
-      amount: 0,
+      type: this.transaction?.type?.toLowerCase() ?? 'expense',
+      amount: this.transaction?.amount ?? 0,
       date: today,
-      categoryId: '',
-      accountId: '',
-      note: '',
+      categoryId: this.transaction?.categoryId ?? '',
+      accountId: this.transaction?.accountId ?? '',
+      note: this.transaction?.description ?? '',
     };
   }
 }
