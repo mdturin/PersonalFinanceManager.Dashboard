@@ -1,0 +1,92 @@
+<section class="d-flex flex-column gap-4">
+  <section class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+    <div>
+      <h1 class="h3 mb-1">Budgets</h1>
+      <p class="text-muted mb-0">Set monthly category limits and monitor overspend risk.</p>
+    </div>
+  </section>
+
+  <section class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">{{ editingBudgetId ? 'Edit Budget' : 'Create Budget' }}</h2>
+      <div class="row g-3 align-items-end">
+        <div class="col-12 col-md-4">
+          <label class="form-label small text-muted">Category</label>
+          <select class="form-select" [(ngModel)]="form.categoryId">
+            <option value="">Select category</option>
+            <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-3">
+          <label class="form-label small text-muted">Month</label>
+          <input type="month" class="form-control" [(ngModel)]="form.month" />
+        </div>
+        <div class="col-12 col-md-3">
+          <label class="form-label small text-muted">Budget Amount</label>
+          <input type="number" class="form-control" min="0" [(ngModel)]="form.amount" />
+        </div>
+        <div class="col-12 col-md-2 d-grid gap-2">
+          <button class="btn btn-primary" type="button" (click)="saveBudget()">Save</button>
+          <button
+            *ngIf="editingBudgetId"
+            class="btn btn-outline-secondary"
+            type="button"
+            (click)="resetForm()"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Monthly Progress</h2>
+      <app-spinner *ngIf="isLoading" />
+
+      <div *ngIf="!isLoading && progressItems.length === 0" class="alert alert-info mb-0">
+        No budgets found yet. Create your first budget above.
+      </div>
+
+      <div class="d-flex flex-column gap-3" *ngIf="!isLoading && progressItems.length > 0">
+        <article class="budget-row" *ngFor="let item of progressItems">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-1">
+            <div>
+              <strong>{{ item.categoryName }}</strong>
+              <small class="text-muted d-block">{{ item.month }}</small>
+            </div>
+            <div class="text-end">
+              <span class="fw-semibold">{{ item.spent | number: '1.2-2' }} / {{ item.amount | number: '1.2-2' }}</span>
+              <small class="d-block" [class]="thresholdTextClass(item)">
+                {{ item.progressPercent }}% used
+              </small>
+            </div>
+          </div>
+
+          <div class="progress" style="height: 9px">
+            <div
+              class="progress-bar"
+              [ngClass]="progressBarClass(item)"
+              role="progressbar"
+              [style.width.%]="item.progressPercent > 100 ? 100 : item.progressPercent"
+            ></div>
+          </div>
+
+          <div class="d-flex justify-content-between text-muted small mt-1 flex-wrap gap-2">
+            <span>Remaining: {{ item.remaining | number: '1.2-2' }}</span>
+            <span *ngIf="item.projectedOverspend > 0" class="text-danger">
+              Projected overspend: {{ item.projectedOverspend | number: '1.2-2' }}
+            </span>
+            <span *ngIf="item.projectedOverspend <= 0" class="text-success">On track</span>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2 mt-2">
+            <button class="btn btn-sm btn-outline-primary" type="button" (click)="editBudget(item)">Edit</button>
+            <button class="btn btn-sm btn-outline-danger" type="button" (click)="deleteBudget(item)">Delete</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</section>

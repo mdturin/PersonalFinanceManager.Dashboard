@@ -6,6 +6,8 @@ import { DashboardService } from '../../core/services/dashboard.service';
 import { SpinnerComponent } from '../../shared/components/spinner-component/spinner-component';
 import { ChartConfiguration } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { AlertItem } from '../../core/models/alert.model';
+import { AlertService } from '../../core/services/alert.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +18,7 @@ import { BaseChartDirective } from 'ng2-charts';
 export class DashboardComponent implements OnInit {
   private dashboardService = inject(DashboardService);
   private cdr = inject(ChangeDetectorRef);
+  private alertService = inject(AlertService);
 
   isSummaryLoading = true;
   summaries: MetricModel[] = [];
@@ -28,6 +31,9 @@ export class DashboardComponent implements OnInit {
 
   isBudgetUsagesLoading = true;
   budgetUsages: MetricModel[] = [];
+
+  isAlertsLoading = true;
+  alerts: AlertItem[] = [];
 
   isExpenseTrendLoading = true;
   expenseTrend: MetricModel[] = [];
@@ -109,6 +115,18 @@ export class DashboardComponent implements OnInit {
 
         this.isIncomeVsExpenseLoading = false;
         this.cdr.detectChanges();
+      },
+    });
+
+    this.alertService.getAlerts().subscribe({
+      next: (alerts: AlertItem[]) => {
+        this.alerts = alerts.slice(0, 4);
+        this.isAlertsLoading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.isAlertsLoading = false;
+        this.cdr.markForCheck();
       },
     });
   }

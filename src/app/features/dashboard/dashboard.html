@@ -109,39 +109,23 @@
   </div>
 </section>
 
-<!-- BUDGET & ALERTS -->
-<section class="row g-3 hide">
+<!-- ALERTS -->
+<section class="row g-3">
   <div class="col-12">
     <article class="card shadow-sm h-100">
       <div class="card-body">
-        <h2 class="h5 mb-3">Budget Usage</h2>
-        <div class="d-flex align-items-center gap-3 mb-3">
-          <span class="fw-semibold">Food</span>
-          <div class="progress flex-grow-1" style="height: 8px">
-            <div class="progress-bar bg-danger" role="progressbar" style="width: 80%"></div>
-          </div>
-          <span class="text-danger fw-semibold">80%</span>
-        </div>
-        <div class="d-flex align-items-center gap-3">
-          <span class="fw-semibold">Transport</span>
-          <div class="progress flex-grow-1" style="height: 8px">
-            <div class="progress-bar" role="progressbar" style="width: 45%"></div>
-          </div>
-          <span class="text-muted fw-semibold">45%</span>
-        </div>
-      </div>
-    </article>
-  </div>
-
-  <!-- For Full Row Remove col-lg-6 -->
-  <div class="col-12 col-lg-6">
-    <article class="card shadow-sm h-100">
-      <div class="card-body">
         <h2 class="h5 mb-3">Alerts &amp; Insights</h2>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item px-0">⚠️ Food budget exceeded 80%</li>
-          <li class="list-group-item px-0">📉 Spending up 12% vs last month</li>
-          <li class="list-group-item px-0">💡 Most spending happens on weekends</li>
+        <app-spinner *ngIf="isAlertsLoading" />
+        <ul class="list-group list-group-flush" *ngIf="!isAlertsLoading">
+          @if (alerts.length === 0) {
+            <li class="list-group-item px-0">✅ No alerts right now.</li>
+          }
+          @for (alert of alerts; track alert.id) {
+            <li class="list-group-item px-0 d-flex justify-content-between align-items-center gap-2">
+              <span>{{ alert.title }} — {{ alert.message }}</span>
+              <small class="text-muted">{{ alert.createdAt | date: 'short' }}</small>
+            </li>
+          }
         </ul>
       </div>
     </article>

@@ -1,0 +1,39 @@
+<section class="d-flex flex-column gap-4">
+  <section class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+    <div>
+      <h1 class="h3 mb-1">Alerts Center</h1>
+      <p class="text-muted mb-0">Stay proactive with balance, spending, and due-payment signals.</p>
+    </div>
+  </section>
+
+  <section class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="h5 mb-3">All Alerts</h2>
+      <app-spinner *ngIf="isLoading" />
+
+      <div *ngIf="!isLoading && alerts.length === 0" class="alert alert-success mb-0">
+        No active alerts right now. Great job staying on top of your finances.
+      </div>
+
+      <div class="d-flex flex-column gap-3" *ngIf="!isLoading && alerts.length > 0">
+        <article
+          *ngFor="let alert of alerts"
+          class="alert-item border-start border-4 rounded p-3 bg-light"
+          [class]="severityClass(alert)"
+        >
+          <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+            <div>
+              <h3 class="h6 mb-1">{{ alert.title }}</h3>
+              <p class="mb-1">{{ alert.message }}</p>
+              <small class="text-muted">
+                {{ alert.createdAt | date: 'medium' }}
+                <span *ngIf="alert.source">• Source: {{ alert.source }}</span>
+              </small>
+            </div>
+            <span class="badge text-bg-secondary text-uppercase">{{ alert.type }}</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</section>
