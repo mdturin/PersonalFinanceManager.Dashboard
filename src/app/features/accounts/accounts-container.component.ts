@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { filter } from 'rxjs/operators';
 import { DialogService } from '../../core/services/dialog.service';
 import { Account } from '../../core/models/account.model';
 import {
   AddAccountDialogComponent,
+  AddAccountDialogData,
   AddAccountFormData,
 } from './components/add-account-dialog/add-account-dialog';
 import { MetricModel } from '../../core/models/metric-model';
@@ -94,7 +94,7 @@ export class AccountsContainerComponent implements OnInit {
   openAddAccountDialog() {
     const dialogRef = this.dialogService.openComponent<
       AddAccountDialogComponent,
-      undefined,
+      AddAccountDialogData,
       AddAccountFormData
     >({
       component: AddAccountDialogComponent,
@@ -102,11 +102,62 @@ export class AccountsContainerComponent implements OnInit {
         width: '640px',
         maxWidth: '95vw',
       },
+      data: {
+        mode: 'create',
+      },
     });
 
     dialogRef.subscribe((formData: AddAccountFormData) => {
       this.accounts = [{ ...formData }, ...this.accounts];
       this.cdr.markForCheck();
+    });
+  }
+
+  openEditAccountDialog(account: Account) {
+    const dialogRef = this.dialogService.openComponent<
+      AddAccountDialogComponent,
+      AddAccountDialogData,
+      AddAccountFormData
+    >({
+      component: AddAccountDialogComponent,
+      config: {
+        width: '640px',
+        maxWidth: '95vw',
+      },
+      data: {
+        account,
+        mode: 'edit',
+      },
+    });
+
+    dialogRef.subscribe((formData: AddAccountFormData) => {
+      this.accountsService.updateAccount(account.id, formData).subscribe({
+        next: (updatedAccount: Account) => {
+          this.accounts = this.accounts.map((currentAccount: Account) =>
+            currentAccount.id === account.id
+              ? { ...currentAccount, ...updatedAccount }
+              : currentAccount,
+          );
+          this.cdr.markForCheck();
+        },
+      });
+    });
+  }
+
+  deactivateAccount(account: Account) {
+    this.accountsService.deactivateAccount(account.id).subscribe({
+      next: () => {
+        this.accounts = this.accounts.map((currentAccount: Account) =>
+          currentAccount.id === account.id
+            ? {
+                ...currentAccount,
+                isActive: false,
+                updatedAt: new Date().toISOString(),
+              }
+            : currentAccount,
+        );
+        this.cdr.markForCheck();
+      },
     });
   }
 

@@ -24,4 +24,14 @@ export class AccountService {
     const accountMixEp = `${this.accountsEndpoint}/account-mix`;
     return this.apiService.get<MetricModel[]>(accountMixEp);
   }
+
+  updateAccount(accountId: string, payload: Partial<Account>): Observable<Account> {
+    const accountEndpoint = `${this.accountsEndpoint}/${accountId}`;
+    return this.apiService.put<Account>(accountEndpoint, payload);
+  }
+
+  deactivateAccount(accountId: string): Observable<void> {
+    const deactivateEndpoint = `${this.accountsEndpoint}/${accountId}/deactivate`;
+    return this.apiService.patch<void>(deactivateEndpoint, {});
+  }
 }

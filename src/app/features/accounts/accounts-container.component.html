@@ -49,6 +49,7 @@
                 <th scope="col">Balance</th>
                 <th scope="col">Status</th>
                 <th scope="col">Last activity</th>
+                <th scope="col" class="text-end">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -60,10 +61,29 @@
                 <td class="fw-semibold">{{ account.currentBalance }}</td>
                 <td>
                   <span class="badge badge-soft" [ngClass]="getStatusClass(account.isActive)">{{
-                    account.isActive == true ? 'Active' : 'Need Attention'
+                    account.isActive ? 'Active' : 'Need Attention'
                   }}</span>
                 </td>
                 <td class="text-muted">{{ account.updatedAt | date: 'shortDate' }}</td>
+                <td>
+                  <div class="d-flex justify-content-end gap-2">
+                    <button
+                      class="btn btn-outline-primary btn-sm"
+                      type="button"
+                      (click)="openEditAccountDialog(account)"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      class="btn btn-outline-danger btn-sm"
+                      type="button"
+                      [disabled]="!account.isActive"
+                      (click)="deactivateAccount(account)"
+                    >
+                      Deactivate
+                    </button>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>

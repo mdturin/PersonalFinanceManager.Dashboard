@@ -14,6 +14,8 @@ export type AddAccountFormData = Account;
 
 export interface AddAccountDialogData {
   statuses?: AccountStatus[];
+  account?: Account;
+  mode?: 'create' | 'edit';
 }
 
 @Component({
@@ -32,18 +34,37 @@ export interface AddAccountDialogData {
   styleUrl: './add-account-dialog.scss',
 })
 export class AddAccountDialogComponent implements OnInit {
-  private dialogRef = inject(
-    MatDialogRef<AddAccountDialogComponent, AddAccountFormData>,
-  );
+  private dialogRef = inject(MatDialogRef<AddAccountDialogComponent, AddAccountFormData>);
   private dialogData = inject<AddAccountDialogData>(MAT_DIALOG_DATA);
 
-  statusOptions: AccountStatus[] =
-    this.dialogData?.statuses ?? ['Active', 'Needs attention', 'Inactive'];
+  statusOptions: AccountStatus[] = this.dialogData?.statuses ?? [
+    'Active',
+    'Needs attention',
+    'Inactive',
+  ];
+
+  mode: 'create' | 'edit' = this.dialogData?.mode ?? 'create';
 
   formData: AddAccountFormData = this.getDefaultFormData();
 
+  get title(): string {
+    return this.mode === 'edit' ? 'Edit account' : 'Add account';
+  }
+
+  get subtitle(): string {
+    return this.mode === 'edit'
+      ? 'Update the account details.'
+      : 'Capture the details for a new account.';
+  }
+
+  get submitButtonLabel(): string {
+    return this.mode === 'edit' ? 'Save changes' : 'Add account';
+  }
+
   ngOnInit() {
-    this.formData = this.getDefaultFormData();
+    this.formData = this.dialogData?.account
+      ? { ...this.dialogData.account }
+      : this.getDefaultFormData();
   }
 
   closeDialog() {
