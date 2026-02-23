@@ -5,7 +5,6 @@ import { AccountService } from '../../core/services/account-service';
 import { CategoryService } from '../../core/services/category-service';
 import { TransactionService } from '../../core/services/transaction-service';
 import { CalendarComponent } from './components/calendar-component/calendar-component';
-import { DialogService } from '../../core/services/dialog.service';
 import { Transaction, TransactionFilter } from '../../core/models/transaction.model';
 import { SpinnerComponent } from '../../shared/components/spinner-component/spinner-component';
 import { Account } from '../../core/models/account.model';
@@ -14,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UtilityService } from '../../core/services/utility.service';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-transaction-container-component',
@@ -34,6 +34,7 @@ export class TransactionContainerComponent implements OnInit {
   private accountService = inject(AccountService);
   private categoryService = inject(CategoryService);
   private cdr = inject(ChangeDetectorRef);
+  private notificationService = inject(NotificationService);
 
   isTransactionLoading: boolean = true;
   transactions: Transaction[] = [];
@@ -65,23 +66,37 @@ export class TransactionContainerComponent implements OnInit {
         this.isTransactionLoading = false;
         this.cdr.markForCheck();
       },
-      error: console.error,
+      error: () => this.notificationService.error('Failed to load transactions.'),
     });
   }
 
   loadAccounts() {
-    this.accountService.getAccounts().subscribe((accounts: Account[]) => {
-      this.accounts = accounts;
-      this.isGetAccountsLoading = false;
-      this.cdr.markForCheck();
+    this.accountService.getAccounts().subscribe({
+      next: (accounts: Account[]) => {
+        this.accounts = accounts;
+        this.isGetAccountsLoading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.isGetAccountsLoading = false;
+        this.notificationService.error('Failed to load accounts.');
+        this.cdr.markForCheck();
+      },
     });
   }
 
   loadCategories() {
-    this.categoryService.getCategories().subscribe((categories: Category[]) => {
-      this.categories = categories;
-      this.isGetCategoriesLoading = false;
-      this.cdr.markForCheck();
+    this.categoryService.getCategories().subscribe({
+      next: (categories: Category[]) => {
+        this.categories = categories;
+        this.isGetCategoriesLoading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.isGetCategoriesLoading = false;
+        this.notificationService.error('Failed to load categories.');
+        this.cdr.markForCheck();
+      },
     });
   }
 
@@ -127,7 +142,7 @@ export class TransactionContainerComponent implements OnInit {
         this.transactions = [createdTransaction, ...this.transactions];
         this.cdr.markForCheck();
       },
-      error: console.error,
+      error: () => this.notificationService.error('Failed to create transaction.'),
     });
   }
 
@@ -155,7 +170,7 @@ export class TransactionContainerComponent implements OnInit {
         delete this.isTransactionUpdating[updatedTransaction.id];
         this.cdr.markForCheck();
       },
-      error: console.error,
+      error: () => this.notificationService.error('Failed to update transaction.'),
     });
   }
 
@@ -164,13 +179,12 @@ export class TransactionContainerComponent implements OnInit {
     this.isTransactionDeleting[id] = true;
     this.transactionService.deleteTransaction(id).subscribe({
       next: () => {
-        // TODO: show deleted toast notification
-        console.info(`Transaction with id: ${id} successfully deleted.`);
+        this.notificationService.success('Transaction deleted successfully.');
         this.transactions = this.transactions.filter((t) => t.id !== id);
         delete this.isTransactionDeleting[id];
         this.cdr.markForCheck();
       },
-      error: console.error,
+      error: () => this.notificationService.error('Failed to delete transaction.'),
     });
   }
 }
