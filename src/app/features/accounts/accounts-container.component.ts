@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { switchMap, take } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 interface AccountInsight {
   title: string;
@@ -38,6 +39,8 @@ export class AccountsContainerComponent implements OnInit {
   private accountsService = inject(AccountService);
   private dialogService = inject(DialogService);
   private cdr = inject(ChangeDetectorRef);
+
+  isDevelopment = false;
 
   isSummaryLoading = true;
   summary: MetricModel[] = [];
@@ -66,6 +69,7 @@ export class AccountsContainerComponent implements OnInit {
   quickActions: string[] = ['Add account', 'Sync accounts', 'Export list', 'Set alerts'];
 
   ngOnInit(): void {
+    this.isDevelopment = environment.production === false;
     this.accountsService.getAccountsSummary().subscribe({
       next: (summary: MetricModel[]) => {
         this.summary = summary;

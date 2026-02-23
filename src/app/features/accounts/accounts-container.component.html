@@ -83,7 +83,11 @@
                       }
                     </button>
 
-                    <button mat-icon-button (click)="deleteAccount(account)" class="hide">
+                    <button
+                      mat-icon-button
+                      (click)="deleteAccount(account)"
+                      [class.hide]="!isDevelopment"
+                    >
                       <mat-icon color="warn">delete</mat-icon>
                     </button>
                   </div>

@@ -39,14 +39,13 @@ export class AlertsContainerComponent implements OnInit {
   }
 
   severityClass(alert: AlertItem): string {
-    if (alert.severity === 'critical') {
-      return 'border-danger';
+    switch (alert.severity) {
+      case 'critical':
+        return 'border-danger';
+      case 'warning':
+        return 'border-warning';
+      default:
+        return 'border-info';
     }
-
-    if (alert.severity === 'warning') {
-      return 'border-warning';
-    }
-
-    return 'border-info';
   }
 }
