@@ -67,7 +67,11 @@
           placeholder="Search or add category"
         />
 
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCategorySelected($event)">
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          [displayWith]="displayCategory"
+          (optionSelected)="onCategorySelected($event)"
+        >
           @for (cat of filteredCategories; track cat.id) {
             <mat-option [value]="cat">
               {{ cat.name }}
