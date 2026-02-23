@@ -44,9 +44,19 @@ export class BudgetsContainerComponent implements OnInit {
   loadData(): void {
     this.isLoading = true;
 
+    this.categoryService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.notificationService.error('Failed to load categories.');
+        this.cdr.markForCheck();
+      },
+    });
+
     forkJoin({
       budgets: this.budgetService.getBudgets(),
-      categories: this.categoryService.getCategories(),
       transactions: this.transactionService.getTransactions({
         type: '',
         account: '',
@@ -55,9 +65,8 @@ export class BudgetsContainerComponent implements OnInit {
         endDate: null,
       }),
     }).subscribe({
-      next: ({ budgets, categories, transactions }) => {
+      next: ({ budgets, transactions }) => {
         this.budgets = budgets;
-        this.categories = categories;
         this.transactions = transactions;
         this.progressItems = this.budgetService.buildProgress(this.budgets, this.transactions);
         this.isLoading = false;

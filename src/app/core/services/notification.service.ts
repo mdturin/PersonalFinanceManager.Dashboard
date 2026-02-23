@@ -22,7 +22,7 @@ export class NotificationService {
   private open(message: string, panelClass: string, duration = 3500): void {
     this.snackBar.open(message, 'Dismiss', {
       duration,
-      horizontalPosition: 'right',
+      horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass,
     });
