@@ -14,10 +14,10 @@ import { SpinnerComponent } from '../../shared/components/spinner-component/spin
 @Component({
   selector: 'app-budgets',
   imports: [CommonModule, FormsModule, SpinnerComponent],
-  templateUrl: './budgets.component.html',
-  styleUrl: './budgets.component.scss',
+  templateUrl: './budgets-container.component.html',
+  styleUrl: './budgets-container.component.scss',
 })
-export class BudgetsComponent implements OnInit {
+export class BudgetsContainerComponent implements OnInit {
   private budgetService = inject(BudgetService);
   private transactionService = inject(TransactionService);
   private categoryService = inject(CategoryService);
