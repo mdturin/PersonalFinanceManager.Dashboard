@@ -4,7 +4,7 @@ import { TransactionContainerComponent } from './features/transactions/transacti
 import { AccountsContainerComponent } from './features/accounts/accounts-container.component';
 import { LoginComponent } from './features/auth/login/login';
 import { BudgetsContainerComponent } from './features/budgets/budgets-container.component';
-import { AlertsComponent } from './features/alerts/alerts.component';
+import { AlertsContainerComponent } from './features/alerts/alerts-container.component';
 import { authGuard, unauthenticatedGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -13,6 +13,6 @@ export const routes: Routes = [
   { path: 'accounts', component: AccountsContainerComponent, canActivate: [authGuard] },
   { path: 'transactions', component: TransactionContainerComponent, canActivate: [authGuard] },
   { path: 'budgets', component: BudgetsContainerComponent, canActivate: [authGuard] },
-  { path: 'alerts', component: AlertsComponent, canActivate: [authGuard] },
+  { path: 'alerts', component: AlertsContainerComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' },
 ];

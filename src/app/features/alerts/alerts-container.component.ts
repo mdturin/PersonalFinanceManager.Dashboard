@@ -8,10 +8,10 @@ import { SpinnerComponent } from '../../shared/components/spinner-component/spin
 @Component({
   selector: 'app-alerts',
   imports: [CommonModule, SpinnerComponent],
-  templateUrl: './alerts.component.html',
-  styleUrl: './alerts.component.scss',
+  templateUrl: './alerts-container.component.html',
+  styleUrl: './alerts-container.component.scss',
 })
-export class AlertsComponent implements OnInit {
+export class AlertsContainerComponent implements OnInit {
   private alertService = inject(AlertService);
   private notificationService = inject(NotificationService);
   private cdr = inject(ChangeDetectorRef);
