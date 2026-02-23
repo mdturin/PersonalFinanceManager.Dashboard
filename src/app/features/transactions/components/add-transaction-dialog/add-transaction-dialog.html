@@ -42,7 +42,7 @@
         <input matInput type="date" name="date" [(ngModel)]="formData.date" required />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <!-- <mat-form-field appearance="outline">
         <mat-label>Category</mat-label>
         <mat-select name="categoryId" [(ngModel)]="formData.categoryId" required>
           <mat-option value="" disabled>Select category</mat-option>
@@ -52,6 +52,32 @@
             </mat-option>
           }
         </mat-select>
+      </mat-form-field> -->
+
+      <mat-form-field appearance="outline">
+        <mat-label>Category</mat-label>
+
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="selectedCategory"
+          [ngModelOptions]="{ standalone: true }"
+          (input)="filterCategories()"
+          [matAutocomplete]="auto"
+          placeholder="Search or add category"
+        />
+
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCategorySelected($event)">
+          @for (cat of filteredCategories; track cat.id) {
+            <mat-option [value]="cat">
+              {{ cat.name }}
+            </mat-option>
+          }
+
+          @if (selectedCategory && !categoryExists(selectedCategory)) {
+            <mat-option [value]="selectedCategory"> Add "{{ selectedCategory }}" </mat-option>
+          }
+        </mat-autocomplete>
       </mat-form-field>
 
       <mat-form-field appearance="outline">

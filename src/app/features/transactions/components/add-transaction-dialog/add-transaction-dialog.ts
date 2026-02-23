@@ -8,11 +8,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { UtilityService } from '../../../../core/services/utility.service';
 import {
   AddTransactionFormData,
   AddTransactionDialogData,
 } from '../../../../core/models/transaction.model';
+import { Category } from '../../../../core/models/category.model';
 
 @Component({
   selector: 'app-add-transaction-dialog',
@@ -25,6 +27,7 @@ import {
     MatIconModule,
     MatInputModule,
     MatSelectModule,
+    MatAutocompleteModule,
   ],
   templateUrl: './add-transaction-dialog.html',
   styleUrl: './add-transaction-dialog.scss',
@@ -38,10 +41,63 @@ export class AddTransactionDialogComponent implements OnInit {
   categories = this.dialogData.categories;
   transaction = this.dialogData.transaction;
 
+  selectedCategory: Category | string = '';
+  filteredCategories = [...this.categories];
+
   formData: AddTransactionFormData = this.getDefaultFormData();
 
   ngOnInit() {
     this.formData = this.getDefaultFormData();
+  }
+
+  filterCategories() {
+    let categoryName = '';
+    if (typeof this.selectedCategory !== 'string') {
+      categoryName = this.selectedCategory.name;
+    } else {
+      categoryName = this.selectedCategory;
+    }
+
+    const val = categoryName.toLowerCase();
+    this.filteredCategories = this.categories.filter((c) => c.name.toLowerCase().startsWith(val));
+  }
+
+  categoryExists(category: Category | string): boolean {
+    let categoryName = '';
+    if (typeof category !== 'string') {
+      categoryName = category.name;
+    } else {
+      categoryName = category;
+    }
+
+    return this.categories.some((c) => c.name.toLowerCase() === categoryName.toLowerCase());
+  }
+
+  addCategory(categoryName: string) {
+    const newCategory = {
+      id: Date.now().toString(),
+      name: categoryName,
+    } as Category;
+
+    this.categories = [...this.categories, newCategory];
+    this.filteredCategories = [newCategory];
+
+    this.formData.categoryId = newCategory.id;
+    this.selectedCategory = newCategory;
+  }
+
+  onCategorySelected(event: any) {
+    const value = event.option.value;
+
+    if (typeof value === 'string') {
+      this.addCategory(value);
+    } else {
+      this.formData.categoryId = value.id;
+    }
+  }
+
+  displayCategory(category: any): string {
+    return category?.name ?? category ?? '';
   }
 
   closeDialog() {
