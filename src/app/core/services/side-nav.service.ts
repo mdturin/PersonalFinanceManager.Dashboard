@@ -33,8 +33,8 @@ export class SideNavService {
           items: [
             { label: 'Dashboard', route: '/dashboard', active: true },
             { label: 'Accounts', route: '/accounts' },
-            { label: 'Budgets', route: '#' },
-            { label: 'Goals', route: '#' },
+            { label: 'Budgets', route: '/budgets' },
+            { label: 'Alerts', route: '/alerts' },
           ],
         },
         {
