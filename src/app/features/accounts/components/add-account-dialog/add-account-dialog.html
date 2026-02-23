@@ -1,8 +1,8 @@
 <mat-card class="dialog-card" role="dialog" aria-labelledby="add-account-title">
   <mat-card-header class="dialog-header">
     <div class="dialog-header-text">
-      <mat-card-title id="add-account-title">Add account</mat-card-title>
-      <mat-card-subtitle>Capture the details for a new account.</mat-card-subtitle>
+      <mat-card-title id="add-account-title">{{ title }}</mat-card-title>
+      <mat-card-subtitle>{{ subtitle }}</mat-card-subtitle>
     </div>
     <button type="button" mat-icon-button aria-label="Close dialog" (click)="closeDialog()">
       <mat-icon>close</mat-icon>
@@ -35,7 +35,7 @@
     <footer class="dialog-footer">
       <button type="button" mat-stroked-button (click)="closeDialog()">Cancel</button>
       <button type="submit" mat-flat-button color="primary" [disabled]="accountForm.invalid">
-        Add account
+        {{ submitButtonLabel }}
       </button>
     </footer>
   </form>
