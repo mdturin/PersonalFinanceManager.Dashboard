@@ -8,12 +8,16 @@
 
 html {
   height: 100%;
-  @include mat.theme((color: (primary: mat.$azure-palette,
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
         tertiary: mat.$blue-palette,
       ),
       typography: Roboto,
       density: 0,
-    ));
+    )
+  );
 }
 
 body {
@@ -59,4 +63,24 @@ body {
   justify-content: center;
   color: #64748b;
   font-size: 0.9rem;
+}
+.notification-success,
+.notification-success .mat-mdc-snack-bar-action {
+  --mdc-snackbar-container-color: #1b5e20;
+  --mat-snack-bar-button-color: #c8e6c9;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+}
+
+.notification-error,
+.notification-error .mat-mdc-snack-bar-action {
+  --mdc-snackbar-container-color: #b3261e;
+  --mat-snack-bar-button-color: #ffd9d6;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+}
+
+.notification-info,
+.notification-info .mat-mdc-snack-bar-action {
+  --mdc-snackbar-container-color: #1f3b8b;
+  --mat-snack-bar-button-color: #d6e4ff;
+  --mdc-snackbar-supporting-text-color: #ffffff;
 }

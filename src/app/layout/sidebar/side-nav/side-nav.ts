@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from "@angular/router";
+import { RouterModule } from '@angular/router';
 import { SideNavService } from '../../../core/services/side-nav.service';
+import { NotificationService } from '../../../core/services/notification.service';
 import { NavItem, SideNavConfig } from '../../../core/models/side-nav.model';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-side-nav',
   templateUrl: './side-nav.html',
   styleUrl: './side-nav.scss',
-  imports: [CommonModule, RouterModule, MatSidenavModule, MatButtonModule, MatIconModule]
+  imports: [CommonModule, RouterModule, MatSidenavModule, MatButtonModule, MatIconModule],
 })
 export class SideNavComponent implements OnInit {
   currentNavItem: NavItem | null = null;
@@ -21,27 +22,26 @@ export class SideNavComponent implements OnInit {
 
   private cdr = inject(ChangeDetectorRef);
   private sideNavService = inject(SideNavService);
+  private notificationService = inject(NotificationService);
 
   ngOnInit(): void {
     this.loadSideNavConfig();
   }
 
   loadSideNavConfig(): void {
-    this.sideNavService.getSideNavConfig()
-      .subscribe({
-        next: (config) => {
-          this.config = config;
-          this.loading = false;
-          this.currentNavItem = this.findActiveNavItem(config);
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          console.error('Error loading side-nav config:', err);
-          this.error = 'Failed to load navigation configuration';
-          this.loading = false;
-          this.cdr.detectChanges();
-        }
-      });
+    this.sideNavService.getSideNavConfig().subscribe({
+      next: (config) => {
+        this.config = config;
+        this.loading = false;
+        this.currentNavItem = this.findActiveNavItem(config);
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.error = 'Failed to load navigation configuration';
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+    });
   }
 
   private findActiveNavItem(config: SideNavConfig): NavItem | null {
@@ -57,15 +57,13 @@ export class SideNavComponent implements OnInit {
   }
 
   onNavItemClick(item: NavItem): void {
-    if (this.currentNavItem)
-      this.currentNavItem.active = false; // Deactivate current item
+    if (this.currentNavItem) this.currentNavItem.active = false; // Deactivate current item
 
     item.active = true; // Activate clicked item
     this.currentNavItem = item; // Update current active item
   }
 
   onCardButtonClick(action: string): void {
-    console.log('Card button clicked with action:', action);
-    // Implement button action logic here
+    this.notificationService.info(`Action ${action} is not yet implemented.`);
   }
 }

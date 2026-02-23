@@ -7,3 +7,8 @@
 .form-control {
   border-radius: 0.5rem;
 }
+
+.btn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}

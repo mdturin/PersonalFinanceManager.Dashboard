@@ -1,9 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, take, tap } from 'rxjs';
+import { BehaviorSubject, Observable, map, take, tap } from 'rxjs';
 import { ApiService } from './api.service';
 import { AuthResponse } from '../models/auth-response.model';
 import { Router } from '@angular/router';
-import { LoaderService } from './loader.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +10,6 @@ import { LoaderService } from './loader.service';
 export class AuthService {
   private api = inject(ApiService);
   private router = inject(Router);
-  private loader = inject(LoaderService);
 
   private authEndpoint = '/api/auth';
   private readonly authStorageKey = 'pfm.authentication.token';
@@ -27,33 +25,29 @@ export class AuthService {
     return this.isAuthenticatedSubject.value;
   }
 
-  login(username: string, password: string) {
-    this.loader.show();
-    this.api
+  login(username: string, password: string): Observable<string | null> {
+    return this.api
       .post<AuthResponse>(
         this.authEndpoint + '/login',
         {
           email: username,
-          password: password,
+          password,
         },
         { withCredentials: true },
       )
-      .pipe(take(1))
-      .subscribe({
-        next: (response: AuthResponse) => {
-          if (!response.success) {
-            // TODO: show response message as Notification
-            console.error(response.message);
-          } else {
-            console.info(response.message);
+      .pipe(
+        take(1),
+        tap((response: AuthResponse) => {
+          if (response.success) {
             localStorage.setItem(this.authStorageKey, response.token);
             this.isAuthenticatedSubject.next(true);
             this.router.navigateByUrl('/dashboard');
           }
-        },
-        error: console.error,
-        complete: () => this.loader.hide(),
-      });
+        }),
+        map((response: AuthResponse) =>
+          response.success ? null : response.message || 'Login failed.',
+        ),
+      );
   }
 
   refreshToken(): Observable<AuthResponse> {

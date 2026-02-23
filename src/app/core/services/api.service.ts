@@ -3,88 +3,72 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   private http = inject(HttpClient);
+  private notificationService = inject(NotificationService);
   private baseUrl = environment.apiBaseUrl;
 
-  /**
-   * Set custom base URL
-   */
   setBaseUrl(url: string): void {
     this.baseUrl = url;
   }
 
-  /**
-   * Get the current base URL
-   */
   getBaseUrl(): string {
     return this.baseUrl;
   }
 
-  /**
-   * Make a GET request
-   */
   get<T>(endpoint: string, options?: { params?: HttpParams }): Observable<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    console.log(`Making GET request to: ${url} with params:`, options?.params);
-    return this.http.get<T>(url, options).pipe(catchError(this.handleError));
+    return this.http.get<T>(url, options).pipe(catchError((error) => this.handleError(error)));
   }
 
-  /**
-   * Make a POST request
-   */
-  post<T>(endpoint: string, data: any, options?: { withCredentials?: boolean }): Observable<T> {
+  post<T>(endpoint: string, data: unknown, options?: { withCredentials?: boolean }): Observable<T> {
     const url = `${this.baseUrl}${endpoint}`;
     return this.http
       .post<T>(url, data, {
         withCredentials: options?.withCredentials ?? false,
       })
-      .pipe(catchError(this.handleError));
+      .pipe(catchError((error) => this.handleError(error)));
   }
 
-  /**
-   * Make a PUT request
-   */
-  put<T>(endpoint: string, data: any): Observable<T> {
+  put<T>(endpoint: string, data: unknown): Observable<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.put<T>(url, data).pipe(catchError(this.handleError));
+    return this.http.put<T>(url, data).pipe(catchError((error) => this.handleError(error)));
   }
 
-  /**
-   * Make a PATCH request
-   */
-  patch<T>(endpoint: string, data: any): Observable<T> {
+  patch<T>(endpoint: string, data: unknown): Observable<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.patch<T>(url, data).pipe(catchError(this.handleError));
+    return this.http.patch<T>(url, data).pipe(catchError((error) => this.handleError(error)));
   }
 
-  /**
-   * Make a DELETE request
-   */
   delete<T>(endpoint: string): Observable<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    return this.http.delete<T>(url).pipe(catchError(this.handleError));
+    return this.http.delete<T>(url).pipe(catchError((error) => this.handleError(error)));
   }
 
-  /**
-   * Handle HTTP errors
-   */
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'An error occurred';
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    const errorMessage = this.getErrorMessage(error);
+    this.notificationService.error(errorMessage);
+    return throwError(() => new Error(errorMessage));
+  }
 
-    if (error.error instanceof ErrorEvent) {
-      // Client-side error
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+  private getErrorMessage(error: HttpErrorResponse): string {
+    if (typeof error.error?.message === 'string' && error.error.message.trim()) {
+      return error.error.message;
     }
 
-    console.error(errorMessage);
-    return throwError(() => new Error(errorMessage));
+    if (error.error instanceof ErrorEvent) {
+      return error.error.message;
+    }
+
+    if (error.status === 0) {
+      return 'Unable to reach server. Please check your connection and try again.';
+    }
+
+    return error.message || 'An unexpected error occurred. Please try again.';
   }
 }
