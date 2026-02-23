@@ -10,26 +10,53 @@
   </mat-card-header>
 
   <form #accountForm="ngForm" (ngSubmit)="submit()" class="dialog-body">
-    <div class="dialog-grid">
-      <mat-form-field appearance="outline">
-        <mat-label>Account name</mat-label>
-        <input matInput name="name" [(ngModel)]="formData.name" required />
-      </mat-form-field>
+    <div class="row g-3">
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Account name</mat-label>
+          <input matInput name="name" [(ngModel)]="formData.name" required />
+        </mat-form-field>
+      </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Account type</mat-label>
-        <input matInput name="type" [(ngModel)]="formData.type" required />
-      </mat-form-field>
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Institution</mat-label>
+          <input
+            matInput
+            name="institution"
+            [(ngModel)]="formData.institution"
+            required
+            [disabled]="isEditMode"
+          />
+        </mat-form-field>
+      </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Institution</mat-label>
-        <input matInput name="institution" [(ngModel)]="formData.institution" required />
-      </mat-form-field>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Account type</mat-label>
+          <mat-select name="type" [(ngModel)]="formData.type" required [disabled]="isEditMode">
+            <mat-option value="" disabled>Select Account Type</mat-option>
+            @for (accountType of accountTypes; track $index) {
+              <mat-option [value]="accountType.value">
+                {{ accountType.label }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Current balance</mat-label>
-        <input matInput name="balance" [(ngModel)]="formData.currentBalance" required />
-      </mat-form-field>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Current balance</mat-label>
+          <input
+            matInput
+            name="balance"
+            [(ngModel)]="formData.currentBalance"
+            required
+            [disabled]="isEditMode"
+          />
+        </mat-form-field>
+      </div>
     </div>
 
     <footer class="dialog-footer">

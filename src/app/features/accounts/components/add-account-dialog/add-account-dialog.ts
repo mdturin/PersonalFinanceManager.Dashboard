@@ -8,7 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { Account, AccountStatus } from '../../../../core/models/account.model';
+import { Account, AccountStatus, AccountType } from '../../../../core/models/account.model';
+import { AccountService } from '../../../../core/services/account-service';
 
 export type AddAccountFormData = Account;
 
@@ -37,15 +38,15 @@ export class AddAccountDialogComponent implements OnInit {
   private dialogRef = inject(MatDialogRef<AddAccountDialogComponent, AddAccountFormData>);
   private dialogData = inject<AddAccountDialogData>(MAT_DIALOG_DATA);
 
-  statusOptions: AccountStatus[] = this.dialogData?.statuses ?? [
-    'Active',
-    'Needs attention',
-    'Inactive',
-  ];
+  statusOptions: AccountStatus[] = ['Active', 'Needs attention', 'Inactive'];
 
   mode: 'create' | 'edit' = this.dialogData?.mode ?? 'create';
 
   formData: AddAccountFormData = this.getDefaultFormData();
+
+  accountTypes = AccountService.getAccountTypes();
+
+  isEditMode = this.dialogData?.mode === 'edit';
 
   get title(): string {
     return this.mode === 'edit' ? 'Edit account' : 'Add account';
@@ -79,10 +80,13 @@ export class AddAccountDialogComponent implements OnInit {
     return {
       id: '',
       name: '',
-      type: '',
+      type: AccountType.Checking,
       institution: '',
-      currentBalance: '0',
+      currentBalance: 0,
+      currency: 'BDT',
       isActive: true,
+      includeInNetWorth: true,
+      createdAt: new Date().toLocaleDateString(),
       updatedAt: new Date().toLocaleDateString(),
     };
   }

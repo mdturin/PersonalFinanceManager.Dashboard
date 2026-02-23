@@ -11,6 +11,10 @@ import { MetricModel } from '../../core/models/metric-model';
 import { StatCardComponent } from '../../shared/components/stat-card-component/stat-card-component';
 import { AccountService } from '../../core/services/account-service';
 import { SpinnerComponent } from '../../shared/components/spinner-component/spinner-component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { switchMap, take } from 'rxjs';
 
 interface AccountInsight {
   title: string;
@@ -19,7 +23,14 @@ interface AccountInsight {
 
 @Component({
   selector: 'app-accounts',
-  imports: [CommonModule, StatCardComponent, SpinnerComponent],
+  imports: [
+    CommonModule,
+    StatCardComponent,
+    SpinnerComponent,
+    MatIconModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './accounts-container.component.html',
   styleUrls: ['./accounts-container.component.scss'],
 })
@@ -91,29 +102,7 @@ export class AccountsContainerComponent implements OnInit {
     }
   }
 
-  openAddAccountDialog() {
-    const dialogRef = this.dialogService.openComponent<
-      AddAccountDialogComponent,
-      AddAccountDialogData,
-      AddAccountFormData
-    >({
-      component: AddAccountDialogComponent,
-      config: {
-        width: '640px',
-        maxWidth: '95vw',
-      },
-      data: {
-        mode: 'create',
-      },
-    });
-
-    dialogRef.subscribe((formData: AddAccountFormData) => {
-      this.accounts = [{ ...formData }, ...this.accounts];
-      this.cdr.markForCheck();
-    });
-  }
-
-  openEditAccountDialog(account: Account) {
+  private openAccountDialog(account: Account | undefined, mode: 'create' | 'edit') {
     const dialogRef = this.dialogService.openComponent<
       AddAccountDialogComponent,
       AddAccountDialogData,
@@ -126,35 +115,70 @@ export class AccountsContainerComponent implements OnInit {
       },
       data: {
         account,
-        mode: 'edit',
+        mode,
       },
     });
 
-    dialogRef.subscribe((formData: AddAccountFormData) => {
-      this.accountsService.updateAccount(account.id, formData).subscribe({
-        next: (updatedAccount: Account) => {
-          this.accounts = this.accounts.map((currentAccount: Account) =>
-            currentAccount.id === account.id
-              ? { ...currentAccount, ...updatedAccount }
-              : currentAccount,
-          );
-          this.cdr.markForCheck();
-        },
-      });
+    return dialogRef.pipe(
+      take(1),
+      switchMap((formData: AddAccountFormData) => {
+        if (mode === 'create') {
+          return this.accountsService.createAccount(formData);
+        } else if (mode === 'edit' && account) {
+          return this.accountsService.updateAccount(account.id, formData);
+        } else {
+          throw new Error('Invalid dialog mode or missing account data');
+        }
+      }),
+    );
+  }
+
+  openAddAccountDialog() {
+    this.openAccountDialog(undefined, 'create').subscribe({
+      next: (newAccount: Account) => {
+        this.accounts = [{ ...newAccount }, ...this.accounts];
+        this.cdr.markForCheck();
+      },
     });
   }
 
-  deactivateAccount(account: Account) {
-    this.accountsService.deactivateAccount(account.id).subscribe({
+  openEditAccountDialog(account: Account) {
+    this.openAccountDialog(account, 'edit').subscribe({
+      next: (updatedAccount: Account) => {
+        this.accounts = this.accounts.map((currentAccount: Account) =>
+          currentAccount.id === account.id ? updatedAccount : currentAccount,
+        );
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  toggleAccountStatus(account: Account) {
+    const accountStatusSubjet = account.isActive
+      ? this.accountsService.deactivateAccount(account.id)
+      : this.accountsService.activateAccount(account.id);
+
+    accountStatusSubjet.subscribe({
       next: () => {
         this.accounts = this.accounts.map((currentAccount: Account) =>
           currentAccount.id === account.id
             ? {
                 ...currentAccount,
-                isActive: false,
+                isActive: !currentAccount.isActive,
                 updatedAt: new Date().toISOString(),
               }
             : currentAccount,
+        );
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  deleteAccount(account: Account) {
+    this.accountsService.deleteAccount(account.id).subscribe({
+      next: () => {
+        this.accounts = this.accounts.filter(
+          (currentAccount: Account) => currentAccount.id !== account.id,
         );
         this.cdr.markForCheck();
       },

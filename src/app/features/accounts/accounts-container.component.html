@@ -49,7 +49,7 @@
                 <th scope="col">Balance</th>
                 <th scope="col">Status</th>
                 <th scope="col">Last activity</th>
-                <th scope="col" class="text-end">Actions</th>
+                <th scope="col" class="text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -61,26 +61,30 @@
                 <td class="fw-semibold">{{ account.currentBalance }}</td>
                 <td>
                   <span class="badge badge-soft" [ngClass]="getStatusClass(account.isActive)">{{
-                    account.isActive ? 'Active' : 'Need Attention'
+                    account.isActive ? 'Actived' : 'Deactivated'
                   }}</span>
                 </td>
                 <td class="text-muted">{{ account.updatedAt | date: 'shortDate' }}</td>
-                <td>
-                  <div class="d-flex justify-content-end gap-2">
+                <td class="text-center">
+                  <div class="d-flex justify-content-center">
                     <button
-                      class="btn btn-outline-primary btn-sm"
-                      type="button"
+                      mat-icon-button
+                      color="primary"
                       (click)="openEditAccountDialog(account)"
                     >
-                      Edit
+                      <mat-icon>edit_square</mat-icon>
                     </button>
-                    <button
-                      class="btn btn-outline-danger btn-sm"
-                      type="button"
-                      [disabled]="!account.isActive"
-                      (click)="deactivateAccount(account)"
-                    >
-                      Deactivate
+                    <button mat-icon-button color="primary" (click)="toggleAccountStatus(account)">
+                      @if (account.isActive) {
+                        <mat-icon color="warn">block</mat-icon>
+                      } @else {
+                        <!-- Activate -->
+                        <mat-icon color="primary">check_circle</mat-icon>
+                      }
+                    </button>
+
+                    <button mat-icon-button (click)="deleteAccount(account)" class="hide">
+                      <mat-icon color="warn">delete</mat-icon>
                     </button>
                   </div>
                 </td>
