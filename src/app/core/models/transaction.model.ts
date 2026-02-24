@@ -10,7 +10,7 @@ export interface Transaction {
   categoryId: string;
   categoryName: string;
 
-  type: string;
+  type: number;
   amount: number;
   description: string;
 
@@ -18,7 +18,7 @@ export interface Transaction {
 }
 
 export class TransactionFilter {
-  type: string = '';
+  type: number = 0;
   account: string = '';
   category: string = '';
   startDate: string | null = null;
@@ -26,7 +26,7 @@ export class TransactionFilter {
 }
 
 export interface AddTransactionFormData {
-  type: string;
+  type: number;
   amount: number;
   date: string;
   categoryId: string;
@@ -39,4 +39,11 @@ export interface AddTransactionDialogData {
   transaction: Transaction | null;
   accounts: Account[];
   categories: Category[];
+}
+
+export enum TransactionType {
+  All = 0,
+  Income = 1,
+  Expense = 2,
+  Transfer = 3,
 }

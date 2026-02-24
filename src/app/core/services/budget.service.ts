@@ -3,6 +3,7 @@ import { Observable, map } from 'rxjs';
 import { ApiService } from './api.service';
 import { Budget, BudgetFormData, BudgetProgress } from '../models/budget.model';
 import { Transaction } from '../models/transaction.model';
+import { CategoryType } from '../models/category.model';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +38,7 @@ export class BudgetService {
       const spent = transactions
         .filter(
           (transaction) =>
-            transaction.type.toLowerCase() === 'expense' &&
+            transaction.type === CategoryType.Expense &&
             transaction.categoryId === budget.categoryId &&
             this.formatMonth(transaction.date) === budget.month,
         )

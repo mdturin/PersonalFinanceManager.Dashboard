@@ -12,6 +12,21 @@
   <form #transactionForm="ngForm" (ngSubmit)="submit()" class="dialog-body">
     <div class="dialog-grid">
       <mat-form-field appearance="outline">
+        <mat-label>From Account</mat-label>
+        <mat-select
+          name="accountId"
+          [(ngModel)]="formData.accountId"
+          [disabled]="transaction != null"
+          required
+        >
+          <mat-option value="" disabled>Select account</mat-option>
+          <mat-option *ngFor="let account of accounts" [value]="account.id">
+            {{ account.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
         <mat-label>Type</mat-label>
         <mat-select
           name="type"
@@ -19,8 +34,8 @@
           [disabled]="transaction != null"
           required
         >
-          <mat-option value="income">Income</mat-option>
-          <mat-option value="expense">Expense</mat-option>
+          <mat-option [value]="1">Income</mat-option>
+          <mat-option [value]="2">Expense</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -82,21 +97,6 @@
             <mat-option [value]="selectedCategory"> Add "{{ selectedCategory }}" </mat-option>
           }
         </mat-autocomplete>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>From Account</mat-label>
-        <mat-select
-          name="accountId"
-          [(ngModel)]="formData.accountId"
-          [disabled]="transaction != null"
-          required
-        >
-          <mat-option value="" disabled>Select account</mat-option>
-          <mat-option *ngFor="let account of accounts" [value]="account.id">
-            {{ account.name }}
-          </mat-option>
-        </mat-select>
       </mat-form-field>
 
       <!-- <mat-form-field *ngIf="formData.type === 'transfer'" appearance="outline">

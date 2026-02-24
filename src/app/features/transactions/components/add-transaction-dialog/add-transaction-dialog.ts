@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -13,8 +13,11 @@ import { UtilityService } from '../../../../core/services/utility.service';
 import {
   AddTransactionFormData,
   AddTransactionDialogData,
+  TransactionType,
 } from '../../../../core/models/transaction.model';
 import { Category } from '../../../../core/models/category.model';
+import { CategoryService } from '../../../../core/services/category-service';
+import { LoaderService } from '../../../../core/services/loader.service';
 
 @Component({
   selector: 'app-add-transaction-dialog',
@@ -36,15 +39,18 @@ export class AddTransactionDialogComponent implements OnInit {
   private dialogRef = inject(MatDialogRef<AddTransactionDialogComponent, AddTransactionFormData>);
   private dialogData = inject<AddTransactionDialogData>(MAT_DIALOG_DATA);
 
+  private loader = inject(LoaderService);
+  private categoryService = inject(CategoryService);
+
   title = this.dialogData.title;
   accounts = this.dialogData.accounts;
   categories = this.dialogData.categories;
   transaction = this.dialogData.transaction;
 
-  selectedCategory: Category | string = '';
+  selectedCategory: Category | string | null = null;
   filteredCategories = [...this.categories];
 
-  formData: AddTransactionFormData = this.getDefaultFormData();
+  formData = {} as AddTransactionFormData;
 
   ngOnInit() {
     this.formData = this.getDefaultFormData();
@@ -52,7 +58,9 @@ export class AddTransactionDialogComponent implements OnInit {
 
   filterCategories() {
     let categoryName = '';
-    if (typeof this.selectedCategory !== 'string') {
+    if (this.selectedCategory === null || this.selectedCategory === undefined) {
+      categoryName = '';
+    } else if (typeof this.selectedCategory !== 'string') {
       categoryName = this.selectedCategory.name;
     } else {
       categoryName = this.selectedCategory;
@@ -73,24 +81,38 @@ export class AddTransactionDialogComponent implements OnInit {
     return this.categories.some((c) => c.name.toLowerCase() === categoryName.toLowerCase());
   }
 
-  addCategory(categoryName: string) {
+  addCategory(categoryName: string, type: number) {
     const newCategory = {
-      id: Date.now().toString(),
       name: categoryName,
+      type: type,
     } as Category;
 
-    this.categories = [...this.categories, newCategory];
-    this.filteredCategories = [newCategory];
+    this.loader.show();
+    this.categoryService.addCategory(newCategory).subscribe({
+      next: (category) => {
+        newCategory.id = category.id;
+        this.categories = [...this.categories, newCategory];
+        this.filteredCategories = [newCategory];
 
-    this.formData.categoryId = newCategory.id;
-    this.selectedCategory = newCategory;
+        setTimeout(() => {
+          this.formData.categoryId = newCategory.id;
+          this.selectedCategory = newCategory;
+        });
+      },
+      error: (err) => {
+        console.error('Failed to add category', err);
+      },
+      complete: () => {
+        this.loader.hide();
+      },
+    });
   }
 
   onCategorySelected(event: any) {
     const value = event.option.value;
 
     if (typeof value === 'string') {
-      this.addCategory(value);
+      this.addCategory(value, this.formData.type);
     } else {
       this.formData.categoryId = value.id;
     }
@@ -113,7 +135,7 @@ export class AddTransactionDialogComponent implements OnInit {
     const today = UtilityService.formatDate(baseDate);
 
     return {
-      type: this.transaction?.type?.toLowerCase() ?? 'expense',
+      type: this.transaction?.type ?? TransactionType.Expense,
       amount: this.transaction?.amount ?? 0,
       date: today,
       categoryId: this.transaction?.categoryId ?? '',

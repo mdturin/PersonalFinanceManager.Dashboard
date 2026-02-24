@@ -1,14 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, LOCALE_ID, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccountService } from '../../core/services/account-service';
 import { CategoryService } from '../../core/services/category-service';
 import { TransactionService } from '../../core/services/transaction-service';
 import { CalendarComponent } from './components/calendar-component/calendar-component';
-import { Transaction, TransactionFilter } from '../../core/models/transaction.model';
+import {
+  Transaction,
+  TransactionFilter,
+  TransactionType,
+} from '../../core/models/transaction.model';
 import { SpinnerComponent } from '../../shared/components/spinner-component/spinner-component';
 import { Account } from '../../core/models/account.model';
-import { Category } from '../../core/models/category.model';
+import { Category, CategoryType } from '../../core/models/category.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -28,6 +32,7 @@ import { NotificationService } from '../../core/services/notification.service';
   ],
   templateUrl: './transaction-container-component.html',
   styleUrl: './transaction-container-component.scss',
+  providers: [{ provide: LOCALE_ID, useValue: 'bn-BD' }],
 })
 export class TransactionContainerComponent implements OnInit {
   private transactionService = inject(TransactionService);
@@ -35,6 +40,8 @@ export class TransactionContainerComponent implements OnInit {
   private categoryService = inject(CategoryService);
   private cdr = inject(ChangeDetectorRef);
   private notificationService = inject(NotificationService);
+
+  categoryTypes = CategoryService.getCateogryTypes();
 
   isTransactionLoading: boolean = true;
   transactions: Transaction[] = [];
@@ -48,7 +55,7 @@ export class TransactionContainerComponent implements OnInit {
   currentView: 'grid' | 'calendar' = 'grid';
 
   filters: TransactionFilter = {
-    type: '',
+    type: CategoryType.All,
     account: '',
     category: '',
   } as TransactionFilter;
@@ -98,6 +105,14 @@ export class TransactionContainerComponent implements OnInit {
         this.cdr.markForCheck();
       },
     });
+  }
+
+  getTransactionClass(transaction: Transaction): string {
+    return transaction.type === TransactionType.Expense ? 'expense' : 'income';
+  }
+
+  getSignedAmount(transaction: Transaction): number {
+    return transaction.type === TransactionType.Expense ? -transaction.amount : transaction.amount;
   }
 
   applyFilters() {

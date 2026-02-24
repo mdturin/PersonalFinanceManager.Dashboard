@@ -8,6 +8,7 @@ import { BudgetService } from './budget.service';
 import { Budget } from '../models/budget.model';
 import { Account, AccountType } from '../models/account.model';
 import { Transaction, TransactionFilter } from '../models/transaction.model';
+import { CategoryType } from '../models/category.model';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +30,7 @@ export class AlertService {
 
   private generateAlertsFromLiveData(): Observable<AlertItem[]> {
     const allTransactionFilter: TransactionFilter = {
-      type: '',
+      type: CategoryType.All,
       account: '',
       category: '',
       startDate: null,
@@ -51,7 +52,11 @@ export class AlertService {
     );
   }
 
-  private buildAlerts(accounts: Account[], transactions: Transaction[], budgets: Budget[]): AlertItem[] {
+  private buildAlerts(
+    accounts: Account[],
+    transactions: Transaction[],
+    budgets: Budget[],
+  ): AlertItem[] {
     const alerts: AlertItem[] = [];
     alerts.push(...this.getLowBalanceAlerts(accounts));
     alerts.push(...this.getUnusualSpendingAlerts(transactions));
@@ -90,7 +95,9 @@ export class AlertService {
       .filter((account) => account.isActive)
       .filter((account) => {
         if (account.type === AccountType.CreditCard) {
-          const utilization = account.creditLimit ? account.currentBalance / account.creditLimit : 0;
+          const utilization = account.creditLimit
+            ? account.currentBalance / account.creditLimit
+            : 0;
           return utilization >= 0.85;
         }
 
@@ -117,11 +124,12 @@ export class AlertService {
 
     const currentMonthExpenses = transactions.filter(
       (transaction) =>
-        transaction.type.toLowerCase() === 'expense' && new Date(transaction.date) >= startCurrentMonth,
+        transaction.type === CategoryType.Expense &&
+        new Date(transaction.date) >= startCurrentMonth,
     );
 
     const lastMonthExpenses = transactions.filter((transaction) => {
-      if (transaction.type.toLowerCase() !== 'expense') {
+      if (transaction.type !== CategoryType.Expense) {
         return false;
       }
 
@@ -129,8 +137,14 @@ export class AlertService {
       return date >= startLastMonth && date < startCurrentMonth;
     });
 
-    const currentTotal = currentMonthExpenses.reduce((sum, transaction) => sum + transaction.amount, 0);
-    const previousTotal = lastMonthExpenses.reduce((sum, transaction) => sum + transaction.amount, 0);
+    const currentTotal = currentMonthExpenses.reduce(
+      (sum, transaction) => sum + transaction.amount,
+      0,
+    );
+    const previousTotal = lastMonthExpenses.reduce(
+      (sum, transaction) => sum + transaction.amount,
+      0,
+    );
 
     if (previousTotal <= 0 || currentTotal <= previousTotal * 1.2) {
       return [];
@@ -150,10 +164,17 @@ export class AlertService {
   }
 
   private getUpcomingDuePaymentAlerts(transactions: Transaction[]): AlertItem[] {
-    const recurringKeywords = ['rent', 'mortgage', 'loan', 'credit card', 'utility', 'subscription'];
+    const recurringKeywords = [
+      'rent',
+      'mortgage',
+      'loan',
+      'credit card',
+      'utility',
+      'subscription',
+    ];
 
     const recurringPayments = transactions
-      .filter((transaction) => transaction.type.toLowerCase() === 'expense')
+      .filter((transaction) => transaction.type === CategoryType.Expense)
       .filter((transaction) =>
         recurringKeywords.some((keyword) =>
           `${transaction.categoryName} ${transaction.description}`.toLowerCase().includes(keyword),

@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { Budget, BudgetFormData, BudgetProgress } from '../../core/models/budget.model';
-import { Category } from '../../core/models/category.model';
+import { Category, CategoryType } from '../../core/models/category.model';
 import { Transaction } from '../../core/models/transaction.model';
 import { BudgetService } from '../../core/services/budget.service';
 import { CategoryService } from '../../core/services/category-service';
@@ -58,7 +58,7 @@ export class BudgetsContainerComponent implements OnInit {
     forkJoin({
       budgets: this.budgetService.getBudgets(),
       transactions: this.transactionService.getTransactions({
-        type: '',
+        type: CategoryType.All,
         account: '',
         category: '',
         startDate: null,

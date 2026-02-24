@@ -25,9 +25,9 @@
         <div class="col-12 col-md-3 col-lg-2">
           <label class="form-label small text-muted">Type</label>
           <select class="form-select" [(ngModel)]="filters.type">
-            <option value="">All Types</option>
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
+            <option *ngFor="let type of categoryTypes" [value]="type.value">
+              {{ type.label }}
+            </option>
           </select>
         </div>
 
@@ -90,8 +90,8 @@
                 <td>{{ t.type }}</td>
                 <td>{{ t.categoryName }}</td>
                 <td>{{ t.accountName }}</td>
-                <td [ngClass]="t.type" class="fw-semibold text-end">
-                  {{ t.type === 'Expense' ? '-' : '+' }} ৳ {{ t.amount }}
+                <td [ngClass]="getTransactionClass(t)" class="fw-semibold text-end">
+                  {{ getSignedAmount(t) | currency: 'BDT' : 'symbol' : '1.2-2' }}
                 </td>
                 <td>{{ t.description }}</td>
                 <td class="text-center">
